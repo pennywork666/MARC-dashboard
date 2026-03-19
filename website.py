@@ -226,24 +226,24 @@ st.markdown(
         display:flex;
         justify-content:flex-start;
         align-items:flex-start;
-        margin-top: -38px;
+        margin-top: -54px;
         padding-left: 6px;
     }
 
     .header-logo {
-        width: 188px;
+        width: 168px;
         max-width: 100%;
         height: auto;
         display: block;
     }
 
     .header-wrap {
-        margin-top: -6px;
+        margin-top: -14px;
     }
 
     .header-title {
         text-align: center;
-        font-size: 2.15rem;
+        font-size: 1.95rem;
         font-weight: 850;
         color:#0e3a67;
         line-height: 1.02;
@@ -254,9 +254,9 @@ st.markdown(
 
     .header-subtitle {
         text-align:center;
-        font-size:12px;
+        font-size:11px;
         color:#5d7b94;
-        margin-top:2px;
+        margin-top:0px;
     }
     </style>
     """,
@@ -439,7 +439,7 @@ def render_movement_cards():
 # =============================
 # ROW 1: Summary + Gender
 # =============================
-st.markdown("<div style='margin-top:-32px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top:-52px;'></div>", unsafe_allow_html=True)
 row1_left, row1_middle = st.columns([1.0, 1.0], gap="medium")
 
 with row1_left:
@@ -813,44 +813,44 @@ with row1_left:
         border:1px solid #d6eaf6;
         border-radius:22px;
         background:linear-gradient(145deg, #0d355f 0%, #0f4577 40%, #0a84c7 100%);
-        height:286px;
+        height:270px;
         box-sizing:border-box;
-        padding:10px 12px 10px 12px;
+        padding:8px 10px 8px 10px;
         display:flex;
         flex-direction:column;
         box-shadow:none;
         position:relative;
         overflow:hidden;
     ">
-      <div style="height:4px; border-radius:999px; background:linear-gradient(90deg, rgba(255,255,255,.9) 0%, rgba(196,233,250,.95) 55%, rgba(120,202,235,.9) 100%); margin-bottom:8px;"></div>
-      <div style="position:relative; min-height:78px; margin-bottom:6px;">
-        <div style="font-size:20px; font-weight:950; color:white; margin-top:10px; line-height:1.02; max-width:54%;">Workforce Snapshot</div>
-        <img src="data:image/png;base64,{row1_left_b64}" alt="workforce illustration" style="position:absolute; top:0; right:0; height:82px; width:auto; object-fit:contain; filter:drop-shadow(0 8px 14px rgba(0,0,0,.16)); z-index:2;" />
+      <div style="height:4px; border-radius:999px; background:linear-gradient(90deg, rgba(255,255,255,.9) 0%, rgba(196,233,250,.95) 55%, rgba(120,202,235,.9) 100%); margin-bottom:6px;"></div>
+      <div style="position:relative; min-height:68px; margin-bottom:6px;">
+        <div style="font-size:18px; font-weight:950; color:white; margin-top:8px; line-height:1.02; max-width:54%;">Workforce Snapshot</div>
+        <img src="data:image/png;base64,{row1_left_b64}" alt="workforce illustration" style="position:absolute; top:0; right:0; height:72px; width:auto; object-fit:contain; filter:none; z-index:2;" />
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; flex:1;">
-        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:10px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:12px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Headcount</div>
-          <div style="font-size:26px; font-weight:950; color:white; margin-top:6px; line-height:1;">{hc}</div>
+        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:8px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+          <div style="font-size:11px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Headcount</div>
+          <div style="font-size:24px; font-weight:950; color:white; margin-top:4px; line-height:1;">{hc}</div>
         </div>
-        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:10px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:12px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">New Hires (MTD)</div>
-          <div style="font-size:26px; font-weight:950; color:white; margin-top:6px; line-height:1;">{new_hires_mtd}</div>
+        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:8px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+          <div style="font-size:11px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">New Hires (MTD)</div>
+          <div style="font-size:24px; font-weight:950; color:white; margin-top:4px; line-height:1;">{new_hires_mtd}</div>
         </div>
-        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:10px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:12px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Midea Tenure</div>
-          <div style="font-size:26px; font-weight:950; color:white; margin-top:6px; line-height:1;">{"-" if np.isnan(avg_midea) else f"{avg_midea:.2f}"}</div>
+        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:8px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+          <div style="font-size:11px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Midea Tenure</div>
+          <div style="font-size:24px; font-weight:950; color:white; margin-top:4px; line-height:1;">{"-" if np.isnan(avg_midea) else f"{avg_midea:.2f}"}</div>
         </div>
-        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:10px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:12px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Industry Experience</div>
-          <div style="font-size:26px; font-weight:950; color:white; margin-top:6px; line-height:1;">{"-" if np.isnan(avg_industry) else f"{avg_industry:.2f}"}</div>
+        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:8px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+          <div style="font-size:11px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Industry Experience</div>
+          <div style="font-size:24px; font-weight:950; color:white; margin-top:4px; line-height:1;">{"-" if np.isnan(avg_industry) else f"{avg_industry:.2f}"}</div>
         </div>
       </div>
-      <div style="margin-top:6px; display:flex; justify-content:flex-end; font-size:9px; font-weight:700; color:rgba(255,255,255,.76); line-height:1;">
+      <div style="margin-top:4px; display:flex; justify-content:flex-end; font-size:8px; font-weight:700; color:rgba(255,255,255,.76); line-height:1;">
         Excludes coop and contractors
       </div>
     </div>
     """
-    components.html(kpi_card, height=296)
+    components.html(kpi_card, height=282)
     
 with row1_middle:
     st.markdown(
@@ -1193,15 +1193,15 @@ with row1_middle:
         box-shadow: none;
         padding: 8px 12px 10px 12px;
         color: #102f52;
-        height: 286px;
+        height: 270px;
         box-sizing: border-box;
       }}
       .gender-title {{
         text-align: center;
-        font-size: 18px;
+        font-size: 17px;
         font-weight: 900;
         color: #0e3a67;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
       }}
       .gender-layout {{
         display: grid;
@@ -1216,7 +1216,7 @@ with row1_middle:
         gap: 8px;
       }}
       .count-box {{
-        padding: 8px 8px;
+        padding: 7px 8px;
         border-radius: 16px;
         background: #f7fcff;
         border: 1px solid #d8ebf7;
@@ -1227,10 +1227,10 @@ with row1_middle:
         text-align: center;
       }}
       .count-icon {{
-        width: 54px;
-        height: 78px;
+        width: 48px;
+        height: 70px;
         object-fit: contain;
-        flex: 0 0 54px;
+        flex: 0 0 48px;
       }}
       .count-text {{
         display:flex;
@@ -1238,14 +1238,14 @@ with row1_middle:
         align-items:center;
       }}
       .count-label {{
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 900;
         color: #5d7b94;
         text-transform: uppercase;
       }}
       .count-value {{
         margin-top: 5px;
-        font-size: 28px;
+        font-size: 25px;
         font-weight: 950;
         line-height: 1;
       }}
@@ -1257,11 +1257,11 @@ with row1_middle:
         justify-content: center;
         position: relative;
         height: 100%;
-        min-height: 144px;
+        min-height: 132px;
       }}
       .donut {{
-        width: 102px;
-        height: 102px;
+        width: 92px;
+        height: 92px;
         border-radius: 50%;
         background: conic-gradient(#0e3a67 0 {male_pct:.3f}%, #0096db {male_pct:.3f}% 100%);
         position: relative;
@@ -1269,13 +1269,13 @@ with row1_middle:
       .donut::after {{
         content: "";
         position: absolute;
-        inset: 16px;
+        inset: 15px;
         background: white;
         border-radius: 50%;
         box-shadow: inset 0 0 0 1px #e1eff8;
       }}
       .percent-item {{
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 900;
         line-height: 1;
         position:absolute;
@@ -1283,12 +1283,12 @@ with row1_middle:
       }}
       .percent-item.male {{
         color:#0e3a67;
-        top: 44px;
+        top: 40px;
         right: 4px;
       }}
       .percent-item.female {{
         color:#0096db;
-        bottom: 38px;
+        bottom: 34px;
         left: 0;
       }}
     </style>
@@ -1323,13 +1323,13 @@ with row1_middle:
     </body>
     </html>
     """
-    components.html(gender_card, height=296)
+    components.html(gender_card, height=282)
 
 
 # =============================
 # Row2: PD analysis + Movement
 # =============================
-st.markdown("<div style='margin-top:-42px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top:-58px;'></div>", unsafe_allow_html=True)
 row2_left, row2_right = st.columns([1.66, 0.84], gap="small")
 
 with row2_left:
