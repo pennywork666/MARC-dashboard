@@ -193,6 +193,7 @@ st.markdown(
 # =============================
 as_of = extract_report_date(EXCEL_PATH)
 dashboard_title = "MARC HR Dashboard"
+report_period_label = as_of.strftime("%B %Y")
 
 LOGO_PATH = BASE_DIR / "Midea.png"
 logo_b64 = image_to_base64(LOGO_PATH)
@@ -390,7 +391,7 @@ avg_industry = avg_industry_years_from_birth(employees_core["birth_date"], as_of
 
 def render_movement_cards():
     nh = new_hires_in_month(employees_core, as_of)
-    st.markdown('<div class="section-title">New Hire (This Month)</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="section-title">New Hire ({report_period_label})</div>', unsafe_allow_html=True)
     if nh.empty:
         st.markdown(
         """
@@ -1739,7 +1740,7 @@ if False:
             """
             <div class="block-card">
               <div style="color:rgba(0,0,0,.65); font-weight:700; font-size:18px;">
-                No new hires in the current month.
+                No new hires in {report_period_label}.
               </div>
             </div>
             """,
@@ -1759,7 +1760,7 @@ if False:
             unsafe_allow_html=True,
         )
 
-    st.markdown('<div class="section-title">Service Anniversary (This Month)</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="section-title">Service Anniversary ({report_period_label})</div>', unsafe_allow_html=True)
     an = service_anniversaries_in_month(employees_core, as_of)
 
     if an.empty:
@@ -1767,7 +1768,7 @@ if False:
             """
             <div class="block-card">
               <div style="color:rgba(0,0,0,.65); font-weight:700; font-size:18px;">
-                No service anniversaries in the current month.
+                No service anniversaries in {report_period_label}.
               </div>
             </div>
             """,
