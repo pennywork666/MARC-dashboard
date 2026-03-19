@@ -2694,9 +2694,7 @@ html = r"""
 <body>
   <div class="wrap">
     <div class="topbar">
-      <div class="righttools">
-        <div>Wheel=Zoom, Drag=Pan</div>
-      </div>
+      <div class="righttools"></div>
     </div>
 
     <div class="content">
@@ -2706,7 +2704,7 @@ html = r"""
 
       <div class="viewport" id="viewport">
         <div class="pdHeaderLine" id="pdTitle"></div>
-        <div class="hint">Reporting Relationship</div>
+        <div class="hint">Wheel=Zoom, Drag=Pan</div>
 
         <svg id="detailSvg" xmlns="http://www.w3.org/2000/svg">
           <g id="zoomGroup">
@@ -3198,10 +3196,10 @@ html = r"""
     fitConfig = {
       maxScale: profile.maxScale,
       padX: realNodeCount <= 10 ? 16 : 20,
-      padTop: pdName === "RAC" ? 44 : 26,
+      padTop: pdName === "RAC" ? 18 : 26,
       padBottom: pdName === "RAC" ? 34 : 24,
       mode: (profile.maxDepth <= 1 && realNodeCount <= 10) ? "horizontal" : profile.fitMode,
-      verticalBias: pdName === "RAC" ? 0.56 : 0.52
+      verticalBias: pdName === "RAC" ? 0.24 : 0.52
     };
 
     edges.forEach(e => {
