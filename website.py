@@ -812,7 +812,7 @@ with row1_left:
         border:1px solid #d6eaf6;
         border-radius:22px;
         background:linear-gradient(145deg, #0d355f 0%, #0f4577 40%, #0a84c7 100%);
-        height:316px;
+        height:304px;
         box-sizing:border-box;
         padding:10px 12px 10px 12px;
         display:flex;
@@ -849,7 +849,7 @@ with row1_left:
       </div>
     </div>
     """
-    components.html(kpi_card, height=316)
+    components.html(kpi_card, height=304)
     
 with row1_middle:
     st.markdown(
@@ -1192,7 +1192,7 @@ with row1_middle:
         box-shadow: 0 14px 28px rgba(14,58,103,.08);
         padding: 12px 12px;
         color: #102f52;
-        height: 316px;
+        height: 304px;
         box-sizing: border-box;
       }}
       .gender-title {{
@@ -1322,7 +1322,7 @@ with row1_middle:
     </body>
     </html>
     """
-    components.html(gender_card, height=316)
+    components.html(gender_card, height=304)
 
 
 # =============================
@@ -1516,7 +1516,7 @@ with row2_left:
         box-shadow:0 14px 28px rgba(14,58,103,.08);
         padding:10px 12px 14px 12px;
         box-sizing:border-box;
-        min-height:310px;
+        min-height:302px;
         overflow:hidden;
     ">
       <div style="font-size:20px; font-weight:900; color:#0e3a67; margin-bottom:8px; padding-left:10px; border-left:4px solid #0096db;">
@@ -1534,7 +1534,7 @@ with row2_left:
       </div>
     </div>
     """
-    components.html(pd_card, height=316)
+    components.html(pd_card, height=334)
 
 if False:
     st.markdown('<div class="section-heading">Gender Distribution</div>', unsafe_allow_html=True)
