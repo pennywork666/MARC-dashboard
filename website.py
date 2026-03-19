@@ -192,7 +192,7 @@ st.markdown(
 # Reporting month / Header
 # =============================
 as_of = extract_report_date(EXCEL_PATH)
-title_month = as_of.strftime("%Y %B")
+dashboard_title = "MARC HR Dashboard"
 
 LOGO_PATH = BASE_DIR / "Midea.png"
 logo_b64 = image_to_base64(LOGO_PATH)
@@ -304,7 +304,7 @@ with col_title:
     st.markdown(
         f"""
         <div class="header-wrap">
-            <div class="header-title">{title_month} HR Dashboard</div>
+            <div class="header-title">{dashboard_title}</div>
             <div class="header-subtitle">
                 As of {as_of.strftime("%B %d, %Y")}
             </div>
