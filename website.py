@@ -257,6 +257,7 @@ st.markdown(
         font-size:11px;
         color:#5d7b94;
         margin-top:0px;
+        margin-bottom:-12px;
     }
     </style>
     """,
@@ -439,7 +440,7 @@ def render_movement_cards():
 # =============================
 # ROW 1: Summary + Gender
 # =============================
-st.markdown("<div style='margin-top:-76px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top:-112px;'></div>", unsafe_allow_html=True)
 row1_left, row1_middle = st.columns([1.0, 1.0], gap="medium")
 
 with row1_left:
@@ -1329,7 +1330,7 @@ with row1_middle:
 # =============================
 # Row2: PD analysis + Movement
 # =============================
-st.markdown("<div style='margin-top:-84px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top:-108px;'></div>", unsafe_allow_html=True)
 row2_left, row2_right = st.columns([1.66, 0.84], gap="small")
 
 with row2_left:
