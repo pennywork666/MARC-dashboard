@@ -194,6 +194,7 @@ st.markdown(
 as_of = extract_report_date(EXCEL_PATH)
 dashboard_title = "MARC HR Dashboard"
 report_period_label = as_of.strftime("%B %Y")
+report_as_of_label = f"{as_of.strftime('%B')} {as_of.day}, {as_of.year}"
 
 LOGO_PATH = BASE_DIR / "Midea.png"
 logo_b64 = image_to_base64(LOGO_PATH)
@@ -394,10 +395,10 @@ def render_movement_cards():
     st.markdown(f'<div class="section-title">New Hire ({report_period_label})</div>', unsafe_allow_html=True)
     if nh.empty:
         st.markdown(
-        """
+        f"""
         <div class="block-card">
           <div style="color:#5d7b94; font-weight:900; font-size:15px;">
-            No new hires in {report_period_label}.
+            No new hires through {report_as_of_label}.
           </div>
         </div>
             """,
@@ -421,10 +422,10 @@ def render_movement_cards():
     st.markdown(f'<div class="section-title">Service Anniversary ({report_period_label})</div>', unsafe_allow_html=True)
     if an.empty:
         st.markdown(
-        """
+        f"""
         <div class="block-card">
           <div style="color:#5d7b94; font-weight:900; font-size:15px;">
-            No service anniversaries in {report_period_label}.
+            No service anniversaries through {report_as_of_label}.
           </div>
         </div>
             """,
@@ -1737,10 +1738,10 @@ if False:
 
     if nh.empty:
         st.markdown(
-            """
+            f"""
             <div class="block-card">
               <div style="color:rgba(0,0,0,.65); font-weight:700; font-size:18px;">
-                No new hires in {report_period_label}.
+                No new hires through {report_as_of_label}.
               </div>
             </div>
             """,
@@ -1765,10 +1766,10 @@ if False:
 
     if an.empty:
         st.markdown(
-            """
+            f"""
             <div class="block-card">
               <div style="color:rgba(0,0,0,.65); font-weight:700; font-size:18px;">
-                No service anniversaries in {report_period_label}.
+                No service anniversaries through {report_as_of_label}.
               </div>
             </div>
             """,
