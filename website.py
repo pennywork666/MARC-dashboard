@@ -217,7 +217,7 @@ st.markdown(
         padding-left: 14px;
         border-left: 4px solid #0096db;
         color: #0e3a67;
-        font-size: 40px;
+        font-size: 32px;
         font-weight: 900;
         letter-spacing: 0.01em;
     }
@@ -231,19 +231,19 @@ st.markdown(
     }
 
     .header-logo {
-        width: 320px;
+        width: 260px;
         max-width: 100%;
         height: auto;
         display: block;
     }
 
     .header-wrap {
-        margin-top: 24px;
+        margin-top: 12px;
     }
 
     .header-title {
         text-align: center;
-        font-size: 4.1rem;
+        font-size: 3.15rem;
         font-weight: 850;
         color:#0e3a67;
         line-height: 1.02;
@@ -254,9 +254,9 @@ st.markdown(
 
     .header-subtitle {
         text-align:center;
-        font-size:17px;
+        font-size:15px;
         color:#5d7b94;
-        margin-top:8px;
+        margin-top:6px;
     }
     </style>
     """,
@@ -291,7 +291,7 @@ with col_title:
 with col_right:
     st.empty()
 
-st.markdown("<div style='height: 24px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
 # =============================
 # Helpers
@@ -812,44 +812,44 @@ with row1_left:
         border:1px solid #d6eaf6;
         border-radius:22px;
         background:linear-gradient(145deg, #0d355f 0%, #0f4577 40%, #0a84c7 100%);
-        height:550px;
+        height:430px;
         box-sizing:border-box;
-        padding:18px 20px 18px 20px;
+        padding:14px 16px 14px 16px;
         display:flex;
         flex-direction:column;
         box-shadow:0 18px 36px rgba(14,58,103,.12);
         position:relative;
         overflow:hidden;
     ">
-      <div style="height:8px; border-radius:999px; background:linear-gradient(90deg, rgba(255,255,255,.9) 0%, rgba(196,233,250,.95) 55%, rgba(120,202,235,.9) 100%); margin-bottom:16px;"></div>
-      <div style="position:relative; min-height:188px; margin-bottom:14px;">
-        <div style="font-size:40px; font-weight:950; color:white; margin-top:30px; line-height:1.02; max-width:58%;">Workforce Snapshot</div>
-        <img src="data:image/png;base64,{row1_left_b64}" alt="workforce illustration" style="position:absolute; top:8px; right:8px; height:166px; width:auto; object-fit:contain; filter:drop-shadow(0 10px 18px rgba(0,0,0,.16)); z-index:2;" />
+      <div style="height:6px; border-radius:999px; background:linear-gradient(90deg, rgba(255,255,255,.9) 0%, rgba(196,233,250,.95) 55%, rgba(120,202,235,.9) 100%); margin-bottom:12px;"></div>
+      <div style="position:relative; min-height:118px; margin-bottom:10px;">
+        <div style="font-size:28px; font-weight:950; color:white; margin-top:18px; line-height:1.02; max-width:54%;">Workforce Snapshot</div>
+        <img src="data:image/png;base64,{row1_left_b64}" alt="workforce illustration" style="position:absolute; top:4px; right:4px; height:122px; width:auto; object-fit:contain; filter:drop-shadow(0 8px 14px rgba(0,0,0,.16)); z-index:2;" />
       </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; flex:1;">
-        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:18px; padding:20px 18px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:18px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Headcount</div>
-          <div style="font-size:46px; font-weight:950; color:white; margin-top:16px; line-height:1;">{hc}</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; flex:1;">
+        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:14px 12px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+          <div style="font-size:15px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Headcount</div>
+          <div style="font-size:36px; font-weight:950; color:white; margin-top:10px; line-height:1;">{hc}</div>
         </div>
-        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:18px; padding:20px 18px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:18px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">New Hires (MTD)</div>
-          <div style="font-size:46px; font-weight:950; color:white; margin-top:16px; line-height:1;">{new_hires_mtd}</div>
+        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:14px 12px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+          <div style="font-size:15px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">New Hires (MTD)</div>
+          <div style="font-size:36px; font-weight:950; color:white; margin-top:10px; line-height:1;">{new_hires_mtd}</div>
         </div>
-        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:18px; padding:20px 18px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:18px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Midea Tenure</div>
-          <div style="font-size:46px; font-weight:950; color:white; margin-top:16px; line-height:1;">{"-" if np.isnan(avg_midea) else f"{avg_midea:.2f}"}</div>
+        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:14px 12px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+          <div style="font-size:15px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Midea Tenure</div>
+          <div style="font-size:36px; font-weight:950; color:white; margin-top:10px; line-height:1;">{"-" if np.isnan(avg_midea) else f"{avg_midea:.2f}"}</div>
         </div>
-        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:18px; padding:20px 18px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:18px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Industry Experience</div>
-          <div style="font-size:46px; font-weight:950; color:white; margin-top:16px; line-height:1;">{"-" if np.isnan(avg_industry) else f"{avg_industry:.2f}"}</div>
+        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:14px 12px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+          <div style="font-size:15px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Industry Experience</div>
+          <div style="font-size:36px; font-weight:950; color:white; margin-top:10px; line-height:1;">{"-" if np.isnan(avg_industry) else f"{avg_industry:.2f}"}</div>
         </div>
       </div>
-      <div style="margin-top:14px; display:flex; justify-content:flex-end; font-size:12px; font-weight:700; color:rgba(255,255,255,.76); line-height:1;">
+      <div style="margin-top:10px; display:flex; justify-content:flex-end; font-size:11px; font-weight:700; color:rgba(255,255,255,.76); line-height:1;">
         Excludes coop and contractors
       </div>
     </div>
     """
-    components.html(kpi_card, height=550)
+    components.html(kpi_card, height=430)
     
 with row1_middle:
     st.markdown(
@@ -872,8 +872,8 @@ with row1_middle:
           border:1px solid #d8ebf7;
           background:#eaf7fd;
           border-radius:999px;
-          padding:8px 12px;
-          font-size:18px;
+          padding:7px 11px;
+          font-size:15px;
           font-weight:900;
           color: #1d4f77;
           line-height:1;
@@ -887,14 +887,14 @@ with row1_middle:
         }
         .svc-row:last-child{ margin-bottom:0; }
         .svc-year{
-          min-width:110px;
+          min-width:96px;
           font-weight:900;
-          font-size:18px;
+          font-size:15px;
           color: #0e3a67;
           padding-top:4px;
         }
         .section-title{
-          font-size:40px;
+          font-size:30px;
           font-weight:900;
           color:#0e3a67;
           padding-left:14px;
@@ -1190,46 +1190,46 @@ with row1_middle:
         border-radius: 22px;
         background: linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
         box-shadow: 0 14px 28px rgba(14,58,103,.08);
-        padding: 20px 18px;
+        padding: 16px 16px;
         color: #102f52;
-        height: 550px;
+        height: 430px;
         box-sizing: border-box;
       }}
       .gender-title {{
         text-align: center;
-        font-size: 40px;
+        font-size: 28px;
         font-weight: 900;
         color: #0e3a67;
-        margin-bottom: 18px;
+        margin-bottom: 14px;
       }}
       .gender-layout {{
         display: grid;
         grid-template-columns: 0.92fr 1.08fr;
-        gap: 12px;
+        gap: 10px;
         align-items: center;
         height: calc(100% - 40px);
       }}
       .count-panel {{
         display: flex;
         flex-direction: column;
-        gap: 18px;
+        gap: 12px;
       }}
       .count-box {{
-        padding: 18px 18px;
+        padding: 14px 14px;
         border-radius: 18px;
         background: #f7fcff;
         border: 1px solid #d8ebf7;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 18px;
+        gap: 14px;
         text-align: center;
       }}
       .count-icon {{
-        width: 108px;
-        height: 158px;
+        width: 82px;
+        height: 120px;
         object-fit: contain;
-        flex: 0 0 108px;
+        flex: 0 0 82px;
       }}
       .count-text {{
         display:flex;
@@ -1237,14 +1237,14 @@ with row1_middle:
         align-items:center;
       }}
       .count-label {{
-        font-size: 18px;
+        font-size: 15px;
         font-weight: 900;
         color: #5d7b94;
         text-transform: uppercase;
       }}
       .count-value {{
-        margin-top: 8px;
-        font-size: 58px;
+        margin-top: 6px;
+        font-size: 42px;
         font-weight: 950;
         line-height: 1;
       }}
@@ -1256,11 +1256,11 @@ with row1_middle:
         justify-content: center;
         position: relative;
         height: 100%;
-        min-height: 260px;
+        min-height: 210px;
       }}
       .donut {{
-        width: 198px;
-        height: 198px;
+        width: 160px;
+        height: 160px;
         border-radius: 50%;
         background: conic-gradient(#0e3a67 0 {male_pct:.3f}%, #0096db {male_pct:.3f}% 100%);
         position: relative;
@@ -1268,13 +1268,13 @@ with row1_middle:
       .donut::after {{
         content: "";
         position: absolute;
-        inset: 30px;
+        inset: 24px;
         background: white;
         border-radius: 50%;
         box-shadow: inset 0 0 0 1px #e1eff8;
       }}
       .percent-item {{
-        font-size: 22px;
+        font-size: 16px;
         font-weight: 900;
         line-height: 1;
         position:absolute;
@@ -1282,13 +1282,13 @@ with row1_middle:
       }}
       .percent-item.male {{
         color:#0e3a67;
-        top: 86px;
-        right: 18px;
+        top: 68px;
+        right: 10px;
       }}
       .percent-item.female {{
         color:#0096db;
-        bottom: 80px;
-        left: 10px;
+        bottom: 62px;
+        left: 4px;
       }}
     </style>
     </head>
@@ -1322,13 +1322,13 @@ with row1_middle:
     </body>
     </html>
     """
-    components.html(gender_card, height=550)
+    components.html(gender_card, height=430)
 
 
 # =============================
 # Row2: PD analysis + Movement
 # =============================
-row2_left, row2_right = st.columns([1.75, 0.65], gap="large")
+row2_left, row2_right = st.columns([1.6, 0.9], gap="large")
 
 with row2_left:
     def compute_integer_percentages(counts):
@@ -1514,27 +1514,27 @@ with row2_left:
         border-radius:22px;
         background:linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
         box-shadow:0 14px 28px rgba(14,58,103,.08);
-        padding:20px 22px 42px 22px;
+        padding:16px 18px 24px 18px;
         box-sizing:border-box;
-        min-height:575px;
+        min-height:450px;
         overflow:hidden;
     ">
-      <div style="font-size:40px; font-weight:900; color:#0e3a67; margin-bottom:16px; padding-left:14px; border-left:4px solid #0096db;">
+      <div style="font-size:30px; font-weight:900; color:#0e3a67; margin-bottom:12px; padding-left:14px; border-left:4px solid #0096db;">
         PD Analysis
       </div>
-      <div style="display:grid; grid-template-columns:0.92fr 1.08fr; gap:20px; align-items:start;">
+      <div style="display:grid; grid-template-columns:0.92fr 1.08fr; gap:14px; align-items:start;">
         <div>
-          <div style="font-size:24px; font-weight:900; color:#0e3a67; margin-bottom:8px;">PD Distribution</div>
+          <div style="font-size:18px; font-weight:900; color:#0e3a67; margin-bottom:6px;">PD Distribution</div>
           <img src="data:image/png;base64,{pie_b64}" alt="PD distribution chart" style="width:100%; display:block;" />
         </div>
         <div>
-          <div style="font-size:24px; font-weight:900; color:#0e3a67; margin-bottom:8px;">PD Headcount</div>
+          <div style="font-size:18px; font-weight:900; color:#0e3a67; margin-bottom:6px;">PD Headcount</div>
           <img src="data:image/png;base64,{bar_b64}" alt="PD headcount mix chart" style="width:100%; display:block;" />
         </div>
       </div>
     </div>
     """
-    components.html(pd_card, height=700)
+    components.html(pd_card, height=500)
 
 if False:
     st.markdown('<div class="section-heading">Gender Distribution</div>', unsafe_allow_html=True)
@@ -2537,7 +2537,7 @@ html = r"""
 
   .righttools{
     display:flex; gap:10px; align-items:center;
-    font-weight:850; font-size:15px; color:var(--muted);
+    font-weight:850; font-size:13px; color:var(--muted);
   }
 
   .btn{
@@ -2560,13 +2560,13 @@ html = r"""
     background:#fafdff;
     overflow:hidden;
     margin-bottom:10px;
-    padding-top:34px;
-    padding-bottom:26px;
+    padding-top:24px;
+    padding-bottom:18px;
   }
 
   #headerSvg{
     width:100%;
-    height:292px;
+    height:244px;
     display:block;
     background:#fafdff;
   }
@@ -2631,13 +2631,13 @@ html = r"""
     overflow:hidden;
     background:#fafdff;
     position:relative;
-    height: 620px;
+    height: 520px;
   }
 
   .pdHeaderLine{
     position:absolute;
     left:14px; top:12px;
-    font-weight:950; font-size:24px;
+    font-weight:950; font-size:18px;
     line-height:1;
     color:#0e3a67;
   }
@@ -2645,7 +2645,7 @@ html = r"""
   .hint{
     position:absolute;
     right:14px; top:16px;
-    font-weight:850; font-size:14px; color:var(--muted);
+    font-weight:850; font-size:12px; color:var(--muted);
   }
 
   #detailSvg{
@@ -2803,23 +2803,23 @@ html = r"""
 
     const W = headerSvg.clientWidth || 1200;
 
-    const execW = 392, execH = 82;
-    const assocW = 378, assocH = 78;
+    const execW = 358, execH = 72;
+    const assocW = 344, assocH = 68;
     const n = pds.length;
     const pdProfile = n <= 8
-      ? { w: 176, h: 56, font: 25 }
+      ? { w: 160, h: 50, font: 21 }
       : n <= 10
-        ? { w: 158, h: 50, font: 23 }
-        : { w: 144, h: 46, font: 21 };
+        ? { w: 146, h: 46, font: 19 }
+        : { w: 132, h: 42, font: 17 };
     const pdW = pdProfile.w, pdH = pdProfile.h;
 
-    const yExec = 20;
-    const yAssoc = 34;
-    const yPD = 214;
-    const busY = 168;
+    const yExec = 12;
+    const yAssoc = 24;
+    const yPD = 168;
+    const busY = 132;
 
     const execX = (W - execW) / 2;
-    const assocX = execX + execW + 28;
+    const assocX = execX + execW + 24;
 
     const execRect = svgEl("rect");
     execRect.setAttribute("class", "hdr-box");
@@ -2831,16 +2831,16 @@ html = r"""
 
     const execName = svgEl("text");
     execName.setAttribute("x", execX + execW/2);
-    execName.setAttribute("y", yExec + 31);
-    execName.setAttribute("font-size", "28");
+    execName.setAttribute("y", yExec + 28);
+    execName.setAttribute("font-size", "23");
     execName.setAttribute("class", "hdr-title");
     execName.textContent = ORG.exec_name || "N/A";
     headerSvg.appendChild(execName);
 
     const execSub = svgEl("text");
     execSub.setAttribute("x", execX + execW/2);
-    execSub.setAttribute("y", yExec + 58);
-    execSub.setAttribute("font-size", "19");
+    execSub.setAttribute("y", yExec + 50);
+    execSub.setAttribute("font-size", "16");
     execSub.setAttribute("class", "hdr-sub");
     execSub.textContent = "Executive Director";
     headerSvg.appendChild(execSub);
@@ -2855,16 +2855,16 @@ html = r"""
 
     const assocName = svgEl("text");
     assocName.setAttribute("x", assocX + assocW/2);
-    assocName.setAttribute("y", yAssoc + 31);
-    assocName.setAttribute("font-size", "25");
+    assocName.setAttribute("y", yAssoc + 27);
+    assocName.setAttribute("font-size", "21");
     assocName.setAttribute("class", "hdr-title");
     assocName.textContent = ORG.assoc_name || "N/A";
     headerSvg.appendChild(assocName);
 
     const assocSub = svgEl("text");
     assocSub.setAttribute("x", assocX + assocW/2);
-    assocSub.setAttribute("y", yAssoc + 58);
-    assocSub.setAttribute("font-size", "16");
+    assocSub.setAttribute("y", yAssoc + 47);
+    assocSub.setAttribute("font-size", "13");
     assocSub.setAttribute("class", "hdr-sub");
     assocSub.textContent = "Associate Executive Director";
     headerSvg.appendChild(assocSub);
@@ -3036,15 +3036,15 @@ html = r"""
   function getFontSpec(nodeCount, maxBreadth){
     const pressure = Math.max(nodeCount / 14, maxBreadth / 5);
     if(pressure <= 0.7){
-      return { title: 19.4, sub: 15.4 };
+      return { title: 16.8, sub: 13.4 };
     }
     if(pressure <= 1.2){
-      return { title: 17.6, sub: 13.9 };
+      return { title: 15.2, sub: 12.2 };
     }
     if(pressure <= 1.8){
-      return { title: 15.4, sub: 12.0 };
+      return { title: 13.6, sub: 10.8 };
     }
-    return { title: 13.6, sub: 10.6 };
+    return { title: 12.2, sub: 9.8 };
   }
 
   function fitNameFontSize(text, baseSize){
@@ -3186,11 +3186,11 @@ html = r"""
     const realNodeCount = nodes.filter(n => !(vroot && n.id === vroot)).length;
     const fontSpec = getFontSpec(realNodeCount, profile.maxBreadth);
     if(profile.maxDepth <= 1 && realNodeCount <= 10){
-      viewport.style.height = "320px";
+      viewport.style.height = "300px";
     } else if(profile.maxDepth <= 2 && realNodeCount <= 18){
-      viewport.style.height = "430px";
+      viewport.style.height = "380px";
     } else {
-      viewport.style.height = "560px";
+      viewport.style.height = "470px";
     }
     fitConfig = {
       maxScale: profile.maxScale,
