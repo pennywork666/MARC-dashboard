@@ -370,7 +370,7 @@ def render_movement_cards():
         st.markdown(
         """
         <div class="block-card">
-          <div style="color:#5d7b94; font-weight:900; font-size:14px;">
+          <div style="color:#5d7b94; font-weight:900; font-size:15px;">
             No new hires in the current month.
           </div>
         </div>
@@ -397,7 +397,7 @@ def render_movement_cards():
         st.markdown(
         """
         <div class="block-card">
-          <div style="color:#5d7b94; font-weight:900; font-size:14px;">
+          <div style="color:#5d7b94; font-weight:900; font-size:15px;">
             No service anniversaries in the current month.
           </div>
         </div>
@@ -824,25 +824,25 @@ with row1_left:
     ">
       <div style="height:4px; border-radius:999px; background:linear-gradient(90deg, rgba(255,255,255,.9) 0%, rgba(196,233,250,.95) 55%, rgba(120,202,235,.9) 100%); margin-bottom:6px;"></div>
       <div style="position:relative; min-height:68px; margin-bottom:6px;">
-        <div style="font-size:18px; font-weight:950; color:white; margin-top:8px; line-height:1.02; max-width:54%;">Workforce Snapshot</div>
+        <div style="font-size:21px; font-weight:950; color:white; margin-top:8px; line-height:1.02; max-width:54%;">Workforce Snapshot</div>
         <img src="data:image/png;base64,{row1_left_b64}" alt="workforce illustration" style="position:absolute; top:0; right:0; height:72px; width:auto; object-fit:contain; filter:none; z-index:2;" />
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; flex:1;">
         <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:8px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:11px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Headcount</div>
-          <div style="font-size:24px; font-weight:950; color:white; margin-top:4px; line-height:1;">{hc}</div>
+          <div style="font-size:13px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Headcount</div>
+          <div style="font-size:27px; font-weight:950; color:white; margin-top:4px; line-height:1;">{hc}</div>
         </div>
         <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:8px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:11px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">New Hires (MTD)</div>
-          <div style="font-size:24px; font-weight:950; color:white; margin-top:4px; line-height:1;">{new_hires_mtd}</div>
+          <div style="font-size:13px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">New Hires (MTD)</div>
+          <div style="font-size:27px; font-weight:950; color:white; margin-top:4px; line-height:1;">{new_hires_mtd}</div>
         </div>
         <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:8px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:11px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Midea Tenure</div>
-          <div style="font-size:24px; font-weight:950; color:white; margin-top:4px; line-height:1;">{"-" if np.isnan(avg_midea) else f"{avg_midea:.2f}"}</div>
+          <div style="font-size:13px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Midea Tenure</div>
+          <div style="font-size:27px; font-weight:950; color:white; margin-top:4px; line-height:1;">{"-" if np.isnan(avg_midea) else f"{avg_midea:.2f}"}</div>
         </div>
         <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:8px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:11px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Industry Experience</div>
-          <div style="font-size:24px; font-weight:950; color:white; margin-top:4px; line-height:1;">{"-" if np.isnan(avg_industry) else f"{avg_industry:.2f}"}</div>
+          <div style="font-size:13px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Industry Experience</div>
+          <div style="font-size:27px; font-weight:950; color:white; margin-top:4px; line-height:1;">{"-" if np.isnan(avg_industry) else f"{avg_industry:.2f}"}</div>
         </div>
       </div>
       <div style="margin-top:4px; display:flex; justify-content:flex-end; font-size:8px; font-weight:700; color:rgba(255,255,255,.76); line-height:1;">
@@ -874,7 +874,7 @@ with row1_middle:
           background:#eaf7fd;
           border-radius:999px;
           padding:6px 10px;
-          font-size:13px;
+          font-size:15px;
           font-weight:900;
           color: #1d4f77;
           line-height:1;
@@ -890,12 +890,12 @@ with row1_middle:
         .svc-year{
           min-width:82px;
           font-weight:900;
-          font-size:13px;
+          font-size:15px;
           color: #0e3a67;
           padding-top:2px;
         }
         .section-title{
-          font-size:20px;
+          font-size:21px;
           font-weight:900;
           color:#0e3a67;
           padding-left:14px;
@@ -1198,7 +1198,7 @@ with row1_middle:
       }}
       .gender-title {{
         text-align: center;
-        font-size: 17px;
+        font-size: 21px;
         font-weight: 900;
         color: #0e3a67;
         margin-bottom: 6px;
@@ -1238,14 +1238,14 @@ with row1_middle:
         align-items:center;
       }}
       .count-label {{
-        font-size: 11px;
+        font-size: 13px;
         font-weight: 900;
         color: #5d7b94;
         text-transform: uppercase;
       }}
       .count-value {{
         margin-top: 5px;
-        font-size: 25px;
+        font-size: 27px;
         font-weight: 950;
         line-height: 1;
       }}
@@ -1275,7 +1275,7 @@ with row1_middle:
         box-shadow: inset 0 0 0 1px #e1eff8;
       }}
       .percent-item {{
-        font-size: 10px;
+        font-size: 13px;
         font-weight: 900;
         line-height: 1;
         position:absolute;
@@ -1385,7 +1385,7 @@ with row2_left:
     labels = pd_dist.index.tolist()
     pcts_int = compute_integer_percentages(counts)
 
-    fig_pie, ax_pie = plt.subplots(figsize=(4.35, 3.95))
+    fig_pie, ax_pie = plt.subplots(figsize=(4.35, 4.05))
     fig_pie.patch.set_facecolor("#f7fcff")
     ax_pie.set_facecolor("#f7fcff")
     pie_colors = [
@@ -1409,15 +1409,15 @@ with row2_left:
         pctdistance=0.72,
         labeldistance=1.12,
         wedgeprops={"edgecolor": "white", "linewidth": 1.5},
-        textprops={"fontsize": 9.5, "color": "#3b5873"},
+        textprops={"fontsize": 10.5, "color": "#3b5873"},
     )
     ax_pie.axis("equal")
 
     for t in texts:
         t.set_color("#3b5873")
-        t.set_fontsize(9.5)
+        t.set_fontsize(10.5)
     for wedge, t in zip(wedges, autotexts):
-        t.set_fontsize(9)
+        t.set_fontsize(10.5)
         t.set_weight("bold")
         t.set_color("white" if is_dark_color(wedge.get_facecolor()) else "#0e3a67")
 
@@ -1430,7 +1430,7 @@ with row2_left:
     ]
     pivot = pivot[col_order]
 
-    fig_bar, ax_bar = plt.subplots(figsize=(5.2, 3.3))
+    fig_bar, ax_bar = plt.subplots(figsize=(4.8, 4.15))
     fig_bar.patch.set_facecolor("#f7fcff")
     ax_bar.set_facecolor("#f7fcff")
 
@@ -1451,7 +1451,7 @@ with row2_left:
             vals,
             left=left,
             label=col,
-            height=0.62,
+            height=0.82,
             color=bar_color,
             edgecolor="white",
             linewidth=1.0,
@@ -1467,7 +1467,7 @@ with row2_left:
                         str(int(v)),
                         ha="center",
                         va="center",
-                        fontsize=8.5,
+                        fontsize=10,
                         fontweight="bold",
                         color=text_color,
                     )
@@ -1478,15 +1478,15 @@ with row2_left:
                         str(int(v)),
                         ha="left",
                         va="center",
-                        fontsize=8.5,
+                        fontsize=10,
                         fontweight="bold",
                         color="#0096db" if col == "Expat" else "#36536f",
                     )
         left += vals
 
     ax_bar.set_yticks(y)
-    ax_bar.set_yticklabels(pivot.index, fontsize=10, color="#36536f")
-    ax_bar.tick_params(axis="x", labelsize=9, colors="#6b879f")
+    ax_bar.set_yticklabels(pivot.index, fontsize=10.5, color="#36536f")
+    ax_bar.tick_params(axis="x", labelsize=10, colors="#6b879f")
     ax_bar.grid(axis="x", color="#d7ebf7", linewidth=0.8)
     ax_bar.set_axisbelow(True)
     ax_bar.invert_yaxis()
@@ -1500,7 +1500,7 @@ with row2_left:
         loc="lower center",
         bbox_to_anchor=(0.5, 1.02),
         ncol=max(1, len(pivot.columns)),
-        fontsize=9,
+        fontsize=10,
         frameon=False,
     )
     for txt in legend.get_texts():
@@ -1518,26 +1518,26 @@ with row2_left:
         box-shadow:0 14px 28px rgba(14,58,103,.08);
         padding:10px 12px 22px 12px;
         box-sizing:border-box;
-        min-height:346px;
+        min-height:360px;
         overflow:hidden;
         margin-top:-6px;
     ">
-      <div style="font-size:20px; font-weight:900; color:#0e3a67; margin-bottom:8px; padding-left:10px; border-left:4px solid #0096db;">
+      <div style="font-size:21px; font-weight:900; color:#0e3a67; margin-bottom:8px; padding-left:10px; border-left:4px solid #0096db;">
         PD Analysis
       </div>
-      <div style="display:grid; grid-template-columns:0.92fr 1.08fr; gap:8px; align-items:start;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start;">
         <div>
-          <div style="font-size:14px; font-weight:900; color:#0e3a67; margin-bottom:2px;">PD Distribution</div>
+          <div style="font-size:13px; font-weight:900; color:#0e3a67; margin-bottom:4px;">PD Distribution</div>
           <img src="data:image/png;base64,{pie_b64}" alt="PD distribution chart" style="width:100%; display:block;" />
         </div>
         <div>
-          <div style="font-size:14px; font-weight:900; color:#0e3a67; margin-bottom:2px;">PD Headcount</div>
+          <div style="font-size:13px; font-weight:900; color:#0e3a67; margin-bottom:4px;">PD Headcount</div>
           <img src="data:image/png;base64,{bar_b64}" alt="PD headcount mix chart" style="width:100%; display:block;" />
         </div>
       </div>
     </div>
     """
-    components.html(pd_card, height=470)
+    components.html(pd_card, height=492)
 
 if False:
     st.markdown('<div class="section-heading">Gender Distribution</div>', unsafe_allow_html=True)
