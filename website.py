@@ -1,6 +1,7 @@
 import json
 from datetime import date
 from pathlib import Path
+import re
 
 import numpy as np
 import pandas as pd
@@ -17,9 +18,29 @@ import io
 # =============================
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
+CLEAN_DATA_DIR = BASE_DIR / "clean_data"
+REPORT_DATE_PATTERN = re.compile(r"(\d{1,2})-(\d{1,2})-(\d{4})")
 
-EXCEL_PATH = DATA_DIR / "standarded_format.xlsx"
-SHEET_NAME = "Sheet2"   # 你截图里是 Sheet2；如果不确定可改成 None（取第一个sheet）
+
+def pick_latest_clean_file(clean_dir: Path) -> Path:
+    candidates = [f for f in clean_dir.glob("*.xlsx") if not f.name.startswith("~$")]
+    if not candidates:
+        raise FileNotFoundError(
+            f"No cleaned Excel file found in {clean_dir}. Run convert_excel.py first."
+        )
+    return max(candidates, key=lambda p: p.stat().st_mtime)
+
+
+def extract_report_date(file_path: Path) -> pd.Timestamp:
+    match = REPORT_DATE_PATTERN.search(file_path.stem)
+    if not match:
+        return pd.Timestamp(date.today())
+    month, day, year = map(int, match.groups())
+    return pd.Timestamp(year=year, month=month, day=day)
+
+
+EXCEL_PATH = pick_latest_clean_file(CLEAN_DATA_DIR)
+SHEET_NAME = None
 
 
 # =============================
@@ -135,7 +156,7 @@ try:
     employees = load_employees(EXCEL_PATH, SHEET_NAME)
 except Exception as e:
     st.error(f"Failed to load Excel: {e}")
-    st.info("Please update EXCEL_PATH (and SHEET_NAME if needed) at the top of this script.")
+    st.info("Run convert_excel.py first, then make sure clean_data contains a valid Excel file.")
     st.stop()
 
 
@@ -167,7 +188,7 @@ st.markdown(
 # =============================
 # Reporting month / Header
 # =============================
-as_of = pd.Timestamp(date.today())
+as_of = extract_report_date(EXCEL_PATH)
 title_month = as_of.strftime("%Y %B")
 
 LOGO_PATH = BASE_DIR / "Midea.png"
