@@ -397,7 +397,7 @@ def render_movement_cards():
         """
         <div class="block-card">
           <div style="color:#5d7b94; font-weight:900; font-size:15px;">
-            No new hires in the current month.
+            No new hires in {report_period_label}.
           </div>
         </div>
             """,
@@ -418,13 +418,13 @@ def render_movement_cards():
         )
 
     an = service_anniversaries_in_month(employees_core, as_of)
-    st.markdown('<div class="section-title">Service Anniversary (This Month)</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="section-title">Service Anniversary ({report_period_label})</div>', unsafe_allow_html=True)
     if an.empty:
         st.markdown(
         """
         <div class="block-card">
           <div style="color:#5d7b94; font-weight:900; font-size:15px;">
-            No service anniversaries in the current month.
+            No service anniversaries in {report_period_label}.
           </div>
         </div>
             """,
@@ -1732,7 +1732,7 @@ if False:
         unsafe_allow_html=True,
     )
 
-    st.markdown('<div class="section-title">New Hire (This Month)</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="section-title">New Hire ({report_period_label})</div>', unsafe_allow_html=True)
     nh = new_hires_in_month(employees_core, as_of)
 
     if nh.empty:
