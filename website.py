@@ -439,6 +439,7 @@ def render_movement_cards():
 # =============================
 # ROW 1: Summary + Gender
 # =============================
+st.markdown("<div style='margin-top:-8px;'></div>", unsafe_allow_html=True)
 row1_left, row1_middle = st.columns([1.0, 1.0], gap="medium")
 
 with row1_left:
@@ -817,10 +818,9 @@ with row1_left:
         padding:10px 12px 10px 12px;
         display:flex;
         flex-direction:column;
-        box-shadow:0 18px 36px rgba(14,58,103,.12);
+        box-shadow:none;
         position:relative;
         overflow:hidden;
-        margin-top:-6px;
     ">
       <div style="height:4px; border-radius:999px; background:linear-gradient(90deg, rgba(255,255,255,.9) 0%, rgba(196,233,250,.95) 55%, rgba(120,202,235,.9) 100%); margin-bottom:8px;"></div>
       <div style="position:relative; min-height:78px; margin-bottom:6px;">
@@ -850,7 +850,7 @@ with row1_left:
       </div>
     </div>
     """
-    components.html(kpi_card, height=302)
+    components.html(kpi_card, height=296)
     
 with row1_middle:
     st.markdown(
@@ -1190,12 +1190,11 @@ with row1_middle:
         border: 1px solid #d6eaf6;
         border-radius: 22px;
         background: linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
-        box-shadow: 0 14px 28px rgba(14,58,103,.08);
+        box-shadow: none;
         padding: 8px 12px 10px 12px;
         color: #102f52;
         height: 286px;
         box-sizing: border-box;
-        margin-top: -6px;
       }}
       .gender-title {{
         text-align: center;
@@ -1324,13 +1323,13 @@ with row1_middle:
     </body>
     </html>
     """
-    components.html(gender_card, height=302)
+    components.html(gender_card, height=296)
 
 
 # =============================
 # Row2: PD analysis + Movement
 # =============================
-st.markdown("<div style='margin-top:-6px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top:-14px;'></div>", unsafe_allow_html=True)
 row2_left, row2_right = st.columns([1.66, 0.84], gap="small")
 
 with row2_left:
@@ -1538,7 +1537,7 @@ with row2_left:
       </div>
     </div>
     """
-    components.html(pd_card, height=438)
+    components.html(pd_card, height=470)
 
 if False:
     st.markdown('<div class="section-heading">Gender Distribution</div>', unsafe_allow_html=True)
