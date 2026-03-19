@@ -217,7 +217,7 @@ st.markdown(
         padding-left: 14px;
         border-left: 4px solid #0096db;
         color: #0e3a67;
-        font-size: 32px;
+        font-size: 28px;
         font-weight: 900;
         letter-spacing: 0.01em;
     }
@@ -226,24 +226,24 @@ st.markdown(
         display:flex;
         justify-content:flex-start;
         align-items:flex-start;
-        margin-top: -34px;
+        margin-top: -20px;
         padding-left: 6px;
     }
 
     .header-logo {
-        width: 260px;
+        width: 220px;
         max-width: 100%;
         height: auto;
         display: block;
     }
 
     .header-wrap {
-        margin-top: 12px;
+        margin-top: 6px;
     }
 
     .header-title {
         text-align: center;
-        font-size: 3.15rem;
+        font-size: 2.55rem;
         font-weight: 850;
         color:#0e3a67;
         line-height: 1.02;
@@ -254,9 +254,9 @@ st.markdown(
 
     .header-subtitle {
         text-align:center;
-        font-size:15px;
+        font-size:13px;
         color:#5d7b94;
-        margin-top:6px;
+        margin-top:4px;
     }
     </style>
     """,
@@ -368,12 +368,12 @@ def render_movement_cards():
     st.markdown('<div class="section-title">New Hire (This Month)</div>', unsafe_allow_html=True)
     if nh.empty:
         st.markdown(
-            """
-            <div class="block-card">
-              <div style="color:#5d7b94; font-weight:900; font-size:18px;">
-                No new hires in the current month.
-              </div>
-            </div>
+        """
+        <div class="block-card">
+          <div style="color:#5d7b94; font-weight:900; font-size:14px;">
+            No new hires in the current month.
+          </div>
+        </div>
             """,
             unsafe_allow_html=True,
         )
@@ -395,12 +395,12 @@ def render_movement_cards():
     st.markdown('<div class="section-title">Service Anniversary (This Month)</div>', unsafe_allow_html=True)
     if an.empty:
         st.markdown(
-            """
-            <div class="block-card">
-              <div style="color:#5d7b94; font-weight:900; font-size:18px;">
-                No service anniversaries in the current month.
-              </div>
-            </div>
+        """
+        <div class="block-card">
+          <div style="color:#5d7b94; font-weight:900; font-size:14px;">
+            No service anniversaries in the current month.
+          </div>
+        </div>
             """,
             unsafe_allow_html=True,
         )
@@ -439,7 +439,7 @@ def render_movement_cards():
 # =============================
 # ROW 1: Summary + Gender
 # =============================
-row1_left, row1_middle = st.columns([1.0, 1.0], gap="large")
+row1_left, row1_middle = st.columns([1.0, 1.0], gap="medium")
 
 with row1_left:
     kpi_card = f"""
@@ -812,44 +812,44 @@ with row1_left:
         border:1px solid #d6eaf6;
         border-radius:22px;
         background:linear-gradient(145deg, #0d355f 0%, #0f4577 40%, #0a84c7 100%);
-        height:430px;
+        height:360px;
         box-sizing:border-box;
-        padding:14px 16px 14px 16px;
+        padding:12px 14px 12px 14px;
         display:flex;
         flex-direction:column;
         box-shadow:0 18px 36px rgba(14,58,103,.12);
         position:relative;
         overflow:hidden;
     ">
-      <div style="height:6px; border-radius:999px; background:linear-gradient(90deg, rgba(255,255,255,.9) 0%, rgba(196,233,250,.95) 55%, rgba(120,202,235,.9) 100%); margin-bottom:12px;"></div>
-      <div style="position:relative; min-height:118px; margin-bottom:10px;">
-        <div style="font-size:28px; font-weight:950; color:white; margin-top:18px; line-height:1.02; max-width:54%;">Workforce Snapshot</div>
-        <img src="data:image/png;base64,{row1_left_b64}" alt="workforce illustration" style="position:absolute; top:4px; right:4px; height:122px; width:auto; object-fit:contain; filter:drop-shadow(0 8px 14px rgba(0,0,0,.16)); z-index:2;" />
+      <div style="height:5px; border-radius:999px; background:linear-gradient(90deg, rgba(255,255,255,.9) 0%, rgba(196,233,250,.95) 55%, rgba(120,202,235,.9) 100%); margin-bottom:10px;"></div>
+      <div style="position:relative; min-height:94px; margin-bottom:8px;">
+        <div style="font-size:24px; font-weight:950; color:white; margin-top:14px; line-height:1.02; max-width:54%;">Workforce Snapshot</div>
+        <img src="data:image/png;base64,{row1_left_b64}" alt="workforce illustration" style="position:absolute; top:2px; right:2px; height:98px; width:auto; object-fit:contain; filter:drop-shadow(0 8px 14px rgba(0,0,0,.16)); z-index:2;" />
       </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; flex:1;">
-        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:14px 12px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:15px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Headcount</div>
-          <div style="font-size:36px; font-weight:950; color:white; margin-top:10px; line-height:1;">{hc}</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; flex:1;">
+        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:12px 10px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+          <div style="font-size:13px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Headcount</div>
+          <div style="font-size:30px; font-weight:950; color:white; margin-top:8px; line-height:1;">{hc}</div>
         </div>
-        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:14px 12px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:15px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">New Hires (MTD)</div>
-          <div style="font-size:36px; font-weight:950; color:white; margin-top:10px; line-height:1;">{new_hires_mtd}</div>
+        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:12px 10px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+          <div style="font-size:13px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">New Hires (MTD)</div>
+          <div style="font-size:30px; font-weight:950; color:white; margin-top:8px; line-height:1;">{new_hires_mtd}</div>
         </div>
-        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:14px 12px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:15px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Midea Tenure</div>
-          <div style="font-size:36px; font-weight:950; color:white; margin-top:10px; line-height:1;">{"-" if np.isnan(avg_midea) else f"{avg_midea:.2f}"}</div>
+        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:12px 10px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+          <div style="font-size:13px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Midea Tenure</div>
+          <div style="font-size:30px; font-weight:950; color:white; margin-top:8px; line-height:1;">{"-" if np.isnan(avg_midea) else f"{avg_midea:.2f}"}</div>
         </div>
-        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:14px 12px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:15px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Industry Experience</div>
-          <div style="font-size:36px; font-weight:950; color:white; margin-top:10px; line-height:1;">{"-" if np.isnan(avg_industry) else f"{avg_industry:.2f}"}</div>
+        <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:12px 10px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+          <div style="font-size:13px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Industry Experience</div>
+          <div style="font-size:30px; font-weight:950; color:white; margin-top:8px; line-height:1;">{"-" if np.isnan(avg_industry) else f"{avg_industry:.2f}"}</div>
         </div>
       </div>
-      <div style="margin-top:10px; display:flex; justify-content:flex-end; font-size:11px; font-weight:700; color:rgba(255,255,255,.76); line-height:1;">
+      <div style="margin-top:8px; display:flex; justify-content:flex-end; font-size:10px; font-weight:700; color:rgba(255,255,255,.76); line-height:1;">
         Excludes coop and contractors
       </div>
     </div>
     """
-    components.html(kpi_card, height=430)
+    components.html(kpi_card, height=360)
     
 with row1_middle:
     st.markdown(
@@ -872,8 +872,8 @@ with row1_middle:
           border:1px solid #d8ebf7;
           background:#eaf7fd;
           border-radius:999px;
-          padding:7px 11px;
-          font-size:15px;
+          padding:6px 10px;
+          font-size:13px;
           font-weight:900;
           color: #1d4f77;
           line-height:1;
@@ -882,24 +882,24 @@ with row1_middle:
         .svc-row{
           display:flex;
           align-items:flex-start;
-          gap:16px;
-          margin-bottom:14px;
+          gap:12px;
+          margin-bottom:10px;
         }
         .svc-row:last-child{ margin-bottom:0; }
         .svc-year{
-          min-width:96px;
+          min-width:82px;
           font-weight:900;
-          font-size:15px;
+          font-size:13px;
           color: #0e3a67;
-          padding-top:4px;
+          padding-top:2px;
         }
         .section-title{
-          font-size:30px;
+          font-size:24px;
           font-weight:900;
           color:#0e3a67;
           padding-left:14px;
           border-left:4px solid #0096db;
-          margin-bottom:12px;
+          margin-bottom:10px;
         }
         </style>
         """,
@@ -1190,17 +1190,17 @@ with row1_middle:
         border-radius: 22px;
         background: linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
         box-shadow: 0 14px 28px rgba(14,58,103,.08);
-        padding: 16px 16px;
+        padding: 12px 12px;
         color: #102f52;
-        height: 430px;
+        height: 360px;
         box-sizing: border-box;
       }}
       .gender-title {{
         text-align: center;
-        font-size: 28px;
+        font-size: 22px;
         font-weight: 900;
         color: #0e3a67;
-        margin-bottom: 14px;
+        margin-bottom: 10px;
       }}
       .gender-layout {{
         display: grid;
@@ -1212,24 +1212,24 @@ with row1_middle:
       .count-panel {{
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 10px;
       }}
       .count-box {{
-        padding: 14px 14px;
-        border-radius: 18px;
+        padding: 10px 10px;
+        border-radius: 16px;
         background: #f7fcff;
         border: 1px solid #d8ebf7;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 14px;
+        gap: 10px;
         text-align: center;
       }}
       .count-icon {{
-        width: 82px;
-        height: 120px;
+        width: 66px;
+        height: 94px;
         object-fit: contain;
-        flex: 0 0 82px;
+        flex: 0 0 66px;
       }}
       .count-text {{
         display:flex;
@@ -1237,14 +1237,14 @@ with row1_middle:
         align-items:center;
       }}
       .count-label {{
-        font-size: 15px;
+        font-size: 13px;
         font-weight: 900;
         color: #5d7b94;
         text-transform: uppercase;
       }}
       .count-value {{
-        margin-top: 6px;
-        font-size: 42px;
+        margin-top: 5px;
+        font-size: 34px;
         font-weight: 950;
         line-height: 1;
       }}
@@ -1256,11 +1256,11 @@ with row1_middle:
         justify-content: center;
         position: relative;
         height: 100%;
-        min-height: 210px;
+        min-height: 170px;
       }}
       .donut {{
-        width: 160px;
-        height: 160px;
+        width: 126px;
+        height: 126px;
         border-radius: 50%;
         background: conic-gradient(#0e3a67 0 {male_pct:.3f}%, #0096db {male_pct:.3f}% 100%);
         position: relative;
@@ -1268,13 +1268,13 @@ with row1_middle:
       .donut::after {{
         content: "";
         position: absolute;
-        inset: 24px;
+        inset: 20px;
         background: white;
         border-radius: 50%;
         box-shadow: inset 0 0 0 1px #e1eff8;
       }}
       .percent-item {{
-        font-size: 16px;
+        font-size: 13px;
         font-weight: 900;
         line-height: 1;
         position:absolute;
@@ -1282,13 +1282,13 @@ with row1_middle:
       }}
       .percent-item.male {{
         color:#0e3a67;
-        top: 68px;
-        right: 10px;
+        top: 54px;
+        right: 4px;
       }}
       .percent-item.female {{
         color:#0096db;
-        bottom: 62px;
-        left: 4px;
+        bottom: 48px;
+        left: 0;
       }}
     </style>
     </head>
@@ -1322,13 +1322,13 @@ with row1_middle:
     </body>
     </html>
     """
-    components.html(gender_card, height=430)
+    components.html(gender_card, height=360)
 
 
 # =============================
 # Row2: PD analysis + Movement
 # =============================
-row2_left, row2_right = st.columns([1.6, 0.9], gap="large")
+row2_left, row2_right = st.columns([1.55, 0.95], gap="medium")
 
 with row2_left:
     def compute_integer_percentages(counts):
@@ -1514,27 +1514,27 @@ with row2_left:
         border-radius:22px;
         background:linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
         box-shadow:0 14px 28px rgba(14,58,103,.08);
-        padding:16px 18px 24px 18px;
+        padding:12px 14px 18px 14px;
         box-sizing:border-box;
-        min-height:450px;
+        min-height:380px;
         overflow:hidden;
     ">
-      <div style="font-size:30px; font-weight:900; color:#0e3a67; margin-bottom:12px; padding-left:14px; border-left:4px solid #0096db;">
+      <div style="font-size:24px; font-weight:900; color:#0e3a67; margin-bottom:10px; padding-left:12px; border-left:4px solid #0096db;">
         PD Analysis
       </div>
-      <div style="display:grid; grid-template-columns:0.92fr 1.08fr; gap:14px; align-items:start;">
+      <div style="display:grid; grid-template-columns:0.92fr 1.08fr; gap:10px; align-items:start;">
         <div>
-          <div style="font-size:18px; font-weight:900; color:#0e3a67; margin-bottom:6px;">PD Distribution</div>
+          <div style="font-size:16px; font-weight:900; color:#0e3a67; margin-bottom:4px;">PD Distribution</div>
           <img src="data:image/png;base64,{pie_b64}" alt="PD distribution chart" style="width:100%; display:block;" />
         </div>
         <div>
-          <div style="font-size:18px; font-weight:900; color:#0e3a67; margin-bottom:6px;">PD Headcount</div>
+          <div style="font-size:16px; font-weight:900; color:#0e3a67; margin-bottom:4px;">PD Headcount</div>
           <img src="data:image/png;base64,{bar_b64}" alt="PD headcount mix chart" style="width:100%; display:block;" />
         </div>
       </div>
     </div>
     """
-    components.html(pd_card, height=500)
+    components.html(pd_card, height=390)
 
 if False:
     st.markdown('<div class="section-heading">Gender Distribution</div>', unsafe_allow_html=True)
@@ -2560,13 +2560,13 @@ html = r"""
     background:#fafdff;
     overflow:hidden;
     margin-bottom:10px;
-    padding-top:24px;
-    padding-bottom:18px;
+    padding-top:18px;
+    padding-bottom:14px;
   }
 
   #headerSvg{
     width:100%;
-    height:244px;
+    height:214px;
     display:block;
     background:#fafdff;
   }
@@ -2631,7 +2631,7 @@ html = r"""
     overflow:hidden;
     background:#fafdff;
     position:relative;
-    height: 520px;
+    height: 460px;
   }
 
   .pdHeaderLine{
@@ -2803,23 +2803,23 @@ html = r"""
 
     const W = headerSvg.clientWidth || 1200;
 
-    const execW = 358, execH = 72;
-    const assocW = 344, assocH = 68;
+    const execW = 330, execH = 64;
+    const assocW = 316, assocH = 60;
     const n = pds.length;
     const pdProfile = n <= 8
-      ? { w: 160, h: 50, font: 21 }
+      ? { w: 148, h: 46, font: 18 }
       : n <= 10
-        ? { w: 146, h: 46, font: 19 }
-        : { w: 132, h: 42, font: 17 };
+        ? { w: 138, h: 42, font: 17 }
+        : { w: 126, h: 38, font: 15 };
     const pdW = pdProfile.w, pdH = pdProfile.h;
 
-    const yExec = 12;
-    const yAssoc = 24;
-    const yPD = 168;
-    const busY = 132;
+    const yExec = 10;
+    const yAssoc = 20;
+    const yPD = 146;
+    const busY = 114;
 
     const execX = (W - execW) / 2;
-    const assocX = execX + execW + 24;
+    const assocX = execX + execW + 22;
 
     const execRect = svgEl("rect");
     execRect.setAttribute("class", "hdr-box");
@@ -2831,16 +2831,16 @@ html = r"""
 
     const execName = svgEl("text");
     execName.setAttribute("x", execX + execW/2);
-    execName.setAttribute("y", yExec + 28);
-    execName.setAttribute("font-size", "23");
+    execName.setAttribute("y", yExec + 25);
+    execName.setAttribute("font-size", "20");
     execName.setAttribute("class", "hdr-title");
     execName.textContent = ORG.exec_name || "N/A";
     headerSvg.appendChild(execName);
 
     const execSub = svgEl("text");
     execSub.setAttribute("x", execX + execW/2);
-    execSub.setAttribute("y", yExec + 50);
-    execSub.setAttribute("font-size", "16");
+    execSub.setAttribute("y", yExec + 43);
+    execSub.setAttribute("font-size", "14");
     execSub.setAttribute("class", "hdr-sub");
     execSub.textContent = "Executive Director";
     headerSvg.appendChild(execSub);
@@ -2855,16 +2855,16 @@ html = r"""
 
     const assocName = svgEl("text");
     assocName.setAttribute("x", assocX + assocW/2);
-    assocName.setAttribute("y", yAssoc + 27);
-    assocName.setAttribute("font-size", "21");
+    assocName.setAttribute("y", yAssoc + 24);
+    assocName.setAttribute("font-size", "18");
     assocName.setAttribute("class", "hdr-title");
     assocName.textContent = ORG.assoc_name || "N/A";
     headerSvg.appendChild(assocName);
 
     const assocSub = svgEl("text");
     assocSub.setAttribute("x", assocX + assocW/2);
-    assocSub.setAttribute("y", yAssoc + 47);
-    assocSub.setAttribute("font-size", "13");
+    assocSub.setAttribute("y", yAssoc + 40);
+    assocSub.setAttribute("font-size", "12");
     assocSub.setAttribute("class", "hdr-sub");
     assocSub.textContent = "Associate Executive Director";
     headerSvg.appendChild(assocSub);
@@ -2889,12 +2889,11 @@ html = r"""
 
     if(n === 0) return;
 
-    const margin = 54;
-    const usable = Math.max(300, W - margin*2);
-    const maxStep = 220;
-    const step = Math.min(maxStep, usable / Math.max(1, n));
-    const rowWidth = step*(n-1) + pdW;
-    const startX = Math.max(margin, (W - rowWidth)/2);
+    const margin = 22;
+    const step = n > 1
+      ? (W - margin*2 - pdW) / (n - 1)
+      : 0;
+    const startX = margin;
 
     const execCenterX = execX + execW/2;
     const execBottomY = yExec + execH;
