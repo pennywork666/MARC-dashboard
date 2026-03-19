@@ -1,5 +1,6 @@
 import json
 from datetime import date
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -14,7 +15,10 @@ import io
 # =============================
 # CONFIG: your local Excel path
 # =============================
-EXCEL_PATH = r"C:\Users\ex_hr.coop\Desktop\first_week\dashboard_streamlit\standarded_format.xlsx"
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "data"
+
+EXCEL_PATH = DATA_DIR / "standarded_format.xlsx"
 SHEET_NAME = "Sheet2"   # 你截图里是 Sheet2；如果不确定可改成 None（取第一个sheet）
 
 
@@ -166,11 +170,11 @@ st.markdown(
 as_of = pd.Timestamp(date.today())
 title_month = as_of.strftime("%Y %B")
 
-LOGO_PATH = r"C:\Users\ex_hr.coop\Desktop\first_week\dashboard_streamlit\Midea.png"
+LOGO_PATH = BASE_DIR / "Midea.png"
 logo_b64 = image_to_base64(LOGO_PATH)
-ROW1_LEFT_IMAGE_PATH = r"C:\Users\ex_hr.coop\Desktop\first_week\dashboard_streamlit\row1left.png"
-MAN_IMAGE_PATH = r"C:\Users\ex_hr.coop\Desktop\first_week\dashboard_streamlit\man.jpg"
-WOMAN_IMAGE_PATH = r"C:\Users\ex_hr.coop\Desktop\first_week\dashboard_streamlit\woman.png"
+ROW1_LEFT_IMAGE_PATH = BASE_DIR / "row1left.png"
+MAN_IMAGE_PATH = BASE_DIR / "man.jpg"
+WOMAN_IMAGE_PATH = BASE_DIR / "woman.png"
 
 row1_left_b64 = image_to_base64(ROW1_LEFT_IMAGE_PATH)
 man_b64 = image_to_base64(MAN_IMAGE_PATH)
