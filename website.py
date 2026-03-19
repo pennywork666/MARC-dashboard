@@ -93,6 +93,8 @@ def load_employees(excel_path: str, sheet_name=None) -> pd.DataFrame:
         .map(lambda x: str(x).replace("\n", " ").replace("\r", " ").strip())
     )
 
+    normalized_map = {str(col).strip().lower(): col for col in raw.columns}
+
     required_cols = [
         "Full name",
         "Gender Code",
@@ -104,25 +106,26 @@ def load_employees(excel_path: str, sheet_name=None) -> pd.DataFrame:
         "Job",  # ✅ needed for functional org chart
     ]
 
-    missing = [c for c in required_cols if c not in raw.columns]
+    missing = [c for c in required_cols if c.strip().lower() not in normalized_map]
     if missing:
         raise ValueError(
             f"Missing required columns: {missing}\n\nDetected columns: {list(raw.columns)}"
         )
 
-    df = raw[required_cols].copy()
+    resolved_cols = [normalized_map[c.strip().lower()] for c in required_cols]
+    df = raw[resolved_cols].copy()
 
     # Rename to internal names used downstream
     df = df.rename(
         columns={
-            "Full name": "name",
-            "Gender Code": "gender",
-            "Birth Date": "birth_date",
-            "PD": "pd",
-            "Employment Type": "employee_class",
-            "Last Hire Date": "hire_date",
-            "supervisor full name": "manager",
-            "Job": "job",
+            normalized_map["full name"]: "name",
+            normalized_map["gender code"]: "gender",
+            normalized_map["birth date"]: "birth_date",
+            normalized_map["pd"]: "pd",
+            normalized_map["employment type"]: "employee_class",
+            normalized_map["last hire date"]: "hire_date",
+            normalized_map["supervisor full name"]: "manager",
+            normalized_map["job"]: "job",
         }
     )
 
