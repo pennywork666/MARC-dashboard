@@ -824,24 +824,24 @@ with row1_left:
     ">
       <div style="height:4px; border-radius:999px; background:linear-gradient(90deg, rgba(255,255,255,.9) 0%, rgba(196,233,250,.95) 55%, rgba(120,202,235,.9) 100%); margin-bottom:6px;"></div>
       <div style="position:relative; min-height:68px; margin-bottom:6px;">
-        <div style="font-size:21px; font-weight:950; color:white; margin-top:8px; line-height:1.02; max-width:54%;">Workforce Snapshot</div>
+        <div style="font-size:22px; font-weight:950; color:white; margin-top:8px; line-height:1.02; max-width:54%;">Workforce Snapshot</div>
         <img src="data:image/png;base64,{row1_left_b64}" alt="workforce illustration" style="position:absolute; top:0; right:0; height:72px; width:auto; object-fit:contain; filter:none; z-index:2;" />
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; flex:1;">
         <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:8px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:13px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Headcount</div>
+          <div style="font-size:15px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Headcount</div>
           <div style="font-size:27px; font-weight:950; color:white; margin-top:4px; line-height:1;">{hc}</div>
         </div>
         <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:8px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:13px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">New Hires (MTD)</div>
+          <div style="font-size:15px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">New Hires (MTD)</div>
           <div style="font-size:27px; font-weight:950; color:white; margin-top:4px; line-height:1;">{new_hires_mtd}</div>
         </div>
         <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:8px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:13px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Midea Tenure</div>
+          <div style="font-size:15px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Midea Tenure</div>
           <div style="font-size:27px; font-weight:950; color:white; margin-top:4px; line-height:1;">{"-" if np.isnan(avg_midea) else f"{avg_midea:.2f}"}</div>
         </div>
         <div style="background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:8px 8px; backdrop-filter:blur(8px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-          <div style="font-size:13px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Industry Experience</div>
+          <div style="font-size:15px; font-weight:900; color:rgba(255,255,255,.84); letter-spacing:.03em; text-transform:uppercase;">Industry Experience</div>
           <div style="font-size:27px; font-weight:950; color:white; margin-top:4px; line-height:1;">{"-" if np.isnan(avg_industry) else f"{avg_industry:.2f}"}</div>
         </div>
       </div>
@@ -895,7 +895,7 @@ with row1_middle:
           padding-top:2px;
         }
         .section-title{
-          font-size:21px;
+          font-size:22px;
           font-weight:900;
           color:#0e3a67;
           padding-left:14px;
@@ -1198,7 +1198,7 @@ with row1_middle:
       }}
       .gender-title {{
         text-align: center;
-        font-size: 21px;
+        font-size: 22px;
         font-weight: 900;
         color: #0e3a67;
         margin-bottom: 6px;
@@ -1238,7 +1238,7 @@ with row1_middle:
         align-items:center;
       }}
       .count-label {{
-        font-size: 13px;
+        font-size: 15px;
         font-weight: 900;
         color: #5d7b94;
         text-transform: uppercase;
@@ -1260,8 +1260,8 @@ with row1_middle:
         min-height: 132px;
       }}
       .donut {{
-        width: 92px;
-        height: 92px;
+        width: 108px;
+        height: 108px;
         border-radius: 50%;
         background: conic-gradient(#0e3a67 0 {male_pct:.3f}%, #0096db {male_pct:.3f}% 100%);
         position: relative;
@@ -1269,13 +1269,13 @@ with row1_middle:
       .donut::after {{
         content: "";
         position: absolute;
-        inset: 15px;
+        inset: 18px;
         background: white;
         border-radius: 50%;
         box-shadow: inset 0 0 0 1px #e1eff8;
       }}
       .percent-item {{
-        font-size: 13px;
+        font-size: 15px;
         font-weight: 900;
         line-height: 1;
         position:absolute;
@@ -1283,13 +1283,13 @@ with row1_middle:
       }}
       .percent-item.male {{
         color:#0e3a67;
-        top: 40px;
-        right: 4px;
+        top: 46px;
+        right: 28px;
       }}
       .percent-item.female {{
         color:#0096db;
-        bottom: 34px;
-        left: 0;
+        bottom: 42px;
+        left: 26px;
       }}
     </style>
     </head>
@@ -1430,7 +1430,7 @@ with row2_left:
     ]
     pivot = pivot[col_order]
 
-    fig_bar, ax_bar = plt.subplots(figsize=(4.8, 4.15))
+    fig_bar, ax_bar = plt.subplots(figsize=(5.0, 4.55))
     fig_bar.patch.set_facecolor("#f7fcff")
     ax_bar.set_facecolor("#f7fcff")
 
@@ -1451,7 +1451,7 @@ with row2_left:
             vals,
             left=left,
             label=col,
-            height=0.82,
+            height=0.92,
             color=bar_color,
             edgecolor="white",
             linewidth=1.0,
@@ -1467,7 +1467,7 @@ with row2_left:
                         str(int(v)),
                         ha="center",
                         va="center",
-                        fontsize=10,
+                        fontsize=10.5,
                         fontweight="bold",
                         color=text_color,
                     )
@@ -1478,15 +1478,15 @@ with row2_left:
                         str(int(v)),
                         ha="left",
                         va="center",
-                        fontsize=10,
+                        fontsize=10.5,
                         fontweight="bold",
                         color="#0096db" if col == "Expat" else "#36536f",
                     )
         left += vals
 
     ax_bar.set_yticks(y)
-    ax_bar.set_yticklabels(pivot.index, fontsize=10.5, color="#36536f")
-    ax_bar.tick_params(axis="x", labelsize=10, colors="#6b879f")
+    ax_bar.set_yticklabels(pivot.index, fontsize=11, color="#36536f")
+    ax_bar.tick_params(axis="x", labelsize=10.5, colors="#6b879f")
     ax_bar.grid(axis="x", color="#d7ebf7", linewidth=0.8)
     ax_bar.set_axisbelow(True)
     ax_bar.invert_yaxis()
@@ -1500,7 +1500,7 @@ with row2_left:
         loc="lower center",
         bbox_to_anchor=(0.5, 1.02),
         ncol=max(1, len(pivot.columns)),
-        fontsize=10,
+        fontsize=10.5,
         frameon=False,
     )
     for txt in legend.get_texts():
@@ -1518,26 +1518,26 @@ with row2_left:
         box-shadow:0 14px 28px rgba(14,58,103,.08);
         padding:10px 12px 22px 12px;
         box-sizing:border-box;
-        min-height:360px;
+        min-height:374px;
         overflow:hidden;
         margin-top:-6px;
     ">
-      <div style="font-size:21px; font-weight:900; color:#0e3a67; margin-bottom:8px; padding-left:10px; border-left:4px solid #0096db;">
+      <div style="font-size:22px; font-weight:900; color:#0e3a67; margin-bottom:8px; padding-left:10px; border-left:4px solid #0096db;">
         PD Analysis
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start;">
         <div>
-          <div style="font-size:13px; font-weight:900; color:#0e3a67; margin-bottom:4px;">PD Distribution</div>
+          <div style="font-size:15px; font-weight:900; color:#0e3a67; margin-bottom:4px;">PD Distribution</div>
           <img src="data:image/png;base64,{pie_b64}" alt="PD distribution chart" style="width:100%; display:block;" />
         </div>
         <div>
-          <div style="font-size:13px; font-weight:900; color:#0e3a67; margin-bottom:4px;">PD Headcount</div>
+          <div style="font-size:15px; font-weight:900; color:#0e3a67; margin-bottom:4px;">PD Headcount</div>
           <img src="data:image/png;base64,{bar_b64}" alt="PD headcount mix chart" style="width:100%; display:block;" />
         </div>
       </div>
     </div>
     """
-    components.html(pd_card, height=492)
+    components.html(pd_card, height=510)
 
 if False:
     st.markdown('<div class="section-heading">Gender Distribution</div>', unsafe_allow_html=True)
