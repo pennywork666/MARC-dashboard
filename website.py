@@ -1190,9 +1190,9 @@ with row1_middle:
         border-radius: 22px;
         background: linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
         box-shadow: 0 14px 28px rgba(14,58,103,.08);
-        padding: 12px 12px;
+        padding: 8px 12px 10px 12px;
         color: #102f52;
-        height: 304px;
+        height: 296px;
         box-sizing: border-box;
       }}
       .gender-title {{
@@ -1200,7 +1200,7 @@ with row1_middle:
         font-size: 18px;
         font-weight: 900;
         color: #0e3a67;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
       }}
       .gender-layout {{
         display: grid;
@@ -1322,7 +1322,7 @@ with row1_middle:
     </body>
     </html>
     """
-    components.html(gender_card, height=304)
+    components.html(gender_card, height=296)
 
 
 # =============================
@@ -1383,7 +1383,7 @@ with row2_left:
     labels = pd_dist.index.tolist()
     pcts_int = compute_integer_percentages(counts)
 
-    fig_pie, ax_pie = plt.subplots(figsize=(4.1, 3.3))
+    fig_pie, ax_pie = plt.subplots(figsize=(4.1, 3.45))
     fig_pie.patch.set_facecolor("#f7fcff")
     ax_pie.set_facecolor("#f7fcff")
     pie_colors = [
@@ -1405,21 +1405,21 @@ with row2_left:
         autopct=autopct_percent_only(pcts_int),
         startangle=90,
         pctdistance=0.72,
-        labeldistance=1.08,
+        labeldistance=1.01,
         wedgeprops={"edgecolor": "white", "linewidth": 1.5},
-        textprops={"fontsize": 10, "color": "#3b5873"},
+        textprops={"fontsize": 9.5, "color": "#3b5873"},
     )
     ax_pie.axis("equal")
 
     for t in texts:
         t.set_color("#3b5873")
-        t.set_fontsize(10)
+        t.set_fontsize(9.5)
     for wedge, t in zip(wedges, autotexts):
         t.set_fontsize(9)
         t.set_weight("bold")
         t.set_color("white" if is_dark_color(wedge.get_facecolor()) else "#0e3a67")
 
-    fig_pie.tight_layout()
+    fig_pie.tight_layout(rect=[0.02, 0.04, 0.98, 0.98])
     pie_b64 = fig_to_base64(fig_pie)
     plt.close(fig_pie)
 
@@ -1516,7 +1516,7 @@ with row2_left:
         box-shadow:0 14px 28px rgba(14,58,103,.08);
         padding:10px 12px 14px 12px;
         box-sizing:border-box;
-        min-height:302px;
+        min-height:312px;
         overflow:hidden;
     ">
       <div style="font-size:20px; font-weight:900; color:#0e3a67; margin-bottom:8px; padding-left:10px; border-left:4px solid #0096db;">
@@ -1534,7 +1534,7 @@ with row2_left:
       </div>
     </div>
     """
-    components.html(pd_card, height=334)
+    components.html(pd_card, height=356)
 
 if False:
     st.markdown('<div class="section-heading">Gender Distribution</div>', unsafe_allow_html=True)
