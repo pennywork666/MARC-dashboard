@@ -1409,15 +1409,15 @@ with row2_left:
         pctdistance=0.72,
         labeldistance=1.12,
         wedgeprops={"edgecolor": "white", "linewidth": 1.5},
-        textprops={"fontsize": 11, "color": "#3b5873"},
+        textprops={"fontsize": 10, "color": "#3b5873"},
     )
     ax_pie.axis("equal")
 
     for t in texts:
         t.set_color("#3b5873")
-        t.set_fontsize(11)
+        t.set_fontsize(10)
     for wedge, t in zip(wedges, autotexts):
-        t.set_fontsize(11)
+        t.set_fontsize(10)
         t.set_weight("bold")
         t.set_color("white" if is_dark_color(wedge.get_facecolor()) else "#0e3a67")
 
@@ -1527,11 +1527,11 @@ with row2_left:
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start;">
         <div>
-          <div style="font-size:22px; font-weight:900; color:#0e3a67; margin-bottom:6px;">PD Distribution</div>
+          <div style="font-size:18px; font-weight:900; color:#0e3a67; margin-bottom:6px;">PD Distribution</div>
           <img src="data:image/png;base64,{pie_b64}" alt="PD distribution chart" style="width:100%; display:block;" />
         </div>
         <div>
-          <div style="font-size:22px; font-weight:900; color:#0e3a67; margin-bottom:6px;">PD Headcount</div>
+          <div style="font-size:18px; font-weight:900; color:#0e3a67; margin-bottom:6px;">PD Headcount</div>
           <img src="data:image/png;base64,{bar_b64}" alt="PD headcount mix chart" style="width:100%; display:block;" />
         </div>
       </div>
