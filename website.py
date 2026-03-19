@@ -1328,7 +1328,7 @@ with row1_middle:
 # =============================
 # Row2: PD analysis + Movement
 # =============================
-row2_left, row2_right = st.columns([1.52, 0.98], gap="small")
+row2_left, row2_right = st.columns([1.66, 0.84], gap="small")
 
 with row2_left:
     def compute_integer_percentages(counts):
@@ -1383,7 +1383,7 @@ with row2_left:
     labels = pd_dist.index.tolist()
     pcts_int = compute_integer_percentages(counts)
 
-    fig_pie, ax_pie = plt.subplots(figsize=(4.1, 3.45))
+    fig_pie, ax_pie = plt.subplots(figsize=(4.25, 3.7))
     fig_pie.patch.set_facecolor("#f7fcff")
     ax_pie.set_facecolor("#f7fcff")
     pie_colors = [
@@ -1405,7 +1405,7 @@ with row2_left:
         autopct=autopct_percent_only(pcts_int),
         startangle=90,
         pctdistance=0.72,
-        labeldistance=1.01,
+        labeldistance=1.06,
         wedgeprops={"edgecolor": "white", "linewidth": 1.5},
         textprops={"fontsize": 9.5, "color": "#3b5873"},
     )
@@ -1419,7 +1419,7 @@ with row2_left:
         t.set_weight("bold")
         t.set_color("white" if is_dark_color(wedge.get_facecolor()) else "#0e3a67")
 
-    fig_pie.tight_layout(rect=[0.02, 0.04, 0.98, 0.98])
+    fig_pie.tight_layout(rect=[0.02, 0.08, 0.98, 0.98])
     pie_b64 = fig_to_base64(fig_pie)
     plt.close(fig_pie)
 
@@ -1514,9 +1514,9 @@ with row2_left:
         border-radius:22px;
         background:linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
         box-shadow:0 14px 28px rgba(14,58,103,.08);
-        padding:10px 12px 14px 12px;
+        padding:10px 12px 22px 12px;
         box-sizing:border-box;
-        min-height:312px;
+        min-height:334px;
         overflow:hidden;
     ">
       <div style="font-size:20px; font-weight:900; color:#0e3a67; margin-bottom:8px; padding-left:10px; border-left:4px solid #0096db;">
@@ -1534,7 +1534,7 @@ with row2_left:
       </div>
     </div>
     """
-    components.html(pd_card, height=356)
+    components.html(pd_card, height=398)
 
 if False:
     st.markdown('<div class="section-heading">Gender Distribution</div>', unsafe_allow_html=True)
