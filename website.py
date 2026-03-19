@@ -226,7 +226,7 @@ st.markdown(
         display:flex;
         justify-content:flex-start;
         align-items:flex-start;
-        margin-top: -54px;
+        margin-top: -72px;
         padding-left: 6px;
     }
 
@@ -238,7 +238,7 @@ st.markdown(
     }
 
     .header-wrap {
-        margin-top: -14px;
+        margin-top: -28px;
     }
 
     .header-title {
@@ -439,7 +439,7 @@ def render_movement_cards():
 # =============================
 # ROW 1: Summary + Gender
 # =============================
-st.markdown("<div style='margin-top:-52px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top:-72px;'></div>", unsafe_allow_html=True)
 row1_left, row1_middle = st.columns([1.0, 1.0], gap="medium")
 
 with row1_left:
@@ -845,8 +845,8 @@ with row1_left:
           <div style="font-size:27px; font-weight:950; color:white; margin-top:4px; line-height:1;">{"-" if np.isnan(avg_industry) else f"{avg_industry:.2f}"}</div>
         </div>
       </div>
-      <div style="margin-top:4px; display:flex; justify-content:flex-end; font-size:8px; font-weight:700; color:rgba(255,255,255,.76); line-height:1;">
-        Excludes coop and contractors
+      <div style="margin-top:4px; display:flex; justify-content:flex-end; font-size:10px; font-weight:700; color:rgba(255,255,255,.8); line-height:1;">
+        Excludes coops and contractors
       </div>
     </div>
     """
@@ -1329,7 +1329,7 @@ with row1_middle:
 # =============================
 # Row2: PD analysis + Movement
 # =============================
-st.markdown("<div style='margin-top:-58px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top:-82px;'></div>", unsafe_allow_html=True)
 row2_left, row2_right = st.columns([1.66, 0.84], gap="small")
 
 with row2_left:
