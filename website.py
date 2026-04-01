@@ -1487,7 +1487,7 @@ with top_right:
       </div>
     </div>
     """
-    components.html(pd_card, height=456)
+    components.html(pd_card, height=398)
 
 if False:
     st.markdown('<div class="section-heading">Gender Distribution</div>', unsafe_allow_html=True)
@@ -2128,7 +2128,7 @@ with top_left:
     render_movement_cards()
 
 with top_right:
-    st.markdown("<div style='margin-top:-34px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top:-92px;'></div>", unsafe_allow_html=True)
     render_coop_overview()
 
 st.divider()
