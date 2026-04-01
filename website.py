@@ -1911,7 +1911,7 @@ def render_coop_overview():
   .donut::after {{
     content:"";
     position:absolute;
-    inset:1px;
+    inset:40px;
     background:#ffffff;
     border-radius:50%;
     box-shadow:inset 0 0 0 1px #e1eff8;
@@ -1927,12 +1927,12 @@ def render_coop_overview():
   }}
   .ring-count.male {{
     top:50%;
-    right:8px;
+    right:14px;
     transform:translateY(-50%);
   }}
   .ring-count.female {{
     top:50%;
-    left:8px;
+    left:14px;
     transform:translateY(-50%);
   }}
   .pct {{
