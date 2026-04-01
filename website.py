@@ -2035,11 +2035,7 @@ def render_coop_overview():
     letter-spacing:.03em;
   }}
   .intl-copy {{
-    font-size:12px;
-    font-weight:700;
-    color:#5d7b94;
-    line-height:1.4;
-    margin-bottom:10px;
+    display:none;
   }}
   .intl-cloud-stage {{
     position:relative;
@@ -2065,10 +2061,7 @@ def render_coop_overview():
   .intl-word.xl {{ font-size:50px; }}
   .intl-word.xxl {{ font-size:56px; }}
   .intl-note {{
-    margin-top:10px;
-    font-size:12px;
-    font-weight:700;
-    color:#7a96ac;
+    display:none;
   }}
   .chart-wrap {{
     background:#f7fcff;
@@ -2143,11 +2136,9 @@ def render_coop_overview():
       </div>
       <div class="mini-card international-card">
         <div class="mini-title">International</div>
-        <div class="intl-copy">Preview layout for country diversity. We can swap this to live country data once that field is ready.</div>
         <div class="intl-cloud-stage">
           {international_cloud_html}
         </div>
-        <div class="intl-note">Word-cloud style preview</div>
       </div>
       <div class="bottom-card">
       <div class="chart-head">
