@@ -385,7 +385,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-col_logo, col_title, col_right = st.columns([1.8, 4.4, 1.8], gap="small")
+col_logo, col_filter, col_title = st.columns([1.8, 2.7, 4.1], gap="small")
 
 with col_logo:
     st.markdown(
@@ -397,17 +397,7 @@ with col_logo:
         unsafe_allow_html=True,
     )
 
-with col_title:
-    st.markdown(
-        f"""
-        <div class="header-wrap">
-            <div class="header-title">{dashboard_title}</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-with col_right:
+with col_filter:
     st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
     filter_label_col, filter_select_col = st.columns([1.0, 2.7], gap="small")
     with filter_label_col:
@@ -420,6 +410,16 @@ with col_right:
             key="report_month",
             label_visibility="collapsed",
         )
+
+with col_title:
+    st.markdown(
+        f"""
+        <div class="header-wrap">
+            <div class="header-title">{dashboard_title}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 st.markdown("<div style='height: 0px;'></div>", unsafe_allow_html=True)
 
