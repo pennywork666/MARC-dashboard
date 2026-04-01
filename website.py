@@ -20,6 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
 CLEAN_DATA_DIR = BASE_DIR / "clean_data"
 REPORT_DATE_PATTERN = re.compile(r"(\d{1,2})-(\d{1,2})-(\d{4})")
+SEMESTER_WINDOWS = [
+    ((1, 12), (5, 8), "Spring"),
+    ((5, 12), (8, 15), "Summer"),
+]
 
 
 def list_clean_files(clean_dir: Path) -> list[Path]:
@@ -448,6 +452,16 @@ def month_range(as_of_dt: pd.Timestamp):
     start = pd.Timestamp(as_of_dt.year, as_of_dt.month, 1)
     end = start + pd.offsets.MonthBegin(1)
     return start, end
+
+
+def get_semester_label(as_of_dt: pd.Timestamp) -> str | None:
+    dt = pd.Timestamp(as_of_dt).normalize()
+    for (start_month, start_day), (end_month, end_day), semester_name in SEMESTER_WINDOWS:
+        start = pd.Timestamp(year=dt.year, month=start_month, day=start_day)
+        end = pd.Timestamp(year=dt.year, month=end_month, day=end_day)
+        if start <= dt <= end:
+            return f"{dt.year} {semester_name}"
+    return None
 
 
 def new_hires_in_month(df: pd.DataFrame, as_of_dt: pd.Timestamp) -> pd.DataFrame:
@@ -1736,6 +1750,12 @@ if False:
         )
 
 def render_coop_overview():
+    coop_semester_label = get_semester_label(as_of)
+    coop_overview_title = (
+        f"{coop_semester_label} Co-op Overview"
+        if coop_semester_label
+        else "Co-op Overview"
+    )
     coop_count = int(len(employees_coop))
     coop_male_count = int(
         employees_coop["gender"]
@@ -2077,7 +2097,7 @@ def render_coop_overview():
 <body>
   <div class="coop-card">
     <div class="coop-head">
-      <div class="coop-title">Co-op Overview</div>
+      <div class="coop-title">{coop_overview_title}</div>
     </div>
     <div class="top-grid">
       <div class="mini-card">
