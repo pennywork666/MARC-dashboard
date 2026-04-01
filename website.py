@@ -296,8 +296,11 @@ st.markdown(
     }
 
     section[data-testid="stMain"] div.block-container {
+        max-width: 100%;
         padding-top: 0 !important;
         padding-bottom: 1.15rem;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
     }
 
     hr {
@@ -560,7 +563,7 @@ def render_movement_cards():
 # ROW 1: Summary + Gender
 # =============================
 st.markdown("<div style='margin-top:-112px;'></div>", unsafe_allow_html=True)
-top_left, top_right = st.columns([1.0, 1.0], gap="medium")
+top_left, top_right = st.columns([1.0, 1.0], gap="small")
 
 with top_left:
     kpi_card = f"""
@@ -1116,7 +1119,7 @@ with top_left:
     fig_gender.tight_layout(rect=[0.03, 0.05, 0.99, 0.92])
     gender_b64 = fig_to_base64(fig_gender)
     plt.close(fig_gender)
-    gender_card_height = max(390, 150 + len(pd_rows) * 34)
+    gender_card_height = max(336, 118 + len(pd_rows) * 28)
 
     gender_card = f"""
     <html>
@@ -1170,7 +1173,8 @@ with top_left:
         display: flex;
         flex-direction: column;
         gap: 10px;
-        justify-content: center;
+        justify-content: flex-start;
+        padding-top: 14px;
         height: 100%;
       }}
       .count-box {{
@@ -1479,7 +1483,7 @@ with top_right:
       </div>
     </div>
     """
-    components.html(pd_card, height=520)
+    components.html(pd_card, height=474)
 
 if False:
     st.markdown('<div class="section-heading">Gender Distribution</div>', unsafe_allow_html=True)
@@ -1768,17 +1772,17 @@ def render_coop_overview():
     coop_pd_counts = coop_pd_counts[coop_pd_counts > 0]
 
     coop_chart_rows = max(1, len(coop_pd_counts.index))
-    coop_fig_height = max(3.8, 0.52 * coop_chart_rows + 0.55)
+    coop_fig_height = max(3.3, 0.36 * coop_chart_rows + 1.5)
 
-    fig_coop_bar, ax_coop_bar = plt.subplots(figsize=(7.0, coop_fig_height))
+    fig_coop_bar, ax_coop_bar = plt.subplots(figsize=(6.2, coop_fig_height))
     fig_coop_bar.patch.set_facecolor("#f7fcff")
     ax_coop_bar.set_facecolor("#f7fcff")
 
-    y = np.arange(len(coop_pd_counts.index))
-    bars = ax_coop_bar.barh(
-        y,
+    x = np.arange(len(coop_pd_counts.index))
+    bars = ax_coop_bar.bar(
+        x,
         coop_pd_counts.values,
-        height=0.92,
+        width=0.72,
         color="#0e3a67",
         edgecolor="white",
         linewidth=1.0,
@@ -1787,8 +1791,8 @@ def render_coop_overview():
     for bar, v in zip(bars, coop_pd_counts.values):
         if v > 0:
             ax_coop_bar.text(
-                bar.get_width() / 2,
-                bar.get_y() + bar.get_height() / 2,
+                bar.get_x() + bar.get_width() / 2,
+                bar.get_height() / 2,
                 str(int(v)),
                 ha="center",
                 va="center",
@@ -1797,20 +1801,18 @@ def render_coop_overview():
                 color="white",
             )
 
-    ax_coop_bar.set_yticks(y)
-    ax_coop_bar.set_yticklabels(coop_pd_counts.index, fontsize=11, color="#36536f")
-    ax_coop_bar.tick_params(axis="x", labelsize=10.5, colors="#6b879f")
-    ax_coop_bar.grid(axis="x", color="#d7ebf7", linewidth=0.8)
+    ax_coop_bar.set_xticks(x)
+    ax_coop_bar.set_xticklabels(coop_pd_counts.index, fontsize=10.5, color="#36536f")
+    ax_coop_bar.tick_params(axis="x", length=0, pad=8)
+    ax_coop_bar.set_yticks([])
     ax_coop_bar.set_axisbelow(True)
-    ax_coop_bar.invert_yaxis()
     ax_coop_bar.spines["top"].set_visible(False)
     ax_coop_bar.spines["right"].set_visible(False)
     ax_coop_bar.spines["left"].set_visible(False)
-    ax_coop_bar.spines["bottom"].set_color("#d7ebf7")
+    ax_coop_bar.spines["bottom"].set_visible(False)
     coop_max = int(coop_pd_counts.max()) if len(coop_pd_counts) else 1
-    ax_coop_bar.set_xlim(0, max(1, coop_max))
-    ax_coop_bar.set_xticks(np.arange(0, max(1, coop_max) + 1, 1))
-    ax_coop_bar.margins(x=0)
+    ax_coop_bar.set_ylim(0, max(1, coop_max) + 0.8)
+    ax_coop_bar.margins(x=0.04)
     fig_coop_bar.tight_layout(rect=[0, 0, 1, 0.99])
     coop_bar_b64 = fig_to_base64(fig_coop_bar)
     plt.close(fig_coop_bar)
@@ -1903,7 +1905,7 @@ def render_coop_overview():
   .donut::after {{
     content:"";
     position:absolute;
-    inset:6px;
+    inset:22px;
     background:#ffffff;
     border-radius:50%;
     box-shadow:inset 0 0 0 1px #e1eff8;
@@ -1918,11 +1920,11 @@ def render_coop_overview():
     text-shadow:0 1px 3px rgba(14,58,103,.35);
   }}
   .ring-count.male {{
-    top:18px;
+    top:24px;
     right:18px;
   }}
   .ring-count.female {{
-    bottom:18px;
+    bottom:22px;
     left:18px;
   }}
   .pct {{
