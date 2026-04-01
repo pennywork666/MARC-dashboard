@@ -1848,32 +1848,6 @@ def render_coop_overview():
     coop_bar_b64 = fig_to_base64(fig_coop_bar)
     plt.close(fig_coop_bar)
 
-    international_cloud_items = [
-        ("China", "xxl", "7%", "53%", "#ba4a12", "0deg"),
-        ("United States", "xl", "52%", "66%", "#2da5e4", "0deg"),
-        ("Canada", "xl", "32%", "28%", "#2ca8e7", "0deg"),
-        ("Australia", "xl", "20%", "74%", "#747330", "0deg"),
-        ("Germany", "lg", "58%", "48%", "#c77b00", "0deg"),
-        ("Japan", "lg", "44%", "40%", "#b7440d", "0deg"),
-        ("Qatar", "lg", "83%", "37%", "#b7440d", "0deg"),
-        ("United Arab Emirates", "md", "72%", "82%", "#caa548", "0deg"),
-        ("South Korea", "sm", "12%", "17%", "#cdb150", "0deg"),
-        ("India", "md", "11%", "29%", "#6f6b2c", "0deg"),
-        ("Thailand", "sm", "27%", "84%", "#2ca8e7", "0deg"),
-        ("Philippines", "md", "63%", "18%", "#b88900", "-90deg"),
-        ("Malaysia", "sm", "71%", "19%", "#57561f", "-90deg"),
-        ("Vietnam", "sm", "87%", "72%", "#d07216", "0deg"),
-    ]
-    international_cloud_html = "".join(
-        f"""
-        <span
-          class="intl-word {size_class}"
-          style="left:{left}; top:{top}; color:{color}; transform:translate(-50%, -50%) rotate({rotation});"
-        >{country}</span>
-        """
-        for country, size_class, left, top, color, rotation in international_cloud_items
-    )
-
     coop_overview_card = f"""
 <html>
 <head>
@@ -1928,10 +1902,6 @@ def render_coop_overview():
     padding-left:10px;
     border-left:4px solid #25a7de;
     margin-bottom:12px;
-  }}
-  .international-card {{
-    min-height:220px;
-    overflow:hidden;
   }}
   .donut-shell {{
     height: calc(100% - 34px);
@@ -2034,39 +2004,13 @@ def render_coop_overview():
     text-transform:uppercase;
     letter-spacing:.03em;
   }}
-  .intl-copy {{
-    display:none;
-  }}
-  .intl-cloud-stage {{
-    position:relative;
-    min-height:158px;
-    border-radius:16px;
-    background:
-      radial-gradient(circle at 14% 18%, rgba(42,120,176,.05), transparent 26%),
-      radial-gradient(circle at 82% 72%, rgba(0,150,219,.05), transparent 28%),
-      linear-gradient(180deg, #ffffff 0%, #f7fcff 100%);
-    overflow:hidden;
-  }}
-  .intl-word {{
-    position:absolute;
-    font-weight:900;
-    line-height:1;
-    white-space:nowrap;
-    letter-spacing:-0.02em;
-    user-select:none;
-  }}
-  .intl-word.sm {{ font-size:19px; }}
-  .intl-word.md {{ font-size:28px; }}
-  .intl-word.lg {{ font-size:38px; }}
-  .intl-word.xl {{ font-size:50px; }}
-  .intl-word.xxl {{ font-size:56px; }}
-  .intl-note {{
-    display:none;
-  }}
   .chart-wrap {{
     background:#f7fcff;
     border-radius:16px;
     padding:10px 10px 6px 10px;
+  }}
+  .bottom-card {{
+    grid-column: 1 / -1;
   }}
   .chart-head {{
     display:flex;
@@ -2132,12 +2076,6 @@ def render_coop_overview():
             <div class="pct male">Male {coop_male_pct:.1f}%</div>
             <div class="pct female">Female {coop_female_pct:.1f}%</div>
           </div>
-        </div>
-      </div>
-      <div class="mini-card international-card">
-        <div class="mini-title">International</div>
-        <div class="intl-cloud-stage">
-          {international_cloud_html}
         </div>
       </div>
       <div class="bottom-card">
