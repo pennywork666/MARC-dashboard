@@ -1881,18 +1881,17 @@ def render_coop_overview():
   }}
   .top-grid {{
     display:grid;
-    grid-template-columns:0.84fr 1.16fr;
+    grid-template-columns:1fr 1fr;
     gap:14px;
     align-items:stretch;
   }}
-  .mini-card,
-  .bottom-card {{
+  .mini-card {{
     border:1px solid #d8ebf7;
     border-radius:18px;
     background:#ffffff;
     padding:16px 16px 14px 16px;
     box-sizing:border-box;
-    min-height:154px;
+    min-height:250px;
   }}
   .mini-title {{
     font-size:20px;
@@ -1981,35 +1980,10 @@ def render_coop_overview():
   .center-counts {{
     display:none;
   }}
-  .count-wrap {{
-    height: calc(100% - 34px);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-  }}
-  .count-number {{
-    font-size:52px;
-    font-weight:950;
-    color:#0e3a67;
-    line-height:1;
-  }}
-  .count-note {{
-    margin-top:10px;
-    font-size:15px;
-    font-weight:900;
-    color:#6b879f;
-    text-transform:uppercase;
-    letter-spacing:.03em;
-  }}
   .chart-wrap {{
     background:#f7fcff;
     border-radius:16px;
     padding:10px 12px 8px 12px;
-  }}
-  .bottom-card {{
-    grid-column: 1 / -1;
   }}
   .chart-head {{
     display:flex;
@@ -2021,8 +1995,16 @@ def render_coop_overview():
   .chart-head .mini-title {{
     margin-bottom:0;
   }}
+  .pd-chart-wrap {{
+    height: calc(100% - 34px);
+    display:flex;
+    flex-direction:column;
+  }}
+  .pd-chart-wrap .chart-wrap {{
+    flex:1;
+  }}
   .headcount-chip {{
-    min-width:120px;
+    min-width:110px;
     padding:10px 12px;
     border-radius:16px;
     background:#f7fcff;
@@ -2052,10 +2034,17 @@ def render_coop_overview():
     </div>
     <div class="top-grid">
       <div class="mini-card">
-        <div class="mini-title">Headcount</div>
-        <div class="count-wrap">
-          <div class="count-number">{coop_count}</div>
-          <div class="count-note">Co-ops</div>
+        <div class="chart-head">
+          <div class="mini-title">PD Headcount</div>
+          <div class="headcount-chip">
+            <div class="chip-label">Co-ops</div>
+            <div class="chip-value">{coop_count}</div>
+          </div>
+        </div>
+        <div class="pd-chart-wrap">
+          <div class="chart-wrap">
+            <img src="data:image/png;base64,{coop_bar_b64}" alt="Co-op PD headcount chart" style="width:100%; display:block;" />
+          </div>
         </div>
       </div>
       <div class="mini-card">
@@ -2077,19 +2066,12 @@ def render_coop_overview():
           </div>
         </div>
       </div>
-      <div class="bottom-card">
-      <div class="chart-head">
-        <div class="mini-title">PD Headcount</div>
-      </div>
-      <div class="chart-wrap">
-        <img src="data:image/png;base64,{coop_bar_b64}" alt="Co-op PD headcount chart" style="width:100%; display:block;" />
-      </div>
     </div>
   </div>
 </body>
 </html>
 """
-    components.html(coop_overview_card, height=max(520, int(300 + coop_fig_height * 42)))
+    components.html(coop_overview_card, height=max(360, int(250 + coop_fig_height * 38)))
 
 with top_left:
     st.markdown("<div style='margin-top:-6px;'></div>", unsafe_allow_html=True)
