@@ -339,7 +339,7 @@ st.markdown(
     }
 
     .header-title {
-        text-align: center;
+        text-align: left;
         font-size: 1.95rem;
         font-weight: 850;
         color:#0e3a67;
@@ -358,11 +358,11 @@ st.markdown(
     }
 
     .month-filter-label {
-        text-align:center;
+        text-align:left;
         font-size:11px;
         font-weight:800;
         color:#5d7b94;
-        margin-top:6px;
+        margin-top:2px;
         margin-bottom:4px;
     }
 
@@ -376,7 +376,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-col_logo, col_title, col_right = st.columns([1.8, 4.4, 1.8])
+col_logo, col_header = st.columns([1.8, 6.2], gap="small")
 
 with col_logo:
     st.markdown(
@@ -388,17 +388,18 @@ with col_logo:
         unsafe_allow_html=True,
     )
 
-with col_title:
-    st.markdown(
-        f"""
-        <div class="header-wrap">
-            <div class="header-title">{dashboard_title}</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    filter_left, filter_mid, filter_right = st.columns([1.15, 1.25, 1.15])
-    with filter_mid:
+with col_header:
+    title_col, filter_col = st.columns([2.5, 1.5], gap="medium")
+    with title_col:
+        st.markdown(
+            f"""
+            <div class="header-wrap">
+                <div class="header-title">{dashboard_title}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    with filter_col:
         st.markdown('<div class="month-filter-label">Reporting Month</div>', unsafe_allow_html=True)
         st.selectbox(
             "Reporting Month",
@@ -407,9 +408,6 @@ with col_title:
             key="report_month",
             label_visibility="collapsed",
         )
-
-with col_right:
-    st.empty()
 
 st.markdown("<div style='height: 0px;'></div>", unsafe_allow_html=True)
 
