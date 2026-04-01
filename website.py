@@ -1801,17 +1801,17 @@ def render_coop_overview():
     coop_pd_counts = coop_pd_counts[coop_pd_counts > 0]
 
     coop_chart_rows = max(1, len(coop_pd_counts.index))
-    coop_fig_height = max(3.15, 0.42 * coop_chart_rows + 1.15)
+    coop_fig_height = 2.85 if coop_chart_rows <= 6 else min(4.1, 2.85 + (coop_chart_rows - 6) * 0.18)
 
-    fig_coop_bar, ax_coop_bar = plt.subplots(figsize=(5.75, coop_fig_height))
+    fig_coop_bar, ax_coop_bar = plt.subplots(figsize=(5.6, coop_fig_height))
     fig_coop_bar.patch.set_facecolor("#f7fcff")
     ax_coop_bar.set_facecolor("#f7fcff")
 
-    y = np.arange(len(coop_pd_counts.index))
-    bars = ax_coop_bar.barh(
-        y,
+    x = np.arange(len(coop_pd_counts.index))
+    bars = ax_coop_bar.bar(
+        x,
         coop_pd_counts.values,
-        height=0.82,
+        width=0.62,
         color="#0e3a67",
         edgecolor="white",
         linewidth=1.0,
@@ -1821,29 +1821,28 @@ def render_coop_overview():
         if v > 0:
             ax_coop_bar.text(
                 bar.get_x() + bar.get_width() / 2,
-                bar.get_y() + bar.get_height() / 2,
+                bar.get_height() + 0.08,
                 str(int(v)),
                 ha="center",
-                va="center",
+                va="bottom",
                 fontsize=10.5,
                 fontweight="bold",
-                color="white",
+                color="#0e3a67",
             )
 
-    ax_coop_bar.set_yticks(y)
-    ax_coop_bar.set_yticklabels(coop_pd_counts.index, fontsize=10.5, color="#36536f")
-    ax_coop_bar.tick_params(axis="x", length=0, labelbottom=False, colors="#6b879f")
-    ax_coop_bar.tick_params(axis="y", labelsize=10.5, colors="#36536f")
-    ax_coop_bar.grid(axis="x", color="#d7ebf7", linewidth=0.8)
+    ax_coop_bar.set_xticks(x)
+    ax_coop_bar.set_xticklabels(coop_pd_counts.index, fontsize=10.5, color="#36536f")
+    ax_coop_bar.tick_params(axis="x", labelsize=10.5, colors="#36536f")
+    ax_coop_bar.tick_params(axis="y", length=0, labelleft=False, colors="#6b879f")
+    ax_coop_bar.grid(axis="y", color="#d7ebf7", linewidth=0.8)
     ax_coop_bar.set_axisbelow(True)
-    ax_coop_bar.invert_yaxis()
     ax_coop_bar.spines["top"].set_visible(False)
     ax_coop_bar.spines["right"].set_visible(False)
-    ax_coop_bar.spines["left"].set_visible(False)
+    ax_coop_bar.spines["left"].set_color("#d7ebf7")
     ax_coop_bar.spines["bottom"].set_color("#d7ebf7")
     coop_max = int(coop_pd_counts.max()) if len(coop_pd_counts) else 1
-    ax_coop_bar.set_xlim(0, coop_max)
-    ax_coop_bar.set_xticks(np.arange(0, coop_max + 1, 1))
+    ax_coop_bar.set_ylim(0, coop_max + 0.7)
+    ax_coop_bar.set_yticks(np.arange(0, coop_max + 1, 1))
     fig_coop_bar.tight_layout(rect=[0, 0, 1, 0.99])
     coop_bar_b64 = fig_to_base64(fig_coop_bar)
     plt.close(fig_coop_bar)
@@ -1893,7 +1892,7 @@ def render_coop_overview():
     background:#ffffff;
     padding:16px 16px 14px 16px;
     box-sizing:border-box;
-    min-height:170px;
+    min-height:154px;
   }}
   .mini-title {{
     font-size:20px;
@@ -2007,7 +2006,7 @@ def render_coop_overview():
   .chart-wrap {{
     background:#f7fcff;
     border-radius:16px;
-    padding:10px 10px 6px 10px;
+    padding:10px 12px 8px 12px;
   }}
   .bottom-card {{
     grid-column: 1 / -1;
@@ -2090,7 +2089,7 @@ def render_coop_overview():
 </body>
 </html>
 """
-    components.html(coop_overview_card, height=max(640, int(250 + coop_fig_height * 66)))
+    components.html(coop_overview_card, height=max(520, int(300 + coop_fig_height * 42)))
 
 with top_left:
     st.markdown("<div style='margin-top:-6px;'></div>", unsafe_allow_html=True)
