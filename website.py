@@ -2150,6 +2150,10 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 st.markdown('<div class="section-heading">Org Chart</div>', unsafe_allow_html=True)
+st.markdown(
+    "<div style='margin:-6px 0 12px 18px; font-size:11px; font-weight:700; color:#6a879f;'>Excludes coops and contractors</div>",
+    unsafe_allow_html=True,
+)
 
 # ---------- Build org data (uses name/manager/job/pd already in employees_view) ----------
 
@@ -2244,7 +2248,7 @@ def build_org_payload(df: pd.DataFrame):
         "pd_map": pd_map
     }
 
-org_payload = build_org_payload(employees_view)
+org_payload = build_org_payload(employees_core)
 org_json = json.dumps(org_payload, ensure_ascii=False)
 
 
