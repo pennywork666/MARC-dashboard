@@ -358,7 +358,7 @@ st.markdown(
     }
 
     .month-filter-label {
-        text-align:left;
+        text-align:center;
         font-size:11px;
         font-weight:800;
         color:#5d7b94;
@@ -1276,11 +1276,7 @@ with top_left:
     """
     components.html(kpi_card, height=282)
     st.markdown("<div style='margin-top:-4px;'></div>", unsafe_allow_html=True)
-    gender_shell_left, gender_shell_right = st.columns([0.94, 0.06], gap="small")
-    with gender_shell_left:
-        components.html(gender_card, height=gender_card_height)
-    with gender_shell_right:
-        st.empty()
+    components.html(gender_card, height=gender_card_height)
 
 
 # =============================
