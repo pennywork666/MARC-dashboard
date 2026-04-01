@@ -1848,13 +1848,30 @@ def render_coop_overview():
     coop_bar_b64 = fig_to_base64(fig_coop_bar)
     plt.close(fig_coop_bar)
 
-    international_examples = [
-        "China", "Myanmar", "India", "Panama",
-        "Mexico", "Thailand", "Philippines", "USA",
+    international_cloud_items = [
+        ("China", "xxl", "7%", "53%", "#ba4a12", "0deg"),
+        ("United States", "xl", "52%", "66%", "#2da5e4", "0deg"),
+        ("Canada", "xl", "32%", "28%", "#2ca8e7", "0deg"),
+        ("Australia", "xl", "20%", "74%", "#747330", "0deg"),
+        ("Germany", "lg", "58%", "48%", "#c77b00", "0deg"),
+        ("Japan", "lg", "44%", "40%", "#b7440d", "0deg"),
+        ("Qatar", "lg", "83%", "37%", "#b7440d", "0deg"),
+        ("United Arab Emirates", "md", "72%", "82%", "#caa548", "0deg"),
+        ("South Korea", "sm", "12%", "17%", "#cdb150", "0deg"),
+        ("India", "md", "11%", "29%", "#6f6b2c", "0deg"),
+        ("Thailand", "sm", "27%", "84%", "#2ca8e7", "0deg"),
+        ("Philippines", "md", "63%", "18%", "#b88900", "-90deg"),
+        ("Malaysia", "sm", "71%", "19%", "#57561f", "-90deg"),
+        ("Vietnam", "sm", "87%", "72%", "#d07216", "0deg"),
     ]
-    international_tags_html = "".join(
-        f'<span class="intl-pill size-{(idx % 4) + 1}">{country}</span>'
-        for idx, country in enumerate(international_examples)
+    international_cloud_html = "".join(
+        f"""
+        <span
+          class="intl-word {size_class}"
+          style="left:{left}; top:{top}; color:{color}; transform:translate(-50%, -50%) rotate({rotation});"
+        >{country}</span>
+        """
+        for country, size_class, left, top, color, rotation in international_cloud_items
     )
 
     coop_overview_card = f"""
@@ -1911,6 +1928,10 @@ def render_coop_overview():
     padding-left:10px;
     border-left:4px solid #25a7de;
     margin-bottom:12px;
+  }}
+  .international-card {{
+    min-height:220px;
+    overflow:hidden;
   }}
   .donut-shell {{
     height: calc(100% - 34px);
@@ -2014,43 +2035,37 @@ def render_coop_overview():
     letter-spacing:.03em;
   }}
   .intl-copy {{
-    font-size:14px;
+    font-size:12px;
     font-weight:700;
     color:#5d7b94;
-    line-height:1.45;
-    margin-bottom:12px;
+    line-height:1.4;
+    margin-bottom:10px;
   }}
-  .intl-cloud {{
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px 14px;
-    align-items:center;
+  .intl-cloud-stage {{
+    position:relative;
+    min-height:158px;
+    border-radius:16px;
+    background:
+      radial-gradient(circle at 14% 18%, rgba(42,120,176,.05), transparent 26%),
+      radial-gradient(circle at 82% 72%, rgba(0,150,219,.05), transparent 28%),
+      linear-gradient(180deg, #ffffff 0%, #f7fcff 100%);
+    overflow:hidden;
   }}
-  .intl-pill {{
-    display:inline-flex;
-    align-items:center;
-    border:1px solid #cfe5f4;
-    background:linear-gradient(180deg, #eef8fe 0%, #dff1fb 100%);
-    border-radius:999px;
-    padding:8px 14px;
+  .intl-word {{
+    position:absolute;
     font-weight:900;
-    color:#1d4f77;
     line-height:1;
     white-space:nowrap;
-    box-shadow:0 8px 18px rgba(14,58,103,.06);
+    letter-spacing:-0.02em;
+    user-select:none;
   }}
-  .intl-pill.size-1 {{ font-size:13px; opacity:.82; }}
-  .intl-pill.size-2 {{ font-size:15px; opacity:.9; }}
-  .intl-pill.size-3 {{ font-size:18px; opacity:1; }}
-  .intl-pill.size-4 {{ font-size:22px; opacity:1; }}
-  .intl-cloud .intl-pill:nth-child(odd) {{
-    transform: rotate(-2deg);
-  }}
-  .intl-cloud .intl-pill:nth-child(even) {{
-    transform: rotate(2deg);
-  }}
+  .intl-word.sm {{ font-size:19px; }}
+  .intl-word.md {{ font-size:28px; }}
+  .intl-word.lg {{ font-size:38px; }}
+  .intl-word.xl {{ font-size:50px; }}
+  .intl-word.xxl {{ font-size:56px; }}
   .intl-note {{
-    margin-top:12px;
+    margin-top:10px;
     font-size:12px;
     font-weight:700;
     color:#7a96ac;
@@ -2126,13 +2141,13 @@ def render_coop_overview():
           </div>
         </div>
       </div>
-      <div class="mini-card">
+      <div class="mini-card international-card">
         <div class="mini-title">International</div>
-        <div class="intl-copy">Preview concept for country diversity. This can later auto-populate once country data is available.</div>
-        <div class="intl-cloud">
-          {international_tags_html}
+        <div class="intl-copy">Preview layout for country diversity. We can swap this to live country data once that field is ready.</div>
+        <div class="intl-cloud-stage">
+          {international_cloud_html}
         </div>
-        <div class="intl-note">Placeholder word-cloud style layout.</div>
+        <div class="intl-note">Word-cloud style preview</div>
       </div>
       <div class="bottom-card">
       <div class="chart-head">
