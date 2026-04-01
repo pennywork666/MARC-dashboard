@@ -2150,10 +2150,6 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 st.markdown('<div class="section-heading">Org Chart</div>', unsafe_allow_html=True)
-st.markdown(
-    "<div style='margin:-6px 0 12px 18px; font-size:11px; font-weight:700; color:#6a879f;'>Excludes coops and contractors</div>",
-    unsafe_allow_html=True,
-)
 
 # ---------- Build org data (uses name/manager/job/pd already in employees_view) ----------
 
@@ -2920,8 +2916,20 @@ html = r"""
     background:#fafdff;
     overflow:hidden;
     margin-bottom:10px;
+    position:relative;
     padding-top:18px;
     padding-bottom:14px;
+  }
+
+  .org-note{
+    position:absolute;
+    top:10px;
+    left:16px;
+    font-size:11px;
+    font-weight:700;
+    color:#111111;
+    line-height:1;
+    z-index:2;
   }
 
   #headerSvg{
@@ -3055,6 +3063,7 @@ html = r"""
 
     <div class="content">
       <div class="headerArea">
+        <div class="org-note">Excludes coops and contractors</div>
         <svg id="headerSvg" xmlns="http://www.w3.org/2000/svg"></svg>
       </div>
 
