@@ -385,7 +385,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-col_logo, col_filter, col_title = st.columns([1.8, 2.7, 4.1], gap="small")
+col_logo, col_title, col_right = st.columns([1.8, 4.4, 1.8], gap="small")
 
 with col_logo:
     st.markdown(
@@ -397,20 +397,6 @@ with col_logo:
         unsafe_allow_html=True,
     )
 
-with col_filter:
-    st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
-    filter_label_col, filter_select_col = st.columns([1.0, 2.7], gap="small")
-    with filter_label_col:
-        st.markdown('<div class="month-filter-inline-label">Reporting Month</div>', unsafe_allow_html=True)
-    with filter_select_col:
-        st.selectbox(
-            "Reporting Month",
-            report_options,
-            index=report_options.index(selected_report_label),
-            key="report_month",
-            label_visibility="collapsed",
-        )
-
 with col_title:
     st.markdown(
         f"""
@@ -420,6 +406,19 @@ with col_title:
         """,
         unsafe_allow_html=True,
     )
+    filter_left, filter_mid, filter_right = st.columns([1.15, 1.25, 1.15])
+    with filter_mid:
+        st.markdown('<div class="month-filter-label">Reporting Month</div>', unsafe_allow_html=True)
+        st.selectbox(
+            "Reporting Month",
+            report_options,
+            index=report_options.index(selected_report_label),
+            key="report_month",
+            label_visibility="collapsed",
+        )
+
+with col_right:
+    st.empty()
 
 st.markdown("<div style='height: 0px;'></div>", unsafe_allow_html=True)
 
