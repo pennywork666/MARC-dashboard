@@ -1945,12 +1945,12 @@ def render_coop_overview():
   .pct.male {{
     color:#0e3a67;
     top:30px;
-    left:calc(50% + 58px);
+    left:calc(50% + 70px);
   }}
   .pct.female {{
     color:#0096db;
     bottom:30px;
-    right:calc(50% + 58px);
+    right:calc(50% + 70px);
     text-align:right;
   }}
   .donut-center {{
