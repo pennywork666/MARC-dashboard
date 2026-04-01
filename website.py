@@ -1902,8 +1902,8 @@ def render_coop_overview():
     width:100%;
   }}
   .donut {{
-    width:124px;
-    height:124px;
+    width:132px;
+    height:132px;
     border-radius:50%;
     background:conic-gradient(#0e3a67 0 {coop_male_pct:.3f}%, #0096db {coop_male_pct:.3f}% 100%);
     position:relative;
@@ -1911,7 +1911,7 @@ def render_coop_overview():
   .donut::after {{
     content:"";
     position:absolute;
-    inset:16px;
+    inset:10px;
     background:#ffffff;
     border-radius:50%;
     box-shadow:inset 0 0 0 1px #e1eff8;
@@ -1927,12 +1927,12 @@ def render_coop_overview():
   }}
   .ring-count.male {{
     top:50%;
-    right:14px;
+    right:12px;
     transform:translateY(-50%);
   }}
   .ring-count.female {{
     top:50%;
-    left:14px;
+    left:12px;
     transform:translateY(-50%);
   }}
   .pct {{
