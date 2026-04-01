@@ -22,13 +22,17 @@ CLEAN_DATA_DIR = BASE_DIR / "clean_data"
 REPORT_DATE_PATTERN = re.compile(r"(\d{1,2})-(\d{1,2})-(\d{4})")
 
 
-def pick_latest_clean_file(clean_dir: Path) -> Path:
+def list_clean_files(clean_dir: Path) -> list[Path]:
     candidates = [f for f in clean_dir.glob("*.xlsx") if not f.name.startswith("~$")]
     if not candidates:
         raise FileNotFoundError(
             f"No cleaned Excel file found in {clean_dir}. Run convert_excel.py first."
         )
-    return max(candidates, key=lambda p: p.stat().st_mtime)
+    return sorted(
+        candidates,
+        key=lambda p: (extract_report_date(p), p.stat().st_mtime),
+        reverse=True,
+    )
 
 
 def extract_report_date(file_path: Path) -> pd.Timestamp:
@@ -39,14 +43,24 @@ def extract_report_date(file_path: Path) -> pd.Timestamp:
     return pd.Timestamp(year=year, month=month, day=day)
 
 
-EXCEL_PATH = pick_latest_clean_file(CLEAN_DATA_DIR)
-SHEET_NAME = None
-
-
 # =============================
 # Page config
 # =============================
 st.set_page_config(page_title="HR Dashboard", layout="wide")
+
+
+def build_clean_file_options(clean_dir: Path):
+    files = list_clean_files(clean_dir)
+    option_labels = []
+    option_to_file: dict[str, Path] = {}
+    for f in files:
+        report_dt = extract_report_date(f)
+        month_label = report_dt.strftime("%B %Y")
+        as_of_label = f"{report_dt.strftime('%B')} {report_dt.day}"
+        label = f"{month_label} (As of {as_of_label})"
+        option_labels.append(label)
+        option_to_file[label] = f
+    return option_labels, option_to_file
 
 
 # =============================
@@ -112,7 +126,13 @@ def load_employees(excel_path: str, sheet_name=None) -> pd.DataFrame:
             f"Missing required columns: {missing}\n\nDetected columns: {list(raw.columns)}"
         )
 
-    resolved_cols = [normalized_map[c.strip().lower()] for c in required_cols]
+    optional_cols = []
+    for optional_name in ["Is Coop", "Employee Group"]:
+        key = optional_name.strip().lower()
+        if key in normalized_map:
+            optional_cols.append(normalized_map[key])
+
+    resolved_cols = [normalized_map[c.strip().lower()] for c in required_cols] + optional_cols
     df = raw[resolved_cols].copy()
 
     # Rename to internal names used downstream
@@ -126,6 +146,14 @@ def load_employees(excel_path: str, sheet_name=None) -> pd.DataFrame:
             normalized_map["last hire date"]: "hire_date",
             normalized_map["supervisor full name"]: "manager",
             normalized_map["job"]: "job",
+            **(
+                {normalized_map["is coop"]: "is_coop"}
+                if "is coop" in normalized_map else {}
+            ),
+            **(
+                {normalized_map["employee group"]: "employee_group"}
+                if "employee group" in normalized_map else {}
+            ),
         }
     )
 
@@ -143,6 +171,34 @@ def load_employees(excel_path: str, sheet_name=None) -> pd.DataFrame:
     df["employee_class"] = df["employee_class"].fillna("Unknown").astype(str).str.strip()
     df["job"] = df["job"].fillna("").astype(str).str.strip()
 
+    employment_type_key = (
+        df["employee_class"]
+        .fillna("")
+        .astype(str)
+        .str.strip()
+        .str.lower()
+        .str.replace("-", "", regex=False)
+        .str.replace(" ", "", regex=False)
+    )
+
+    if "is_coop" in df.columns:
+        df["is_coop"] = (
+            df["is_coop"]
+            .fillna(False)
+            .astype(str)
+            .str.strip()
+            .str.lower()
+            .isin(["true", "1", "yes"])
+        )
+    else:
+        df["is_coop"] = employment_type_key.eq("coop")
+
+    if "employee_group" in df.columns:
+        df["employee_group"] = df["employee_group"].fillna("").astype(str).str.strip()
+        df.loc[df["employee_group"] == "", "employee_group"] = np.where(df["is_coop"], "Coop", "Core")
+    else:
+        df["employee_group"] = np.where(df["is_coop"], "Coop", "Core")
+
     # placeholder team (not used)
     df["team"] = "N/A"
 
@@ -150,17 +206,9 @@ def load_employees(excel_path: str, sheet_name=None) -> pd.DataFrame:
         [
             "employee_id", "name", "pd", "team", "manager",
             "hire_date", "birth_date", "gender", "employee_class",
-            "job"
+            "job", "is_coop", "employee_group"
         ]
     ].copy()
-
-
-try:
-    employees = load_employees(EXCEL_PATH, SHEET_NAME)
-except Exception as e:
-    st.error(f"Failed to load Excel: {e}")
-    st.info("Run convert_excel.py first, then make sure clean_data contains a valid Excel file.")
-    st.stop()
 
 
 @st.cache_data(show_spinner=False)
@@ -191,10 +239,30 @@ st.markdown(
 # =============================
 # Reporting month / Header
 # =============================
+try:
+    report_options, report_file_map = build_clean_file_options(CLEAN_DATA_DIR)
+except Exception as e:
+    st.error(f"Failed to find cleaned Excel files: {e}")
+    st.info("Run convert_excel.py first, then make sure clean_data contains at least one valid Excel file.")
+    st.stop()
+
+selected_report_label = st.session_state.get("report_month", report_options[0])
+if selected_report_label not in report_file_map:
+    selected_report_label = report_options[0]
+
+EXCEL_PATH = report_file_map[selected_report_label]
+SHEET_NAME = None
 as_of = extract_report_date(EXCEL_PATH)
 dashboard_title = "MARC HR Dashboard"
 report_period_label = as_of.strftime("%B %Y")
 report_as_of_label = f"{as_of.strftime('%B')} {as_of.day}, {as_of.year}"
+
+try:
+    employees = load_employees(EXCEL_PATH, SHEET_NAME)
+except Exception as e:
+    st.error(f"Failed to load Excel: {e}")
+    st.info("Please make sure the selected file in clean_data contains the required cleaned columns.")
+    st.stop()
 
 LOGO_PATH = BASE_DIR / "Midea.png"
 logo_b64 = image_to_base64(LOGO_PATH)
@@ -283,7 +351,22 @@ st.markdown(
         font-size:11px;
         color:#5d7b94;
         margin-top:0px;
-        margin-bottom:-12px;
+        margin-bottom:0px;
+    }
+
+    .month-filter-label {
+        text-align:center;
+        font-size:11px;
+        font-weight:800;
+        color:#5d7b94;
+        margin-top:6px;
+        margin-bottom:4px;
+    }
+
+    div[data-baseweb="select"] > div {
+        border-radius: 10px !important;
+        border-color: #cfe5f3 !important;
+        min-height: 36px !important;
     }
     </style>
     """,
@@ -307,13 +390,20 @@ with col_title:
         f"""
         <div class="header-wrap">
             <div class="header-title">{dashboard_title}</div>
-            <div class="header-subtitle">
-                As of {as_of.strftime("%B %d, %Y")}
-            </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
+    filter_left, filter_mid, filter_right = st.columns([1.15, 1.25, 1.15])
+    with filter_mid:
+        st.markdown('<div class="month-filter-label">Reporting Month</div>', unsafe_allow_html=True)
+        st.selectbox(
+            "Reporting Month",
+            report_options,
+            index=report_options.index(selected_report_label),
+            key="report_month",
+            label_visibility="collapsed",
+        )
 
 with col_right:
     st.empty()
@@ -380,9 +470,12 @@ def is_dark_color(color) -> bool:
 # =============================
 employees_view = employees.copy()
 
-# Headcount excludes interns and contractors
+# Core headcount excludes interns, contractors, and coops
 exclude_classes = {"Intern", "Contractor"}
-employees_core = employees_view[~employees_view["employee_class"].isin(exclude_classes)].copy()
+employees_coop = employees_view[employees_view["is_coop"]].copy()
+employees_core = employees_view[
+    (~employees_view["employee_class"].isin(exclude_classes)) & (~employees_view["is_coop"])
+].copy()
 
 hc = int(len(employees_core))
 new_hires_mtd = len(new_hires_in_month(employees_core, as_of))
@@ -467,9 +560,9 @@ def render_movement_cards():
 # ROW 1: Summary + Gender
 # =============================
 st.markdown("<div style='margin-top:-112px;'></div>", unsafe_allow_html=True)
-row1_left, row1_middle = st.columns([1.0, 1.0], gap="medium")
+top_left, top_right = st.columns([1.0, 1.0], gap="medium")
 
-with row1_left:
+with top_left:
     kpi_card = f"""
     <div style="
         border:1px solid #e6e6e6;
@@ -586,7 +679,7 @@ with row1_left:
         font-family: "Segoe UI", Arial, sans-serif;
       }}
       .hero {{
-        height: 390px;
+        height: 356px;
         border-radius: 28px;
         overflow: hidden;
         color: white;
@@ -852,6 +945,9 @@ with row1_left:
       <div style="height:4px; border-radius:999px; background:linear-gradient(90deg, rgba(255,255,255,.9) 0%, rgba(196,233,250,.95) 55%, rgba(120,202,235,.9) 100%); margin-bottom:6px;"></div>
       <div style="position:relative; min-height:68px; margin-bottom:6px;">
         <div style="font-size:22px; font-weight:950; color:white; margin-top:8px; line-height:1.02; max-width:54%;">Workforce Snapshot</div>
+        <div style="position:absolute; top:2px; right:82px; font-size:10px; font-weight:700; color:rgba(255,255,255,.82); letter-spacing:.01em; white-space:nowrap;">
+          Excludes coops and contractors
+        </div>
         <img src="data:image/png;base64,{row1_left_b64}" alt="workforce illustration" style="position:absolute; top:0; right:0; height:72px; width:auto; object-fit:contain; filter:none; z-index:2;" />
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; flex:1;">
@@ -872,14 +968,8 @@ with row1_left:
           <div style="font-size:27px; font-weight:950; color:white; margin-top:4px; line-height:1;">{"-" if np.isnan(avg_industry) else f"{avg_industry:.2f}"}</div>
         </div>
       </div>
-      <div style="margin-top:4px; display:flex; justify-content:flex-end; font-size:10px; font-weight:700; color:rgba(255,255,255,.8); line-height:1;">
-        Excludes coops and contractors
-      </div>
     </div>
     """
-    components.html(kpi_card, height=282)
-    
-with row1_middle:
     st.markdown(
         """
         <style>
@@ -935,7 +1025,7 @@ with row1_middle:
     )
 
     gender_dist = (
-        employees_view["gender"]
+        employees_core["gender"]
         .fillna("Unknown")
         .astype(str)
         .str.strip()
@@ -952,6 +1042,81 @@ with row1_middle:
     else:
         male_pct = 0.0
         female_pct = 0.0
+    gender_by_pd = (
+        employees_core.assign(
+            gender_code=(
+                employees_core["gender"]
+                .fillna("Unknown")
+                .astype(str)
+                .str.strip()
+                .replace({"Female": "F", "Male": "M"})
+            )
+        )
+        .groupby(["pd", "gender_code"])
+        .size()
+        .unstack(fill_value=0)
+    )
+    gender_by_pd = gender_by_pd.reindex(columns=["M", "F"], fill_value=0)
+    gender_by_pd = gender_by_pd.loc[gender_by_pd.sum(axis=1).sort_values(ascending=False).index]
+    fig_gender, ax_gender = plt.subplots(figsize=(4.95, 3.25), facecolor="#f7fcff")
+    ax_gender.set_facecolor("#f7fcff")
+
+    pd_rows = gender_by_pd.index.tolist()
+    male_vals = gender_by_pd["M"].values.astype(float) if "M" in gender_by_pd else np.zeros(len(pd_rows))
+    female_vals = gender_by_pd["F"].values.astype(float) if "F" in gender_by_pd else np.zeros(len(pd_rows))
+    y = np.arange(len(pd_rows))
+    max_count = max(1.0, np.max(np.concatenate([male_vals, female_vals])) if len(pd_rows) else 1.0)
+    male_plot = -male_vals
+    female_plot = female_vals
+
+    bars_m = ax_gender.barh(y, male_plot, color="#0e3a67", height=0.56, label="Male")
+    bars_f = ax_gender.barh(y, female_plot, color="#0096db", height=0.56, label="Female")
+
+    for bar, v in zip(bars_m, male_vals):
+        if v <= 0:
+            continue
+        ax_gender.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_y() + bar.get_height() / 2,
+            f"{int(v)}",
+            ha="center",
+            va="center",
+            fontsize=9.3,
+            fontweight="bold",
+            color="white",
+        )
+    for bar, v in zip(bars_f, female_vals):
+        if v <= 0:
+            continue
+        ax_gender.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_y() + bar.get_height() / 2,
+            f"{int(v)}",
+            ha="center",
+            va="center",
+            fontsize=9.3,
+            fontweight="bold",
+            color="white",
+        )
+
+    ax_gender.axvline(0, color="#d7ebf7", linewidth=1.1)
+    ax_gender.set_xlim(-(max_count + 2), max_count + 2)
+    ax_gender.set_xticks([])
+    ax_gender.set_yticks(y)
+    ax_gender.set_yticklabels(pd_rows, fontsize=9.8, color="#36536f")
+    ax_gender.tick_params(axis="y", length=0, pad=6)
+    ax_gender.set_axisbelow(True)
+    ax_gender.invert_yaxis()
+    ax_gender.spines["top"].set_visible(False)
+    ax_gender.spines["right"].set_visible(False)
+    ax_gender.spines["left"].set_visible(False)
+    ax_gender.spines["bottom"].set_visible(False)
+    ax_gender.text(0.25, 1.08, "Male", transform=ax_gender.transAxes, ha="center", va="bottom", fontsize=10.5, fontweight="bold", color="#36536f")
+    ax_gender.text(0.75, 1.08, "Female", transform=ax_gender.transAxes, ha="center", va="bottom", fontsize=10.5, fontweight="bold", color="#36536f")
+    fig_gender.tight_layout(rect=[0.03, 0.05, 0.99, 0.92])
+    gender_b64 = fig_to_base64(fig_gender)
+    plt.close(fig_gender)
+    gender_card_height = max(390, 150 + len(pd_rows) * 34)
 
     gender_card = f"""
     <html>
@@ -966,298 +1131,64 @@ with row1_middle:
         border: 1px solid #d6eaf6;
         border-radius: 22px;
         background: linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
-        box-shadow: 0 14px 28px rgba(14,58,103,.08);
-        padding: 18px;
+        padding: 10px 12px 12px 12px;
         color: #102f52;
-        height: 470px;
+        height: {gender_card_height}px;
         box-sizing: border-box;
+        overflow: hidden;
+      }}
+      .title-row {{
+        display:flex;
+        justify-content:space-between;
+        align-items:flex-start;
+        gap:12px;
+        margin-bottom: 6px;
       }}
       .gender-title {{
-        text-align: center;
-        font-size: 20px;
-        font-weight: 900;
-        color: #0e3a67;
-        margin-bottom: 14px;
-      }}
-      .gender-layout {{
-        display: grid;
-        grid-template-columns: 0.95fr 1.05fr;
-        gap: 12px;
-        align-items: center;
-        height: calc(100% - 40px);
-      }}
-      .gender-left {{
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-      }}
-      .gender-row {{
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        padding: 10px 12px;
-        border-radius: 18px;
-        background: #f7fcff;
-        border: 1px solid #d8ebf7;
-      }}
-      .meta {{
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-      }}
-      .pct {{
-        font-size: 26px;
-        font-weight: 900;
-        line-height: 1;
-      }}
-      .count {{
-        font-size: 14px;
-        font-weight: 700;
-        color: #5d7b94;
-      }}
-      .male {{ color: #0e3a67; }}
-      .female {{ color: #0096db; }}
-      .person {{
-        position: relative;
-        width: 54px;
-        height: 94px;
-        flex: 0 0 54px;
-      }}
-      .head {{
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 0;
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        background: #f6fbff;
-        border: 1px solid rgba(14,58,103,.08);
-      }}
-      .male .body {{
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 22px;
-        width: 24px;
-        height: 34px;
-        border-radius: 12px 12px 8px 8px;
-        background: currentColor;
-      }}
-      .male .leg {{
-        position: absolute;
-        bottom: 0;
-        width: 8px;
-        height: 40px;
-        border-radius: 8px;
-        background: currentColor;
-      }}
-      .male .leg.left {{ left: 18px; }}
-      .male .leg.right {{ right: 18px; }}
-      .male .arm {{
-        position: absolute;
-        top: 28px;
-        width: 8px;
-        height: 32px;
-        border-radius: 8px;
-        background: currentColor;
-      }}
-      .male .arm.left {{ left: 10px; }}
-      .male .arm.right {{ right: 10px; }}
-      .female .dress {{
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 22px;
-        width: 0;
-        height: 0;
-        border-left: 16px solid transparent;
-        border-right: 16px solid transparent;
-        border-top: 38px solid currentColor;
-      }}
-      .female .leg {{
-        position: absolute;
-        bottom: 0;
-        width: 7px;
-        height: 30px;
-        border-radius: 8px;
-        background: currentColor;
-      }}
-      .female .leg.left {{ left: 19px; }}
-      .female .leg.right {{ right: 19px; }}
-      .female .arm {{
-        position: absolute;
-        top: 28px;
-        width: 8px;
-        height: 28px;
-        border-radius: 8px;
-        background: currentColor;
-      }}
-      .female .arm.left {{ left: 7px; transform: rotate(16deg); }}
-      .female .arm.right {{ right: 7px; transform: rotate(-16deg); }}
-      .donut-wrap {{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-      }}
-      .donut {{
-        width: 180px;
-        height: 180px;
-        border-radius: 50%;
-        background: conic-gradient(#0e3a67 0 {male_pct:.3f}%, #0096db {male_pct:.3f}% 100%);
-        position: relative;
-        box-shadow: inset 0 0 0 1px rgba(14,58,103,.05);
-      }}
-      .donut::after {{
-        content: "";
-        position: absolute;
-        inset: 28px;
-        background: white;
-        border-radius: 50%;
-        box-shadow: inset 0 0 0 1px #e1eff8;
-      }}
-      .donut-center {{
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        z-index: 1;
-        text-align: center;
-      }}
-      .donut-major {{
-        font-size: 32px;
-        font-weight: 900;
-        color: #0e3a67;
-        line-height: 1;
-      }}
-      .donut-minor {{
-        margin-top: 6px;
-        font-size: 13px;
-        font-weight: 700;
-        color: #5d7b94;
-      }}
-      .legend {{
-        margin-top: 18px;
-        display: flex;
-        justify-content: center;
-        gap: 14px;
-        flex-wrap: wrap;
-      }}
-      .legend-item {{
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 13px;
-        font-weight: 700;
-        color: #4f708a;
-      }}
-      .dot {{
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-      }}
-    </style>
-    </head>
-    <body>
-      <div class="gender-card">
-        <div class="gender-title">Gender Distribution</div>
-        <div class="gender-layout">
-          <div class="gender-left">
-            <div class="gender-row male">
-              <div class="person male">
-                <div class="head"></div><div class="body"></div><div class="arm left"></div><div class="arm right"></div><div class="leg left"></div><div class="leg right"></div>
-              </div>
-              <div class="meta">
-                <div class="pct">{male_pct:.1f}%</div>
-                <div class="count">{male_count} employees</div>
-              </div>
-            </div>
-            <div class="gender-row female">
-              <div class="person female">
-                <div class="head"></div><div class="dress"></div><div class="arm left"></div><div class="arm right"></div><div class="leg left"></div><div class="leg right"></div>
-              </div>
-              <div class="meta">
-                <div class="pct">{female_pct:.1f}%</div>
-                <div class="count">{female_count} employees</div>
-              </div>
-            </div>
-          </div>
-          <div class="donut-wrap">
-            <div>
-              <div class="donut">
-                <div class="donut-center">
-                  <div class="donut-major">{male_pct:.0f}/{female_pct:.0f}</div>
-                  <div class="donut-minor">M/F split</div>
-                </div>
-              </div>
-              <div class="legend">
-                <div class="legend-item"><span class="dot" style="background:#0e3a67;"></span>Male</div>
-                <div class="legend-item"><span class="dot" style="background:#0096db;"></span>Female</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </body>
-    </html>
-    """
-    gender_card = f"""
-    <html>
-    <head>
-    <style>
-      body {{
-        margin: 0;
-        background: transparent;
-        font-family: "Segoe UI", Arial, sans-serif;
-      }}
-      .gender-card {{
-        border: 1px solid #d6eaf6;
-        border-radius: 22px;
-        background: linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
-        box-shadow: none;
-        padding: 8px 12px 10px 12px;
-        color: #102f52;
-        height: 270px;
-        box-sizing: border-box;
-      }}
-      .gender-title {{
-        text-align: center;
+        text-align: left;
         font-size: 22px;
         font-weight: 900;
         color: #0e3a67;
-        margin-bottom: 6px;
+        padding-left: 10px;
+        border-left: 4px solid #0096db;
+      }}
+      .gender-note {{
+        font-size: 11px;
+        font-weight: 700;
+        color: #6a879f;
+        white-space: nowrap;
+        padding-top: 4px;
       }}
       .gender-layout {{
         display: grid;
-        grid-template-columns: 0.92fr 1.08fr;
-        gap: 8px;
-        align-items: center;
+        grid-template-columns: 0.36fr 0.64fr;
+        gap: 10px;
+        align-items: stretch;
         height: calc(100% - 40px);
       }}
       .count-panel {{
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 10px;
+        justify-content: center;
+        height: 100%;
       }}
       .count-box {{
-        padding: 7px 8px;
+        padding: 10px 10px;
         border-radius: 16px;
         background: #f7fcff;
         border: 1px solid #d8ebf7;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 10px;
         text-align: center;
       }}
       .count-icon {{
-        width: 48px;
-        height: 70px;
+        width: 46px;
+        height: 68px;
         object-fit: contain;
-        flex: 0 0 48px;
+        flex: 0 0 46px;
       }}
       .count-text {{
         display:flex;
@@ -1271,58 +1202,38 @@ with row1_middle:
         text-transform: uppercase;
       }}
       .count-value {{
-        margin-top: 5px;
+        margin-top: 4px;
         font-size: 27px;
         font-weight: 950;
         line-height: 1;
       }}
+      .count-pct {{
+        margin-top: 6px;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1;
+        color: #5d7b94;
+      }}
       .count-box.male .count-value {{ color:#0e3a67; }}
       .count-box.female .count-value {{ color:#0096db; }}
-      .donut-wrap {{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        height: 100%;
-        min-height: 132px;
+      .chart-wrap {{
+        display:flex;
+        align-items:flex-start;
+        justify-content:center;
+        height:100%;
       }}
-      .donut {{
-        width: 108px;
-        height: 108px;
-        border-radius: 50%;
-        background: conic-gradient(#0e3a67 0 {male_pct:.3f}%, #0096db {male_pct:.3f}% 100%);
-        position: relative;
-      }}
-      .donut::after {{
-        content: "";
-        position: absolute;
-        inset: 18px;
-        background: white;
-        border-radius: 50%;
-        box-shadow: inset 0 0 0 1px #e1eff8;
-      }}
-      .percent-item {{
-        font-size: 15px;
-        font-weight: 900;
-        line-height: 1;
-        position:absolute;
-        white-space: nowrap;
-      }}
-      .percent-item.male {{
-        color:#0e3a67;
-        top: 46px;
-        right: 28px;
-      }}
-      .percent-item.female {{
-        color:#0096db;
-        bottom: 42px;
-        left: 26px;
+      .chart-wrap img {{
+        width:100%;
+        display:block;
       }}
     </style>
     </head>
     <body>
       <div class="gender-card">
-        <div class="gender-title">Gender Distribution</div>
+        <div class="title-row">
+          <div class="gender-title">Gender Distribution</div>
+          <div class="gender-note">Excludes coops and contractors</div>
+        </div>
         <div class="gender-layout">
           <div class="count-panel">
             <div class="count-box male">
@@ -1330,6 +1241,7 @@ with row1_middle:
               <div class="count-text">
                 <div class="count-label">Male</div>
                 <div class="count-value">{male_count}</div>
+                <div class="count-pct">{male_pct:.1f}%</div>
               </div>
             </div>
             <div class="count-box female">
@@ -1337,29 +1249,27 @@ with row1_middle:
               <div class="count-text">
                 <div class="count-label">Female</div>
                 <div class="count-value">{female_count}</div>
+                <div class="count-pct">{female_pct:.1f}%</div>
               </div>
             </div>
           </div>
-          <div class="donut-wrap">
-            <div class="donut"></div>
-            <div class="percent-item male">Male {male_pct:.1f}%</div>
-            <div class="percent-item female">Female {female_pct:.1f}%</div>
+          <div class="chart-wrap">
+            <img src="data:image/png;base64,{gender_b64}" alt="PD gender ratio chart" />
           </div>
         </div>
       </div>
     </body>
     </html>
     """
-    components.html(gender_card, height=282)
+    components.html(kpi_card, height=282)
+    st.markdown("<div style='margin-top:-4px;'></div>", unsafe_allow_html=True)
+    components.html(gender_card, height=gender_card_height)
 
 
 # =============================
-# Row2: PD analysis + Movement
+# Right column: PD analysis
 # =============================
-st.markdown("<div style='margin-top:-108px;'></div>", unsafe_allow_html=True)
-row2_left, row2_right = st.columns([1.66, 0.84], gap="small")
-
-with row2_left:
+with top_right:
     def compute_integer_percentages(counts):
         counts = np.array(counts, dtype=float)
         total = counts.sum()
@@ -1388,7 +1298,7 @@ with row2_left:
         return _fmt
 
     pd_dist = (
-        employees_view["pd"]
+        employees_core["pd"]
         .fillna("Unknown")
         .astype(str)
         .str.strip()
@@ -1396,7 +1306,7 @@ with row2_left:
         .sort_values(ascending=False)
     )
 
-    tmp = employees_view.copy()
+    tmp = employees_core.copy()
     tmp["pd"] = tmp["pd"].fillna("Unknown").astype(str).str.strip()
     tmp["employee_class"] = tmp["employee_class"].fillna("Unknown").astype(str)
 
@@ -1549,22 +1459,27 @@ with row2_left:
         overflow:hidden;
         margin-top:-6px;
     ">
-      <div style="font-size:22px; font-weight:900; color:#0e3a67; margin-bottom:8px; padding-left:10px; border-left:4px solid #0096db;">
-        PD Analysis
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:8px;">
+        <div style="font-size:22px; font-weight:900; color:#0e3a67; padding-left:10px; border-left:4px solid #0096db;">
+          PD Analysis
+        </div>
+        <div style="font-size:11px; font-weight:700; color:#6a879f; white-space:nowrap; padding-top:5px;">
+          Excludes coops and contractors
+        </div>
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start;">
         <div>
-          <div style="font-size:18px; font-weight:900; color:#0e3a67; margin-bottom:6px;">PD Distribution</div>
+          <div style="font-size:18px; font-weight:900; color:#0e3a67; margin-bottom:6px; padding-left:10px; border-left:4px solid #25a7de;">PD Distribution</div>
           <img src="data:image/png;base64,{pie_b64}" alt="PD distribution chart" style="width:100%; display:block;" />
         </div>
         <div>
-          <div style="font-size:18px; font-weight:900; color:#0e3a67; margin-bottom:6px;">PD Headcount</div>
+          <div style="font-size:18px; font-weight:900; color:#0e3a67; margin-bottom:6px; padding-left:10px; border-left:4px solid #25a7de;">PD Headcount</div>
           <img src="data:image/png;base64,{bar_b64}" alt="PD headcount mix chart" style="width:100%; display:block;" />
         </div>
       </div>
     </div>
     """
-    components.html(pd_card, height=510)
+    components.html(pd_card, height=520)
 
 if False:
     st.markdown('<div class="section-heading">Gender Distribution</div>', unsafe_allow_html=True)
@@ -1807,8 +1722,404 @@ if False:
             unsafe_allow_html=True,
         )
 
-with row2_right:
+def render_coop_overview():
+    coop_count = int(len(employees_coop))
+    coop_male_count = int(
+        employees_coop["gender"]
+        .fillna("Unknown")
+        .astype(str)
+        .str.strip()
+        .replace({"Male": "M", "Female": "F"})
+        .eq("M")
+        .sum()
+    )
+    coop_female_count = int(
+        employees_coop["gender"]
+        .fillna("Unknown")
+        .astype(str)
+        .str.strip()
+        .replace({"Male": "M", "Female": "F"})
+        .eq("F")
+        .sum()
+    )
+    coop_gender_total = coop_male_count + coop_female_count
+    coop_male_pct = (coop_male_count / coop_gender_total * 100) if coop_gender_total else 0.0
+    coop_female_pct = (coop_female_count / coop_gender_total * 100) if coop_gender_total else 0.0
+
+    all_pd_labels = (
+        employees_view["pd"]
+        .fillna("Unknown")
+        .astype(str)
+        .str.strip()
+        .value_counts()
+        .index
+        .tolist()
+    )
+
+    coop_pd_counts = (
+        employees_coop["pd"]
+        .fillna("Unknown")
+        .astype(str)
+        .str.strip()
+        .value_counts()
+        .reindex(all_pd_labels, fill_value=0)
+        .sort_values(ascending=False)
+    )
+    coop_pd_counts = coop_pd_counts[coop_pd_counts > 0]
+
+    coop_chart_rows = max(1, len(coop_pd_counts.index))
+    coop_fig_height = max(3.8, 0.52 * coop_chart_rows + 0.55)
+
+    fig_coop_bar, ax_coop_bar = plt.subplots(figsize=(7.0, coop_fig_height))
+    fig_coop_bar.patch.set_facecolor("#f7fcff")
+    ax_coop_bar.set_facecolor("#f7fcff")
+
+    y = np.arange(len(coop_pd_counts.index))
+    bars = ax_coop_bar.barh(
+        y,
+        coop_pd_counts.values,
+        height=0.92,
+        color="#0e3a67",
+        edgecolor="white",
+        linewidth=1.0,
+    )
+
+    for bar, v in zip(bars, coop_pd_counts.values):
+        if v > 0:
+            ax_coop_bar.text(
+                bar.get_width() / 2,
+                bar.get_y() + bar.get_height() / 2,
+                str(int(v)),
+                ha="center",
+                va="center",
+                fontsize=10.5,
+                fontweight="bold",
+                color="white",
+            )
+
+    ax_coop_bar.set_yticks(y)
+    ax_coop_bar.set_yticklabels(coop_pd_counts.index, fontsize=11, color="#36536f")
+    ax_coop_bar.tick_params(axis="x", labelsize=10.5, colors="#6b879f")
+    ax_coop_bar.grid(axis="x", color="#d7ebf7", linewidth=0.8)
+    ax_coop_bar.set_axisbelow(True)
+    ax_coop_bar.invert_yaxis()
+    ax_coop_bar.spines["top"].set_visible(False)
+    ax_coop_bar.spines["right"].set_visible(False)
+    ax_coop_bar.spines["left"].set_visible(False)
+    ax_coop_bar.spines["bottom"].set_color("#d7ebf7")
+    coop_max = int(coop_pd_counts.max()) if len(coop_pd_counts) else 1
+    ax_coop_bar.set_xlim(0, max(1, coop_max))
+    ax_coop_bar.set_xticks(np.arange(0, max(1, coop_max) + 1, 1))
+    ax_coop_bar.margins(x=0)
+    fig_coop_bar.tight_layout(rect=[0, 0, 1, 0.99])
+    coop_bar_b64 = fig_to_base64(fig_coop_bar)
+    plt.close(fig_coop_bar)
+
+    international_examples = [
+        "China", "Myanmar", "India", "Panama",
+        "Mexico", "Thailand", "Philippines", "USA",
+    ]
+    international_tags_html = "".join(
+        f'<span class="intl-pill size-{(idx % 4) + 1}">{country}</span>'
+        for idx, country in enumerate(international_examples)
+    )
+
+    coop_overview_card = f"""
+<html>
+<head>
+<style>
+  body {{
+    margin:0;
+    background:transparent;
+    font-family:"Segoe UI", Arial, sans-serif;
+  }}
+  .coop-card {{
+    border:1px solid #d6eaf6;
+    border-radius:22px;
+    background:linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
+    box-shadow:0 14px 28px rgba(14,58,103,.08);
+    padding:10px 16px 16px 16px;
+    box-sizing:border-box;
+  }}
+  .coop-head {{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:18px;
+    margin-bottom:12px;
+  }}
+  .coop-title {{
+    font-size:22px;
+    font-weight:900;
+    color:#0e3a67;
+    padding-left:10px;
+    border-left:4px solid #0096db;
+    line-height:1.1;
+  }}
+  .top-grid {{
+    display:grid;
+    grid-template-columns:1.0fr 1.0fr;
+    gap:14px;
+    align-items:stretch;
+  }}
+  .mini-card,
+  .bottom-card {{
+    border:1px solid #d8ebf7;
+    border-radius:18px;
+    background:#ffffff;
+    padding:16px 16px 14px 16px;
+    box-sizing:border-box;
+    min-height:170px;
+  }}
+  .mini-title {{
+    font-size:20px;
+    font-weight:900;
+    color:#0e3a67;
+    padding-left:10px;
+    border-left:4px solid #25a7de;
+    margin-bottom:12px;
+  }}
+  .donut-shell {{
+    height: calc(100% - 34px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }}
+  .donut-wrap {{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:128px;
+    width:100%;
+  }}
+  .donut {{
+    width:124px;
+    height:124px;
+    border-radius:50%;
+    background:conic-gradient(#0e3a67 0 {coop_male_pct:.3f}%, #0096db {coop_male_pct:.3f}% 100%);
+    position:relative;
+  }}
+  .donut::after {{
+    content:"";
+    position:absolute;
+    inset:6px;
+    background:#ffffff;
+    border-radius:50%;
+    box-shadow:inset 0 0 0 1px #e1eff8;
+  }}
+  .ring-count {{
+    position:absolute;
+    z-index:2;
+    color:#ffffff;
+    font-size:18px;
+    font-weight:950;
+    line-height:1;
+    text-shadow:0 1px 3px rgba(14,58,103,.35);
+  }}
+  .ring-count.male {{
+    top:18px;
+    right:18px;
+  }}
+  .ring-count.female {{
+    bottom:18px;
+    left:18px;
+  }}
+  .pct {{
+    position:absolute;
+    font-size:14px;
+    font-weight:900;
+    white-space:nowrap;
+    line-height:1;
+  }}
+  .pct.male {{
+    color:#0e3a67;
+    top:30px;
+    left:calc(50% + 58px);
+  }}
+  .pct.female {{
+    color:#0096db;
+    bottom:30px;
+    right:calc(50% + 58px);
+    text-align:right;
+  }}
+  .donut-center {{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+  }}
+  .center-counts {{
+    display:none;
+  }}
+  .count-wrap {{
+    height: calc(100% - 34px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }}
+  .count-number {{
+    font-size:62px;
+    font-weight:950;
+    color:#0e3a67;
+    line-height:1;
+  }}
+  .count-note {{
+    margin-top:10px;
+    font-size:15px;
+    font-weight:900;
+    color:#6b879f;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+  }}
+  .intl-copy {{
+    font-size:14px;
+    font-weight:700;
+    color:#5d7b94;
+    line-height:1.45;
+    margin-bottom:12px;
+  }}
+  .intl-cloud {{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px 14px;
+    align-items:center;
+  }}
+  .intl-pill {{
+    display:inline-flex;
+    align-items:center;
+    border:1px solid #cfe5f4;
+    background:linear-gradient(180deg, #eef8fe 0%, #dff1fb 100%);
+    border-radius:999px;
+    padding:8px 14px;
+    font-weight:900;
+    color:#1d4f77;
+    line-height:1;
+    white-space:nowrap;
+    box-shadow:0 8px 18px rgba(14,58,103,.06);
+  }}
+  .intl-pill.size-1 {{ font-size:13px; opacity:.82; }}
+  .intl-pill.size-2 {{ font-size:15px; opacity:.9; }}
+  .intl-pill.size-3 {{ font-size:18px; opacity:1; }}
+  .intl-pill.size-4 {{ font-size:22px; opacity:1; }}
+  .intl-cloud .intl-pill:nth-child(odd) {{
+    transform: rotate(-2deg);
+  }}
+  .intl-cloud .intl-pill:nth-child(even) {{
+    transform: rotate(2deg);
+  }}
+  .intl-note {{
+    margin-top:12px;
+    font-size:12px;
+    font-weight:700;
+    color:#7a96ac;
+  }}
+  .chart-wrap {{
+    background:#f7fcff;
+    border-radius:16px;
+    padding:10px 10px 6px 10px;
+  }}
+  .chart-head {{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:14px;
+    margin-bottom:10px;
+  }}
+  .chart-head .mini-title {{
+    margin-bottom:0;
+  }}
+  .headcount-chip {{
+    min-width:120px;
+    padding:10px 12px;
+    border-radius:16px;
+    background:#f7fcff;
+    border:1px solid #d8ebf7;
+    text-align:center;
+  }}
+  .headcount-chip .chip-label {{
+    font-size:12px;
+    font-weight:900;
+    color:#6b879f;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }}
+  .headcount-chip .chip-value {{
+    margin-top:4px;
+    font-size:34px;
+    font-weight:950;
+    color:#0e3a67;
+    line-height:1;
+  }}
+</style>
+</head>
+<body>
+  <div class="coop-card">
+    <div class="coop-head">
+      <div class="coop-title">Co-op Overview</div>
+    </div>
+    <div class="top-grid">
+      <div class="mini-card">
+        <div class="mini-title">Headcount</div>
+        <div class="count-wrap">
+          <div class="count-number">{coop_count}</div>
+          <div class="count-note">Co-ops</div>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-title">Gender Distribution</div>
+        <div class="donut-shell">
+          <div class="donut-wrap">
+            <div class="donut">
+              <div class="ring-count male">{coop_male_count}</div>
+              <div class="ring-count female">{coop_female_count}</div>
+              <div class="donut-center">
+                <div class="center-counts">
+                  <div>{coop_male_count} M</div>
+                  <div>{coop_female_count} F</div>
+                </div>
+              </div>
+            </div>
+            <div class="pct male">Male {coop_male_pct:.1f}%</div>
+            <div class="pct female">Female {coop_female_pct:.1f}%</div>
+          </div>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-title">International</div>
+        <div class="intl-copy">Preview concept for country diversity. This can later auto-populate once country data is available.</div>
+        <div class="intl-cloud">
+          {international_tags_html}
+        </div>
+        <div class="intl-note">Placeholder word-cloud style layout.</div>
+      </div>
+      <div class="bottom-card">
+      <div class="chart-head">
+        <div class="mini-title">PD Headcount</div>
+      </div>
+      <div class="chart-wrap">
+        <img src="data:image/png;base64,{coop_bar_b64}" alt="Co-op PD headcount chart" style="width:100%; display:block;" />
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+"""
+    components.html(coop_overview_card, height=max(640, int(250 + coop_fig_height * 66)))
+
+with top_left:
+    st.markdown("<div style='margin-top:-6px;'></div>", unsafe_allow_html=True)
     render_movement_cards()
+
+with top_right:
+    st.markdown("<div style='margin-top:-10px;'></div>", unsafe_allow_html=True)
+    render_coop_overview()
 
 st.divider()
 
