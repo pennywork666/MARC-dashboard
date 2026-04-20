@@ -1556,6 +1556,9 @@ def render_coop_overview():
     display:flex;
     flex-direction:column;
   }}
+  .pd-mini-card {{
+    position:relative;
+  }}
   .mini-title {{
     font-size:18px;
     font-weight:900;
@@ -1574,6 +1577,10 @@ def render_coop_overview():
     align-items:flex-start;
     gap:14px;
     margin-bottom:12px;
+  }}
+  .pd-mini-head {{
+    min-height:auto;
+    margin-bottom:6px;
   }}
   .donut-shell {{
     flex:1;
@@ -1676,9 +1683,11 @@ def render_coop_overview():
     display:flex;
     flex-direction:column;
     justify-content:flex-start;
+    margin-top:-10px;
   }}
   .pd-chart-wrap .chart-wrap {{
     flex:none;
+    padding-top:8px;
   }}
   .headcount-chip {{
     min-width:110px;
@@ -1707,11 +1716,23 @@ def render_coop_overview():
     font-style:normal;
     letter-spacing:0;
   }}
+  .overlay-chip {{
+    position:absolute;
+    top:20px;
+    right:22px;
+    z-index:3;
+    min-width:116px;
+    box-shadow:0 8px 18px rgba(14,58,103,.06);
+  }}
   .headcount-chip.ghost {{
     visibility:hidden;
   }}
   .gender-card-compact .mini-title {{
     white-space:nowrap;
+  }}
+  .gender-card-compact .mini-head {{
+    min-height:46px;
+    margin-bottom:4px;
   }}
   .gender-card-compact .headcount-chip.ghost {{
     min-width:0;
@@ -1733,6 +1754,9 @@ def render_coop_overview():
   .gender-card-compact .pct {{
     font-size:12px;
   }}
+  .gender-card-compact .donut-wrap {{
+    transform:translateY(-10px);
+  }}
   .gender-card-compact .pct.male {{
     left:calc(50% + 58px);
     top:34px;
@@ -1749,13 +1773,13 @@ def render_coop_overview():
       <div class="coop-title">{coop_overview_title}</div>
     </div>
     <div class="top-grid">
-      <div class="mini-card">
-        <div class="mini-head chart-head">
+      <div class="mini-card pd-mini-card">
+        <div class="mini-head chart-head pd-mini-head">
           <div class="mini-title">PD Headcount</div>
-          <div class="headcount-chip">
-            <div class="chip-label">Co-ops</div>
+        </div>
+        <div class="headcount-chip overlay-chip">
+            <div class="chip-label">Total</div>
             <div class="chip-value">{coop_count}</div>
-          </div>
         </div>
         <div class="pd-chart-wrap">
           <div class="chart-wrap">
