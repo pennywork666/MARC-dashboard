@@ -1120,6 +1120,7 @@ def render_pd_analysis():
     <div style="
         width:100%;
         max-width:100%;
+        font-family:'Segoe UI', Arial, sans-serif;
         border:1px solid #d6eaf6;
         border-radius:22px;
         background:linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
@@ -1511,6 +1512,7 @@ def render_coop_overview():
     min-height: 374px;
     width:100%;
     max-width:100%;
+    font-family:'Segoe UI', Arial, sans-serif;
     border:1px solid #d6eaf6;
     border-radius:22px;
     background:linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
@@ -1532,7 +1534,10 @@ def render_coop_overview():
     color:#0e3a67;
     padding-left:10px;
     border-left:4px solid #0096db;
-    line-height:1.1;
+    line-height:1.02;
+    font-family:'Segoe UI', Arial, sans-serif;
+    font-style:normal;
+    letter-spacing:0;
   }}
   .top-grid {{
     display:grid;
@@ -1559,7 +1564,10 @@ def render_coop_overview():
     padding-left:10px;
     border-left:4px solid #25a7de;
     margin-bottom:0;
-    line-height:1.15;
+    line-height:1.02;
+    font-family:'Segoe UI', Arial, sans-serif;
+    font-style:normal;
+    letter-spacing:0;
   }}
   .mini-head {{
     min-height:86px;
@@ -1621,6 +1629,9 @@ def render_coop_overview():
     position:absolute;
     font-size:14px;
     font-weight:900;
+    font-family:'Segoe UI', Arial, sans-serif;
+    font-style:normal;
+    letter-spacing:0;
     white-space:nowrap;
     line-height:1;
   }}
@@ -1684,8 +1695,10 @@ def render_coop_overview():
     font-size:12px;
     font-weight:900;
     color:#6b879f;
+    font-family:'Segoe UI', Arial, sans-serif;
+    font-style:normal;
+    letter-spacing:0;
     text-transform:uppercase;
-    letter-spacing:.04em;
   }}
   .headcount-chip .chip-value {{
     margin-top:4px;
@@ -1693,6 +1706,9 @@ def render_coop_overview():
     font-weight:950;
     color:#0e3a67;
     line-height:1;
+    font-family:'Segoe UI', Arial, sans-serif;
+    font-style:normal;
+    letter-spacing:0;
   }}
   .headcount-chip.ghost {{
     visibility:hidden;
