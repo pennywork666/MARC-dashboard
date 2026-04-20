@@ -1126,6 +1126,7 @@ def render_pd_analysis():
         box-shadow:0 14px 28px rgba(14,58,103,.08);
         padding:10px 12px 22px 12px;
         box-sizing:border-box;
+        height:374px;
         min-height:374px;
         overflow:hidden;
         margin-top:0;
@@ -1514,15 +1515,16 @@ def render_coop_overview():
     border-radius:22px;
     background:linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
     box-shadow:0 14px 28px rgba(14,58,103,.08);
-    padding:10px 16px 16px 16px;
+    padding:10px 12px 22px 12px;
     box-sizing:border-box;
+    overflow:hidden;
   }}
   .coop-head {{
     display:flex;
     justify-content:space-between;
     align-items:flex-start;
     gap:18px;
-    margin-bottom:12px;
+    margin-bottom:8px;
   }}
   .coop-title {{
     font-size:22px;
@@ -1537,6 +1539,7 @@ def render_coop_overview():
     grid-template-columns:1fr 1fr;
     gap:14px;
     align-items:stretch;
+    height: calc(100% - 46px);
   }}
   .mini-card {{
     border:1px solid #d8ebf7;
@@ -1544,7 +1547,8 @@ def render_coop_overview():
     background:#ffffff;
     padding:16px 16px 14px 16px;
     box-sizing:border-box;
-    min-height:250px;
+    height:100%;
+    min-height:0;
   }}
   .mini-title {{
     font-size:20px;
