@@ -646,7 +646,6 @@ def render_workforce_snapshot():
     <div style="
         width:100%;
         max-width:100%;
-        font-family:'Segoe UI', Arial, sans-serif;
         border:1px solid #d6eaf6;
         border-radius:22px;
         background:linear-gradient(145deg, #0d355f 0%, #0f4577 40%, #0a84c7 100%);
