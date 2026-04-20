@@ -649,7 +649,7 @@ def render_workforce_snapshot():
         border:1px solid #d6eaf6;
         border-radius:22px;
         background:linear-gradient(145deg, #0d355f 0%, #0f4577 40%, #0a84c7 100%);
-        height:270px;
+        height:304px;
         box-sizing:border-box;
         padding:8px 10px 8px 10px;
         display:flex;
@@ -686,7 +686,7 @@ def render_workforce_snapshot():
       </div>
     </div>
     """
-    components.html(kpi_card, height=282)
+    components.html(kpi_card, height=316)
 
 
 def render_gender_distribution():
@@ -782,7 +782,7 @@ def render_gender_distribution():
     fig_gender.tight_layout(rect=[0.03, 0.05, 0.99, 0.92])
     gender_b64 = fig_to_base64(fig_gender)
     plt.close(fig_gender)
-    gender_card_height = max(316, 104 + len(pd_rows) * 26)
+    gender_card_height = 316
 
     gender_card = f"""
     <html>
@@ -1505,6 +1505,7 @@ def render_coop_overview():
     font-family:"Segoe UI", Arial, sans-serif;
   }}
   .coop-card {{
+    min-height: 374px;
     width:100%;
     max-width:100%;
     border:1px solid #d6eaf6;
@@ -1721,7 +1722,7 @@ def render_coop_overview():
 </body>
 </html>
 """
-    components.html(coop_overview_card, height=max(360, int(250 + coop_fig_height * 38)))
+    components.html(coop_overview_card, height=398)
 
 
 # =============================
