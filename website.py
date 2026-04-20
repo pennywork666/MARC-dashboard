@@ -337,10 +337,6 @@ st.markdown(
         margin-top: -14px;
     }
 
-    .header-filter-wrap {
-        margin-top: -70px;
-    }
-
     .header-title-row {
         display:grid;
         grid-template-columns: 1fr auto 1fr;
@@ -377,11 +373,12 @@ st.markdown(
         white-space: nowrap;
         text-align: right;
         padding-top: 0px;
+        position: relative;
+        top: -18px;
     }
 
-    .header-filter-offset {
-        margin-top: 0px;
-        height: 0;
+    div[data-testid="stSelectbox"] {
+        margin-top: -18px;
     }
 
     div[data-baseweb="select"] > div {
@@ -394,7 +391,11 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-col_logo, col_filter, col_title, col_spacer, col_right = st.columns([1.45, 2.15, 3.2, 2.1, 1.1], gap="small")
+col_logo, col_filter, col_title, col_spacer, col_right = st.columns(
+    [1.45, 2.15, 3.2, 2.1, 1.1],
+    gap="small",
+    vertical_alignment="top",
+)
 
 with col_logo:
     st.markdown(
@@ -407,9 +408,11 @@ with col_logo:
     )
 
 with col_filter:
-    st.markdown('<div class="header-filter-offset"></div>', unsafe_allow_html=True)
-    st.markdown('<div class="header-filter-wrap">', unsafe_allow_html=True)
-    filter_label_col, filter_select_col = st.columns([1.2, 1.55], gap="small")
+    filter_label_col, filter_select_col = st.columns(
+        [1.2, 1.55],
+        gap="small",
+        vertical_alignment="top",
+    )
     with filter_label_col:
         st.markdown(
             '<div class="month-filter-inline-label">Reporting Month</div>',
@@ -424,7 +427,6 @@ with col_filter:
             format_func=format_report_option,
             label_visibility="collapsed",
         )
-    st.markdown('</div>', unsafe_allow_html=True)
 
 with col_title:
     st.markdown(
