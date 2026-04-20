@@ -374,7 +374,7 @@ st.markdown(
         text-align: right;
         padding-top: 0px;
         position: relative;
-        top: -18px;
+        top: -8px;
     }
 
     div[data-testid="stSelectbox"] {
