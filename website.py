@@ -1128,7 +1128,7 @@ def render_pd_analysis():
         box-sizing:border-box;
         min-height:374px;
         overflow:hidden;
-        margin-top:-6px;
+        margin-top:0;
     ">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:8px;">
         <div style="font-size:22px; font-weight:900; color:#0e3a67; padding-left:10px; border-left:4px solid #0096db;">
@@ -1150,7 +1150,7 @@ def render_pd_analysis():
       </div>
     </div>
     """
-    components.html(pd_card, height=398)
+    components.html(pd_card, height=398, scrolling=False)
 
 if False:
     st.markdown('<div class="section-heading">Gender Distribution</div>', unsafe_allow_html=True)
@@ -1498,6 +1498,7 @@ def render_coop_overview():
   html, body {{
     width:100%;
     max-width:100%;
+    overflow:hidden;
   }}
   body {{
     margin:0;
@@ -1505,6 +1506,7 @@ def render_coop_overview():
     font-family:"Segoe UI", Arial, sans-serif;
   }}
   .coop-card {{
+    height: 374px;
     min-height: 374px;
     width:100%;
     max-width:100%;
@@ -1722,7 +1724,7 @@ def render_coop_overview():
 </body>
 </html>
 """
-    components.html(coop_overview_card, height=398)
+    components.html(coop_overview_card, height=398, scrolling=False)
 
 
 # =============================
