@@ -334,13 +334,7 @@ st.markdown(
     }
 
     .header-wrap {
-        margin-top: -14px;
-    }
-
-    .header-title-row {
-        display:grid;
-        grid-template-columns: 1fr auto 1fr;
-        align-items:center;
+        padding-top: 2px;
     }
 
     .header-title {
@@ -352,35 +346,27 @@ st.markdown(
         margin-top: 0px;
         margin-bottom: 0px;
         letter-spacing: -0.03em;
-        grid-column: 2;
     }
 
     .header-asof {
-        grid-column: 3;
-        justify-self: start;
-        margin-left: 12px;
         font-size: 11px;
         font-weight: 800;
         color: #5d7b94;
         white-space: nowrap;
-        padding-top: 8px;
+        padding-top: 16px;
     }
 
-    .month-filter-inline-label {
+    .header-filter-wrap {
+        max-width: 220px;
+        padding-top: 4px;
+    }
+
+    .header-filter-label {
         font-size: 13px;
         font-weight: 900;
         color: #5d7b94;
         white-space: nowrap;
-        text-align: right;
-        padding-top: 0px;
-        position: relative;
-        top: -8px;
-    }
-
-    div[data-testid="stSelectbox"] {
-        position: relative;
-        top: -18px;
-        z-index: 200;
+        margin-bottom: 6px;
     }
 
     div[data-baseweb="select"] > div {
@@ -388,21 +374,13 @@ st.markdown(
         border-color: #cfe5f3 !important;
         min-height: 36px !important;
     }
-
-    div[data-baseweb="popover"] {
-        z-index: 99999 !important;
-    }
-
-    ul[role="listbox"] {
-        z-index: 99999 !important;
-    }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-col_logo, col_filter, col_title, col_spacer, col_right = st.columns(
-    [1.45, 2.15, 3.2, 2.1, 1.1],
+col_logo, col_filter, col_title, col_asof, col_right = st.columns(
+    [1.45, 2.15, 3.35, 1.45, 0.7],
     gap="small",
     vertical_alignment="top",
 )
@@ -418,41 +396,31 @@ with col_logo:
     )
 
 with col_filter:
-    filter_label_col, filter_select_col = st.columns(
-        [1.2, 1.55],
-        gap="small",
-        vertical_alignment="top",
+    st.markdown('<div class="header-filter-wrap"><div class="header-filter-label">Reporting Month</div></div>', unsafe_allow_html=True)
+    st.selectbox(
+        "Reporting Month",
+        report_files,
+        index=report_files.index(selected_report_file),
+        key=REPORT_SELECT_KEY,
+        format_func=format_report_option,
+        label_visibility="collapsed",
     )
-    with filter_label_col:
-        st.markdown(
-            '<div class="month-filter-inline-label">Reporting Month</div>',
-            unsafe_allow_html=True,
-        )
-    with filter_select_col:
-        st.selectbox(
-            "Reporting Month",
-            report_files,
-            index=report_files.index(selected_report_file),
-            key=REPORT_SELECT_KEY,
-            format_func=format_report_option,
-            label_visibility="collapsed",
-        )
 
 with col_title:
     st.markdown(
         f"""
         <div class="header-wrap">
-            <div class="header-title-row">
-                <div class="header-title">{dashboard_title}</div>
-                <div class="header-asof">* As of {report_as_of_label}</div>
-            </div>
+            <div class="header-title">{dashboard_title}</div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-with col_spacer:
-    st.empty()
+with col_asof:
+    st.markdown(
+        f'<div class="header-asof">* As of {report_as_of_label}</div>',
+        unsafe_allow_html=True,
+    )
 
 with col_right:
     st.empty()
