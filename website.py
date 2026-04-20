@@ -51,20 +51,15 @@ def extract_report_date(file_path: Path) -> pd.Timestamp:
 # Page config
 # =============================
 st.set_page_config(page_title="HR Dashboard", layout="wide")
+REPORT_SELECT_KEY = "report_file"
 
 
 def build_clean_file_options(clean_dir: Path):
-    files = list_clean_files(clean_dir)
-    option_labels = []
-    option_to_file: dict[str, Path] = {}
-    for f in files:
-        report_dt = extract_report_date(f)
-        month_label = report_dt.strftime("%B %Y")
-        as_of_label = f"{report_dt.strftime('%B')} {report_dt.day}"
-        label = f"{month_label} (As of {as_of_label})"
-        option_labels.append(label)
-        option_to_file[label] = f
-    return option_labels, option_to_file
+    return list_clean_files(clean_dir)
+
+
+def format_report_option(file_path: Path) -> str:
+    return extract_report_date(file_path).strftime("%B %Y")
 
 
 # =============================
@@ -244,17 +239,17 @@ st.markdown(
 # Reporting month / Header
 # =============================
 try:
-    report_options, report_file_map = build_clean_file_options(CLEAN_DATA_DIR)
+    report_files = build_clean_file_options(CLEAN_DATA_DIR)
 except Exception as e:
     st.error(f"Failed to find cleaned Excel files: {e}")
     st.info("Run convert_excel.py first, then make sure clean_data contains at least one valid Excel file.")
     st.stop()
 
-selected_report_label = st.session_state.get("report_month", report_options[0])
-if selected_report_label not in report_file_map:
-    selected_report_label = report_options[0]
+selected_report_file = st.session_state.get(REPORT_SELECT_KEY, report_files[0])
+if selected_report_file not in report_files:
+    selected_report_file = report_files[0]
 
-EXCEL_PATH = report_file_map[selected_report_label]
+EXCEL_PATH = selected_report_file
 SHEET_NAME = None
 as_of = extract_report_date(EXCEL_PATH)
 dashboard_title = "MARC HR Dashboard"
@@ -342,6 +337,12 @@ st.markdown(
         margin-top: -14px;
     }
 
+    .header-title-row {
+        display:grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items:center;
+    }
+
     .header-title {
         text-align: center;
         font-size: 2.2rem;
@@ -351,23 +352,32 @@ st.markdown(
         margin-top: 0px;
         margin-bottom: 0px;
         letter-spacing: -0.03em;
+        grid-column: 2;
     }
 
-    .header-subtitle {
-        text-align:center;
-        font-size:11px;
-        color:#5d7b94;
-        margin-top:0px;
-        margin-bottom:0px;
-    }
-
-    .month-filter-inline-label {
+    .header-asof {
+        grid-column: 3;
+        justify-self: start;
+        margin-left: 12px;
         font-size: 11px;
         font-weight: 800;
         color: #5d7b94;
         white-space: nowrap;
+        padding-top: 8px;
+    }
+
+    .month-filter-inline-label {
+        font-size: 13px;
+        font-weight: 900;
+        color: #5d7b94;
+        white-space: nowrap;
         text-align: right;
-        padding-top: 10px;
+        padding-top: 7px;
+    }
+
+    .header-filter-offset {
+        margin-top: -18px;
+        height: 0;
     }
 
     div[data-baseweb="select"] > div {
@@ -393,7 +403,8 @@ with col_logo:
     )
 
 with col_filter:
-    filter_label_col, filter_select_col = st.columns([1.05, 2.2], gap="small")
+    st.markdown('<div class="header-filter-offset"></div>', unsafe_allow_html=True)
+    filter_label_col, filter_select_col = st.columns([1.2, 1.55], gap="small")
     with filter_label_col:
         st.markdown(
             '<div class="month-filter-inline-label">Reporting Month</div>',
@@ -402,9 +413,10 @@ with col_filter:
     with filter_select_col:
         st.selectbox(
             "Reporting Month",
-            report_options,
-            index=report_options.index(selected_report_label),
-            key="report_month",
+            report_files,
+            index=report_files.index(selected_report_file),
+            key=REPORT_SELECT_KEY,
+            format_func=format_report_option,
             label_visibility="collapsed",
         )
 
@@ -412,7 +424,10 @@ with col_title:
     st.markdown(
         f"""
         <div class="header-wrap">
-            <div class="header-title">{dashboard_title}</div>
+            <div class="header-title-row">
+                <div class="header-title">{dashboard_title}</div>
+                <div class="header-asof">* As of {report_as_of_label}</div>
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
