@@ -372,11 +372,11 @@ st.markdown(
         color: #5d7b94;
         white-space: nowrap;
         text-align: right;
-        padding-top: 7px;
+        padding-top: 0px;
     }
 
     .header-filter-offset {
-        margin-top: -18px;
+        margin-top: -52px;
         height: 0;
     }
 
