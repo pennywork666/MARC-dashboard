@@ -380,13 +380,21 @@ st.markdown(
     div[data-testid="stSelectbox"] {
         position: relative;
         top: -18px;
-        z-index: 20;
+        z-index: 200;
     }
 
     div[data-baseweb="select"] > div {
         border-radius: 10px !important;
         border-color: #cfe5f3 !important;
         min-height: 36px !important;
+    }
+
+    div[data-baseweb="popover"] {
+        z-index: 99999 !important;
+    }
+
+    ul[role="listbox"] {
+        z-index: 99999 !important;
     }
     </style>
     """,
