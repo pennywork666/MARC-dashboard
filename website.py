@@ -377,10 +377,6 @@ st.markdown(
         top: -8px;
     }
 
-    div[data-testid="stSelectbox"] {
-        margin-top: -18px;
-    }
-
     div[data-baseweb="select"] > div {
         border-radius: 10px !important;
         border-color: #cfe5f3 !important;
