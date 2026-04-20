@@ -271,7 +271,7 @@ except Exception as e:
 LOGO_PATH = BASE_DIR / "Midea.png"
 logo_b64 = image_to_base64(LOGO_PATH)
 ROW1_LEFT_IMAGE_PATH = BASE_DIR / "row1left.png"
-MAN_IMAGE_PATH = BASE_DIR / "man.jpg"
+MAN_IMAGE_PATH = BASE_DIR / "man.png"
 WOMAN_IMAGE_PATH = BASE_DIR / "woman.png"
 
 row1_left_b64 = image_to_base64(ROW1_LEFT_IMAGE_PATH)
@@ -841,9 +841,10 @@ def render_gender_distribution():
       .count-panel {{
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        justify-content: flex-start;
-        padding-top: 6px;
+        gap: 14px;
+        justify-content: center;
+        padding-top: 26px;
+        padding-bottom: 12px;
         height: 100%;
       }}
       .count-box {{
