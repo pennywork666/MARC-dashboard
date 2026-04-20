@@ -1536,7 +1536,7 @@ def render_coop_overview():
   }}
   .top-grid {{
     display:grid;
-    grid-template-columns:1.14fr 0.86fr;
+    grid-template-columns:1.22fr 0.78fr;
     gap:14px;
     align-items:stretch;
     height: calc(100% - 46px);
@@ -1553,12 +1553,13 @@ def render_coop_overview():
     flex-direction:column;
   }}
   .mini-title {{
-    font-size:20px;
+    font-size:18px;
     font-weight:900;
     color:#0e3a67;
     padding-left:10px;
     border-left:4px solid #25a7de;
     margin-bottom:0;
+    line-height:1.15;
   }}
   .mini-head {{
     min-height:86px;
@@ -1696,6 +1697,27 @@ def render_coop_overview():
   .headcount-chip.ghost {{
     visibility:hidden;
   }}
+  .gender-card-compact .donut {{
+    width:116px;
+    height:116px;
+  }}
+  .gender-card-compact .donut::after {{
+    inset:30px;
+  }}
+  .gender-card-compact .ring-count {{
+    font-size:16px;
+  }}
+  .gender-card-compact .pct {{
+    font-size:12px;
+  }}
+  .gender-card-compact .pct.male {{
+    left:calc(50% + 58px);
+    top:34px;
+  }}
+  .gender-card-compact .pct.female {{
+    right:calc(50% + 58px);
+    bottom:34px;
+  }}
 </style>
 </head>
 <body>
@@ -1718,7 +1740,7 @@ def render_coop_overview():
           </div>
         </div>
       </div>
-      <div class="mini-card">
+      <div class="mini-card gender-card-compact">
         <div class="mini-head">
           <div class="mini-title">Gender Distribution</div>
           <div class="headcount-chip ghost" aria-hidden="true">
