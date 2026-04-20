@@ -379,8 +379,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-col_logo, col_filter, col_title, col_right = st.columns(
-    [1.45, 1.7, 4.05, 0.8],
+col_logo, col_filter, col_title, col_spacer_1, col_spacer_2 = st.columns(
+    [1.45, 1.7, 3.6, 1.7, 1.45],
     gap="small",
     vertical_alignment="top",
 )
@@ -422,7 +422,10 @@ with col_title:
         unsafe_allow_html=True,
     )
 
-with col_right:
+with col_spacer_1:
+    st.empty()
+
+with col_spacer_2:
     st.empty()
 
 st.markdown("<div style='height: 0px;'></div>", unsafe_allow_html=True)
