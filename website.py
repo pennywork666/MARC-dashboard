@@ -361,27 +361,13 @@ st.markdown(
         margin-bottom:0px;
     }
 
-    .month-filter-label {
-        text-align:left;
-        font-size:11px;
-        font-weight:800;
-        color:#5d7b94;
-        margin-top:0px;
-        margin-bottom:4px;
-    }
-
-    .header-filter-wrap {
-        max-width: 360px;
-        margin-top: -2px;
-    }
-
     .month-filter-inline-label {
         font-size: 11px;
         font-weight: 800;
         color: #5d7b94;
         white-space: nowrap;
         text-align: right;
-        padding-top: 9px;
+        padding-top: 10px;
     }
 
     div[data-baseweb="select"] > div {
@@ -394,7 +380,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-col_logo, col_filter, col_title, col_right = st.columns([1.7, 2.5, 3.6, 1.2], gap="small")
+col_logo, col_filter, col_title, col_spacer, col_right = st.columns([1.7, 2.0, 3.0, 2.0, 1.1], gap="small")
 
 with col_logo:
     st.markdown(
@@ -407,21 +393,20 @@ with col_logo:
     )
 
 with col_filter:
-    st.markdown(
-        """
-        <div class="header-filter-wrap">
-            <div class="month-filter-label">Reporting Month</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    st.selectbox(
-        "Reporting Month",
-        report_options,
-        index=report_options.index(selected_report_label),
-        key="report_month",
-        label_visibility="collapsed",
-    )
+    filter_label_col, filter_select_col = st.columns([1.05, 2.2], gap="small")
+    with filter_label_col:
+        st.markdown(
+            '<div class="month-filter-inline-label">Reporting Month</div>',
+            unsafe_allow_html=True,
+        )
+    with filter_select_col:
+        st.selectbox(
+            "Reporting Month",
+            report_options,
+            index=report_options.index(selected_report_label),
+            key="report_month",
+            label_visibility="collapsed",
+        )
 
 with col_title:
     st.markdown(
@@ -432,6 +417,9 @@ with col_title:
         """,
         unsafe_allow_html=True,
     )
+
+with col_spacer:
+    st.empty()
 
 with col_right:
     st.empty()
