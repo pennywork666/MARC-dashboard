@@ -509,7 +509,62 @@ avg_midea = avg_years_from_dates(employees_core["hire_date"], as_of)
 avg_industry = avg_industry_years_from_birth(employees_core["birth_date"], as_of)
 
 
-def render_movement_cards():
+st.markdown(
+    """
+    <style>
+    .block-card{
+      border:1px solid #d6eaf6;
+      border-radius:18px;
+      padding:14px 14px;
+      background:linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
+      box-shadow: 0 14px 28px rgba(14,58,103,.08);
+      margin-bottom:12px;
+    }
+    .tag-container{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .tag{
+      border:1px solid #d8ebf7;
+      background:#eaf7fd;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:15px;
+      font-weight:900;
+      color: #1d4f77;
+      line-height:1;
+      white-space:nowrap;
+    }
+    .svc-row{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom:10px;
+    }
+    .svc-row:last-child{ margin-bottom:0; }
+    .svc-year{
+      min-width:82px;
+      font-weight:900;
+      font-size:15px;
+      color: #0e3a67;
+      padding-top:2px;
+    }
+    .section-title{
+      font-size:22px;
+      font-weight:900;
+      color:#0e3a67;
+      padding-left:14px;
+      border-left:4px solid #0096db;
+      margin-bottom:8px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+
+def render_new_hires_card():
     nh = new_hires_in_month(employees_core, as_of)
     st.markdown(f'<div class="section-title">New Hire ({report_period_label})</div>', unsafe_allow_html=True)
     if nh.empty:
@@ -523,20 +578,23 @@ def render_movement_cards():
             """,
             unsafe_allow_html=True,
         )
-    else:
-        nh_names = sorted(nh["name"].astype(str).str.strip().tolist())
-        tags_html = "".join([f'<span class="tag">{n}</span>' for n in nh_names])
-        st.markdown(
-            f"""
-            <div class="block-card">
-              <div class="tag-container">
-                {tags_html}
-              </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        return
 
+    nh_names = sorted(nh["name"].astype(str).str.strip().tolist())
+    tags_html = "".join([f'<span class="tag">{n}</span>' for n in nh_names])
+    st.markdown(
+        f"""
+        <div class="block-card">
+          <div class="tag-container">
+            {tags_html}
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_service_anniversary_card():
     an = service_anniversaries_in_month(employees_core, as_of)
     st.markdown(f'<div class="section-title">Service Anniversary ({report_period_label})</div>', unsafe_allow_html=True)
     if an.empty:
@@ -550,410 +608,40 @@ def render_movement_cards():
             """,
             unsafe_allow_html=True,
         )
-    else:
-        an2 = an[["anniv_years", "name"]].copy()
-        an2["name"] = an2["name"].astype(str).str.strip()
-        grp = (
-            an2.groupby("anniv_years")["name"]
-            .apply(lambda s: sorted(s.tolist()))
-            .sort_index(ascending=False)
-        )
+        return
 
-        rows_html = ""
-        for years, names in grp.items():
-            tags_html = "".join([f'<span class="tag">{n}</span>' for n in names])
-            label = f"{int(years)} Year" + ("s" if int(years) > 1 else "")
-            rows_html += f"""
-              <div class="svc-row">
-                <div class="svc-year">{label}</div>
-                <div class="tag-container">
-                  {tags_html}
-                </div>
-              </div>
-            """
+    an2 = an[["anniv_years", "name"]].copy()
+    an2["name"] = an2["name"].astype(str).str.strip()
+    grp = (
+        an2.groupby("anniv_years")["name"]
+        .apply(lambda s: sorted(s.tolist()))
+        .sort_index(ascending=False)
+    )
 
-        st.markdown(
-            f"""
-            <div class="block-card">
-              {rows_html}
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-
-# =============================
-# ROW 1: Summary + Gender
-# =============================
-st.markdown("<div style='margin-top:-112px;'></div>", unsafe_allow_html=True)
-top_left, top_right = st.columns([1.0, 1.0], gap="small")
-
-with top_left:
-    kpi_card = f"""
-    <div style="
-        border:1px solid #e6e6e6;
-        border-radius:16px;
-        background:#ffffff;
-        height:380px;
-        box-sizing:border-box;
-        padding:16px 22px 18px 22px;
-        display:flex;
-        flex-direction:column;
-    ">
-      <div style="text-align:left; font-size:15px; font-weight:700; color:#777; height:26px;">
-        Excludes interns and contractors
-      </div>
-
-      <div style="
-          flex:1;
-          display:flex;
-          flex-direction:column;
-          justify-content:center;
-      ">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div style="width:48%; text-align:center;">
-            <div style="display:flex; justify-content:center; align-items:center; gap:10px;">
-              <div style="font-size:28px; line-height:1;">👥</div>
-              <div style="font-size:24px; font-weight:850; color:#1f4e79;">Headcount</div>
-            </div>
-            <div style="font-size:48px; font-weight:950; color:#111; margin-top:10px;">{hc}</div>
-          </div>
-
-          <div style="width:48%; text-align:center;">
-            <div style="display:flex; justify-content:center; align-items:center; gap:10px;">
-              <div style="font-size:28px; line-height:1;">🆕</div>
-              <div style="font-size:24px; font-weight:850; color:#7a2e2e;">New Hires (MTD)</div>
-            </div>
-            <div style="font-size:48px; font-weight:950; color:#111; margin-top:10px;">{new_hires_mtd}</div>
-          </div>
-        </div>
-
-        <div style="height:42px;"></div>
-
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div style="width:48%; text-align:center;">
-            <div style="display:flex; justify-content:center; align-items:center; gap:10px;">
-              <div style="font-size:28px; line-height:1;">🏢</div>
-              <div style="font-size:22px; font-weight:850; color:#2f6f3e;">Midea Tenure</div>
-            </div>
-            <div style="font-size:42px; font-weight:950; color:#111; margin-top:10px;">
-              {"-" if np.isnan(avg_midea) else f"{avg_midea:.2f}"}
+    rows_html = ""
+    for years, names in grp.items():
+        tags_html = "".join([f'<span class="tag">{n}</span>' for n in names])
+        label = f"{int(years)} Year" + ("s" if int(years) > 1 else "")
+        rows_html += f"""
+          <div class="svc-row">
+            <div class="svc-year">{label}</div>
+            <div class="tag-container">
+              {tags_html}
             </div>
           </div>
+        """
 
-          <div style="width:48%; text-align:center;">
-            <div style="display:flex; justify-content:center; align-items:center; gap:10px;">
-              <div style="font-size:28px; line-height:1;">📈</div>
-              <div style="font-size:20px; font-weight:850; color:#6a4c93;">Years of Industry Experience</div>
-            </div>
-            <div style="font-size:42px; font-weight:950; color:#111; margin-top:10px;">
-              {"-" if np.isnan(avg_industry) else f"{avg_industry:.2f}"}
-            </div>
-          </div>
+    st.markdown(
+        f"""
+        <div class="block-card">
+          {rows_html}
         </div>
-      </div>
-    </div>
-    """
-    kpi_card = f"""
-    <div style="
-        border:1px solid #d6eaf6;
-        border-radius:22px;
-        background:linear-gradient(180deg, #ffffff 0%, #f1f9fe 100%);
-        height:380px;
-        box-sizing:border-box;
-        padding:18px 22px 20px 22px;
-        display:flex;
-        flex-direction:column;
-        box-shadow:0 18px 36px rgba(14,58,103,.08);
-    ">
-      <div style="height:8px; border-radius:999px; background:linear-gradient(90deg, #0e3a67 0%, #0096db 58%, #78caeb 100%); margin-bottom:16px;"></div>
-      <div style="text-align:left; font-size:15px; font-weight:700; color:#6a879f; margin-bottom:14px;">
-        Excludes interns and contractors
-      </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; flex:1;">
-        <div style="background:#f7fcff; border:1px solid #d9edf8; border-radius:18px; padding:18px 14px; text-align:center;">
-          <div style="font-size:16px; font-weight:800; color:#0e3a67; letter-spacing:.02em;">Headcount</div>
-          <div style="font-size:48px; font-weight:950; color:#102f52; margin-top:12px;">{hc}</div>
-        </div>
-        <div style="background:#f7fcff; border:1px solid #d9edf8; border-radius:18px; padding:18px 14px; text-align:center;">
-          <div style="font-size:16px; font-weight:800; color:#0096db; letter-spacing:.02em;">New Hires (MTD)</div>
-          <div style="font-size:48px; font-weight:950; color:#102f52; margin-top:12px;">{new_hires_mtd}</div>
-        </div>
-        <div style="background:#f7fcff; border:1px solid #d9edf8; border-radius:18px; padding:18px 14px; text-align:center;">
-          <div style="font-size:15px; font-weight:800; color:#2a78b0; letter-spacing:.02em;">Midea Tenure</div>
-          <div style="font-size:42px; font-weight:950; color:#102f52; margin-top:12px;">
-            {"-" if np.isnan(avg_midea) else f"{avg_midea:.2f}"}
-          </div>
-        </div>
-        <div style="background:#f7fcff; border:1px solid #d9edf8; border-radius:18px; padding:18px 14px; text-align:center;">
-          <div style="font-size:15px; font-weight:800; color:#5cb8d7; letter-spacing:.01em;">Years of Industry Experience</div>
-          <div style="font-size:42px; font-weight:950; color:#102f52; margin-top:12px;">
-            {"-" if np.isnan(avg_industry) else f"{avg_industry:.2f}"}
-          </div>
-        </div>
-      </div>
-    </div>
-    """
-    kpi_card = f"""
-    <html>
-    <head>
-    <style>
-      body {{
-        margin: 0;
-        background: transparent;
-        font-family: "Segoe UI", Arial, sans-serif;
-      }}
-      .hero {{
-        height: 356px;
-        border-radius: 28px;
-        overflow: hidden;
-        color: white;
-        background:
-          radial-gradient(circle at 22% 18%, rgba(120,202,235,.30), transparent 30%),
-          radial-gradient(circle at 84% 20%, rgba(77,185,214,.20), transparent 28%),
-          linear-gradient(155deg, #0a2f54 0%, #0e3a67 46%, #0096db 100%);
-        box-shadow: 0 22px 44px rgba(14,58,103,.16);
-        padding: 24px 28px;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }}
-      .eyebrow {{
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 14px;
-        font-weight: 700;
-        color: rgba(255,255,255,.78);
-        letter-spacing: .04em;
-        text-transform: uppercase;
-      }}
-      .eyebrow::before {{
-        content: "";
-        width: 34px;
-        height: 2px;
-        border-radius: 999px;
-        background: rgba(255,255,255,.72);
-      }}
-      .hero-title {{
-        margin-top: 18px;
-        font-size: 18px;
-        font-weight: 700;
-        color: rgba(255,255,255,.82);
-      }}
-      .hero-number {{
-        margin-top: 8px;
-        font-size: 78px;
-        font-weight: 900;
-        line-height: .95;
-        letter-spacing: -.05em;
-      }}
-      .hero-sub {{
-        margin-top: 8px;
-        font-size: 16px;
-        color: rgba(255,255,255,.80);
-      }}
-      .people {{
-        position: relative;
-        height: 190px;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        gap: 28px;
-      }}
-      .person {{
-        position: relative;
-        width: 82px;
-        height: 150px;
-      }}
-      .person.large {{
-        width: 98px;
-        height: 174px;
-      }}
-      .head {{
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 0;
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background: #f4f8fb;
-      }}
-      .large .head {{
-        width: 40px;
-        height: 40px;
-      }}
-      .hair {{
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 0;
-        width: 34px;
-        height: 18px;
-        border-radius: 18px 18px 10px 10px;
-        background: #1c3751;
-      }}
-      .large .hair {{
-        width: 40px;
-        height: 22px;
-      }}
-      .torso {{
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 28px;
-        width: 44px;
-        height: 64px;
-        border-radius: 20px 20px 16px 16px;
-        background: #95a2b2;
-      }}
-      .large .torso {{
-        top: 34px;
-        width: 52px;
-        height: 76px;
-      }}
-      .tie {{
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 41px;
-        width: 0;
-        height: 0;
-        border-left: 7px solid transparent;
-        border-right: 7px solid transparent;
-        border-top: 18px solid #0096db;
-      }}
-      .large .tie {{
-        top: 48px;
-      }}
-      .leg {{
-        position: absolute;
-        bottom: 0;
-        width: 17px;
-        height: 68px;
-        border-radius: 12px;
-        background: #768296;
-      }}
-      .large .leg {{
-        height: 80px;
-        width: 19px;
-      }}
-      .leg.left {{ left: 23px; }}
-      .leg.right {{ right: 23px; }}
-      .large .leg.left {{ left: 28px; }}
-      .large .leg.right {{ right: 28px; }}
-      .arm {{
-        position: absolute;
-        top: 54px;
-        width: 12px;
-        height: 58px;
-        border-radius: 12px;
-        background: #768296;
-      }}
-      .large .arm {{
-        top: 64px;
-        height: 66px;
-      }}
-      .arm.left {{ left: 12px; }}
-      .arm.right {{ right: 12px; }}
-      .large .arm.left {{ left: 14px; }}
-      .large .arm.right {{ right: 14px; }}
-      .briefcase {{
-        position: absolute;
-        bottom: 4px;
-        width: 18px;
-        height: 40px;
-        border-radius: 4px;
-        background: #0a4f7d;
-      }}
-      .large .briefcase {{
-        height: 46px;
-      }}
-      .briefcase.left {{ left: 2px; }}
-      .briefcase.right {{ right: 2px; }}
-      .metrics {{
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 14px;
-      }}
-      .metric {{
-        padding: 16px 18px;
-        border-radius: 18px;
-        background: rgba(255,255,255,.12);
-        border: 1px solid rgba(255,255,255,.16);
-        backdrop-filter: blur(8px);
-      }}
-      .metric-label {{
-        font-size: 13px;
-        font-weight: 700;
-        color: rgba(255,255,255,.72);
-        letter-spacing: .03em;
-        text-transform: uppercase;
-      }}
-      .metric-value {{
-        margin-top: 8px;
-        font-size: 28px;
-        font-weight: 900;
-        line-height: 1;
-      }}
-      .metric-note {{
-        margin-top: 4px;
-        font-size: 12px;
-        color: rgba(255,255,255,.70);
-      }}
-    </style>
-    </head>
-    <body>
-      <div class="hero">
-        <div>
-          <div class="eyebrow">Workforce Snapshot</div>
-          <div class="hero-title">Core Employee Population</div>
-          <div class="hero-number">{hc}</div>
-          <div class="hero-sub">Excludes interns and contractors</div>
-        </div>
 
-        <div class="people">
-          <div class="person">
-            <div class="head"></div><div class="hair"></div><div class="torso"></div><div class="tie"></div>
-            <div class="arm left"></div><div class="arm right"></div>
-            <div class="leg left"></div><div class="leg right"></div><div class="briefcase left"></div>
-          </div>
-          <div class="person large">
-            <div class="head"></div><div class="hair"></div><div class="torso"></div><div class="tie"></div>
-            <div class="arm left"></div><div class="arm right"></div>
-            <div class="leg left"></div><div class="leg right"></div>
-          </div>
-          <div class="person">
-            <div class="head"></div><div class="hair"></div><div class="torso"></div><div class="tie"></div>
-            <div class="arm left"></div><div class="arm right"></div>
-            <div class="leg left"></div><div class="leg right"></div><div class="briefcase right"></div>
-          </div>
-        </div>
-
-        <div class="metrics">
-          <div class="metric">
-            <div class="metric-label">New Hires (MTD)</div>
-            <div class="metric-value">{new_hires_mtd}</div>
-            <div class="metric-note">Current month</div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">Midea Tenure</div>
-            <div class="metric-value">{"-" if np.isnan(avg_midea) else f"{avg_midea:.2f}"}</div>
-            <div class="metric-note">Average years</div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">Industry Experience</div>
-            <div class="metric-value">{"-" if np.isnan(avg_industry) else f"{avg_industry:.2f}"}</div>
-            <div class="metric-note">Average years</div>
-          </div>
-        </div>
-      </div>
-    </body>
-    </html>
-    """
+def render_workforce_snapshot():
     kpi_card = f"""
     <div style="
         border:1px solid #d6eaf6;
@@ -996,60 +684,10 @@ with top_left:
       </div>
     </div>
     """
-    st.markdown(
-        """
-        <style>
-        .block-card{
-          border:1px solid #d6eaf6;
-          border-radius:18px;
-          padding:14px 14px;
-          background:linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
-          box-shadow: 0 14px 28px rgba(14,58,103,.08);
-          margin-bottom:12px;
-        }
-        .tag-container{
-          display:flex;
-          flex-wrap:wrap;
-          gap:10px;
-        }
-        .tag{
-          border:1px solid #d8ebf7;
-          background:#eaf7fd;
-          border-radius:999px;
-          padding:6px 10px;
-          font-size:15px;
-          font-weight:900;
-          color: #1d4f77;
-          line-height:1;
-          white-space:nowrap;
-        }
-        .svc-row{
-          display:flex;
-          align-items:flex-start;
-          gap:12px;
-          margin-bottom:10px;
-        }
-        .svc-row:last-child{ margin-bottom:0; }
-        .svc-year{
-          min-width:82px;
-          font-weight:900;
-          font-size:15px;
-          color: #0e3a67;
-          padding-top:2px;
-        }
-        .section-title{
-          font-size:22px;
-          font-weight:900;
-          color:#0e3a67;
-          padding-left:14px;
-          border-left:4px solid #0096db;
-          margin-bottom:8px;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    components.html(kpi_card, height=282)
 
+
+def render_gender_distribution():
     gender_dist = (
         employees_core["gender"]
         .fillna("Unknown")
@@ -1288,42 +926,38 @@ with top_left:
     </body>
     </html>
     """
-    components.html(kpi_card, height=282)
-    st.markdown("<div style='margin-top:-4px;'></div>", unsafe_allow_html=True)
     components.html(gender_card, height=gender_card_height)
 
+def compute_integer_percentages(counts):
+    counts = np.array(counts, dtype=float)
+    total = counts.sum()
 
-# =============================
-# Right column: PD analysis
-# =============================
-with top_right:
-    def compute_integer_percentages(counts):
-        counts = np.array(counts, dtype=float)
-        total = counts.sum()
+    raw = counts / total * 100.0
+    floors = np.floor(raw).astype(int)
+    remainders = raw - floors
 
-        raw = counts / total * 100.0
-        floors = np.floor(raw).astype(int)
-        remainders = raw - floors
+    need = 100 - floors.sum()
 
-        need = 100 - floors.sum()
+    if need > 0:
+        idx = np.argsort(-remainders)
+        floors[idx[:need]] += 1
+    elif need < 0:
+        idx = np.argsort(remainders)
+        floors[idx[:abs(need)]] -= 1
 
-        if need > 0:
-            idx = np.argsort(-remainders)
-            floors[idx[:need]] += 1
-        elif need < 0:
-            idx = np.argsort(remainders)
-            floors[idx[:abs(need)]] -= 1
+    return floors
 
-        return floors
 
-    def autopct_percent_only(pcts):
-        i = {"k": 0}
-        def _fmt(_pct):
-            val = int(pcts[i["k"]])
-            i["k"] += 1
-            return f"{val}%"
-        return _fmt
+def autopct_percent_only(pcts):
+    i = {"k": 0}
+    def _fmt(_pct):
+        val = int(pcts[i["k"]])
+        i["k"] += 1
+        return f"{val}%"
+    return _fmt
 
+
+def render_pd_analysis():
     pd_dist = (
         employees_core["pd"]
         .fillna("Unknown")
@@ -2073,13 +1707,33 @@ def render_coop_overview():
 """
     components.html(coop_overview_card, height=max(360, int(250 + coop_fig_height * 38)))
 
-with top_left:
-    st.markdown("<div style='margin-top:-6px;'></div>", unsafe_allow_html=True)
-    render_movement_cards()
 
-with top_right:
-    st.markdown("<div style='margin-top:-92px;'></div>", unsafe_allow_html=True)
+# =============================
+# Dashboard Rows
+# =============================
+st.markdown("<div style='margin-top:-112px;'></div>", unsafe_allow_html=True)
+
+row1_left, row1_right = st.columns([1, 1], gap="small")
+with row1_left:
+    render_workforce_snapshot()
+with row1_right:
+    render_gender_distribution()
+
+st.markdown("<div style='margin-top:8px;'></div>", unsafe_allow_html=True)
+
+row2_left, row2_right = st.columns([1, 1], gap="small")
+with row2_left:
+    render_pd_analysis()
+with row2_right:
     render_coop_overview()
+
+st.markdown("<div style='margin-top:8px;'></div>", unsafe_allow_html=True)
+
+row3_left, row3_right = st.columns([1, 1], gap="small")
+with row3_left:
+    render_new_hires_card()
+with row3_right:
+    render_service_anniversary_card()
 
 st.divider()
 
