@@ -337,6 +337,10 @@ st.markdown(
         margin-top: -14px;
     }
 
+    .header-filter-wrap {
+        margin-top: -70px;
+    }
+
     .header-title-row {
         display:grid;
         grid-template-columns: 1fr auto 1fr;
@@ -376,7 +380,7 @@ st.markdown(
     }
 
     .header-filter-offset {
-        margin-top: -52px;
+        margin-top: 0px;
         height: 0;
     }
 
@@ -404,6 +408,7 @@ with col_logo:
 
 with col_filter:
     st.markdown('<div class="header-filter-offset"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="header-filter-wrap">', unsafe_allow_html=True)
     filter_label_col, filter_select_col = st.columns([1.2, 1.55], gap="small")
     with filter_label_col:
         st.markdown(
@@ -419,6 +424,7 @@ with col_filter:
             format_func=format_report_option,
             label_visibility="collapsed",
         )
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with col_title:
     st.markdown(
