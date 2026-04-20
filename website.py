@@ -344,8 +344,8 @@ st.markdown(
 
     .header-title {
         text-align: center;
-        font-size: 1.95rem;
-        font-weight: 850;
+        font-size: 2.2rem;
+        font-weight: 900;
         color:#0e3a67;
         line-height: 1.02;
         margin-top: 0px;
@@ -380,7 +380,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-col_logo, col_filter, col_title, col_spacer, col_right = st.columns([1.7, 2.0, 3.0, 2.0, 1.1], gap="small")
+col_logo, col_filter, col_title, col_spacer, col_right = st.columns([1.45, 2.15, 3.2, 2.1, 1.1], gap="small")
 
 with col_logo:
     st.markdown(
