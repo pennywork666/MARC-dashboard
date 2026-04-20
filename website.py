@@ -1799,7 +1799,7 @@ def render_coop_overview():
 # =============================
 # Dashboard Rows
 # =============================
-st.markdown("<div style='margin-top:-112px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top:-145px;'></div>", unsafe_allow_html=True)
 
 row1_left, row1_right = st.columns([1, 1], gap="small")
 with row1_left:
