@@ -377,14 +377,16 @@ st.markdown(
         top: -8px;
     }
 
+    div[data-testid="stSelectbox"] {
+        position: relative;
+        top: -18px;
+        z-index: 20;
+    }
+
     div[data-baseweb="select"] > div {
         border-radius: 10px !important;
         border-color: #cfe5f3 !important;
         min-height: 36px !important;
-    }
-
-    div[data-testid="stSelectbox"] div[data-baseweb="select"] {
-        transform: translateY(-18px);
     }
     </style>
     """,
