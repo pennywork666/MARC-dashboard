@@ -302,6 +302,10 @@ st.markdown(
         padding-right: 0.55rem !important;
     }
 
+    section[data-testid="stMain"] div.block-container > div[data-testid="stHorizontalBlock"]:first-of-type {
+        margin-bottom: -68px;
+    }
+
     hr {
         border: none;
         border-top: 1px solid #cfe5f3;
@@ -1799,8 +1803,6 @@ def render_coop_overview():
 # =============================
 # Dashboard Rows
 # =============================
-st.markdown("<div style='margin-top:-200px;'></div>", unsafe_allow_html=True)
-
 row1_left, row1_right = st.columns([1, 1], gap="small")
 with row1_left:
     render_workforce_snapshot()
