@@ -1505,12 +1505,14 @@ def render_coop_overview():
   body {{
     margin:0;
     background:transparent;
+    font-family:'Segoe UI', Arial, sans-serif;
   }}
   .coop-card {{
     height: 374px;
     min-height: 374px;
     width:100%;
     max-width:100%;
+    font-family:'Segoe UI', Arial, sans-serif;
     border:1px solid #d6eaf6;
     border-radius:22px;
     background:linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
@@ -1528,7 +1530,7 @@ def render_coop_overview():
   }}
   .coop-title {{
     font-size:22px;
-    font-weight:700;
+    font-weight:900;
     color:#0e3a67;
     padding-left:10px;
     border-left:4px solid #0096db;
@@ -1556,11 +1558,11 @@ def render_coop_overview():
   }}
   .mini-title {{
     font-size:18px;
-    font-weight:700;
+    font-weight:900;
     color:#0e3a67;
     padding-left:10px;
     border-left:4px solid #25a7de;
-    margin-bottom:0;
+    margin-bottom:6px;
     line-height:1.02;
     font-style:normal;
     letter-spacing:0;
@@ -1690,6 +1692,7 @@ def render_coop_overview():
     font-size:12px;
     font-weight:700;
     color:#6b879f;
+    font-family:'Segoe UI', Arial, sans-serif;
     font-style:normal;
     letter-spacing:0;
     text-transform:uppercase;
@@ -1700,6 +1703,7 @@ def render_coop_overview():
     font-weight:700;
     color:#0e3a67;
     line-height:1;
+    font-family:'Segoe UI', Arial, sans-serif;
     font-style:normal;
     letter-spacing:0;
   }}
@@ -1786,29 +1790,6 @@ def render_coop_overview():
       </div>
     </div>
   </div>
-  <script>
-    (function syncParentFontFamily() {{
-      try {{
-        const parentBody = window.parent && window.parent.document
-          ? window.parent.document.body
-          : null;
-        if (!parentBody || !window.parent.getComputedStyle) {{
-          return;
-        }}
-        const parentFontFamily = window.parent.getComputedStyle(parentBody).fontFamily;
-        if (!parentFontFamily) {{
-          return;
-        }}
-        document.body.style.fontFamily = parentFontFamily;
-        const coopCard = document.querySelector(".coop-card");
-        if (coopCard) {{
-          coopCard.style.fontFamily = parentFontFamily;
-        }}
-      }} catch (err) {{
-        // Ignore cross-frame access issues and keep the local fallback font.
-      }}
-    }})();
-  </script>
 </body>
 </html>
 """
