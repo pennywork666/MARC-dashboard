@@ -1,5 +1,6 @@
 import json
 from datetime import date
+from html import escape
 from pathlib import Path
 import re
 
@@ -476,7 +477,7 @@ def new_hires_in_month(df: pd.DataFrame, as_of_dt: pd.Timestamp) -> pd.DataFrame
     m_start, m_end = month_range(as_of_dt)
     out = df[(df["hire_date"] >= m_start) & (df["hire_date"] < m_end)].copy()
     out = out.sort_values("hire_date")
-    return out[["employee_id", "name", "pd", "manager", "hire_date"]]
+    return out[["employee_id", "name", "job", "pd", "manager", "hire_date"]]
 
 
 def service_anniversaries_in_month(df: pd.DataFrame, as_of_dt: pd.Timestamp) -> pd.DataFrame:
@@ -544,6 +545,28 @@ st.markdown(
       line-height:1;
       white-space:nowrap;
     }
+    .new-hire-tag{
+      border:1px solid #d8ebf7;
+      background:#eaf7fd;
+      border-radius:14px;
+      padding:9px 12px;
+      min-width:170px;
+      max-width:240px;
+    }
+    .new-hire-name{
+      font-size:15px;
+      font-weight:900;
+      color:#1d4f77;
+      line-height:1.15;
+    }
+    .new-hire-job{
+      margin-top:4px;
+      font-size:12px;
+      font-weight:800;
+      color:#5d7b94;
+      line-height:1.2;
+      white-space:normal;
+    }
     .svc-row{
       display:flex;
       align-items:flex-start;
@@ -574,13 +597,15 @@ st.markdown(
 
 def render_new_hires_card():
     nh = new_hires_in_month(employees_core, as_of)
+    month_start = pd.Timestamp(as_of.year, as_of.month, 1)
+    month_start_label = f"{month_start.strftime('%B')} {month_start.day}, {month_start.year}"
     st.markdown(f'<div class="section-title">New Hire ({report_period_label})</div>', unsafe_allow_html=True)
     if nh.empty:
         st.markdown(
         f"""
         <div class="block-card">
           <div style="color:#5d7b94; font-weight:900; font-size:15px;">
-            No new hires through {report_as_of_label}.
+            No new hires from {month_start_label} to {report_as_of_label}.
           </div>
         </div>
             """,
@@ -588,8 +613,21 @@ def render_new_hires_card():
         )
         return
 
-    nh_names = sorted(nh["name"].astype(str).str.strip().tolist())
-    tags_html = "".join([f'<span class="tag">{n}</span>' for n in nh_names])
+    tags_html = ""
+    for row in nh.itertuples(index=False):
+        name = escape(str(row.name).strip())
+        job = str(row.job).strip()
+        job_html = (
+            f'<div class="new-hire-job">{escape(job)}</div>'
+            if job
+            else ""
+        )
+        tags_html += f"""
+        <div class="new-hire-tag">
+          <div class="new-hire-name">{name}</div>
+          {job_html}
+        </div>
+        """
     st.markdown(
         f"""
         <div class="block-card">
