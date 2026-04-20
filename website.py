@@ -334,11 +334,11 @@ st.markdown(
     }
 
     .header-wrap {
-        padding-top: 2px;
+        padding-top: 6px;
+        text-align: center;
     }
 
     .header-title {
-        text-align: center;
         font-size: 2.2rem;
         font-weight: 900;
         color:#0e3a67;
@@ -353,12 +353,12 @@ st.markdown(
         font-weight: 800;
         color: #5d7b94;
         white-space: nowrap;
-        padding-top: 16px;
+        padding-top: 6px;
     }
 
     .header-filter-wrap {
-        max-width: 220px;
-        padding-top: 4px;
+        max-width: 180px;
+        padding-top: 8px;
     }
 
     .header-filter-label {
@@ -379,8 +379,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-col_logo, col_filter, col_title, col_asof, col_right = st.columns(
-    [1.45, 2.15, 3.35, 1.45, 0.7],
+col_logo, col_filter, col_title, col_right = st.columns(
+    [1.45, 1.7, 4.05, 0.8],
     gap="small",
     vertical_alignment="top",
 )
@@ -396,29 +396,29 @@ with col_logo:
     )
 
 with col_filter:
-    st.markdown('<div class="header-filter-wrap"><div class="header-filter-label">Reporting Month</div></div>', unsafe_allow_html=True)
-    st.selectbox(
-        "Reporting Month",
-        report_files,
-        index=report_files.index(selected_report_file),
-        key=REPORT_SELECT_KEY,
-        format_func=format_report_option,
-        label_visibility="collapsed",
-    )
+    filter_main, _ = st.columns([0.86, 0.14], gap="small")
+    with filter_main:
+        st.markdown(
+            '<div class="header-filter-wrap"><div class="header-filter-label">Reporting Month</div></div>',
+            unsafe_allow_html=True,
+        )
+        st.selectbox(
+            "Reporting Month",
+            report_files,
+            index=report_files.index(selected_report_file),
+            key=REPORT_SELECT_KEY,
+            format_func=format_report_option,
+            label_visibility="collapsed",
+        )
 
 with col_title:
     st.markdown(
         f"""
         <div class="header-wrap">
             <div class="header-title">{dashboard_title}</div>
+            <div class="header-asof">* As of {report_as_of_label}</div>
         </div>
         """,
-        unsafe_allow_html=True,
-    )
-
-with col_asof:
-    st.markdown(
-        f'<div class="header-asof">* As of {report_as_of_label}</div>',
         unsafe_allow_html=True,
     )
 
