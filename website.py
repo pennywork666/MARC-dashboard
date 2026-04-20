@@ -1536,7 +1536,7 @@ def render_coop_overview():
   }}
   .top-grid {{
     display:grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:1.14fr 0.86fr;
     gap:14px;
     align-items:stretch;
     height: calc(100% - 46px);
@@ -1549,6 +1549,8 @@ def render_coop_overview():
     box-sizing:border-box;
     height:100%;
     min-height:0;
+    display:flex;
+    flex-direction:column;
   }}
   .mini-title {{
     font-size:20px;
@@ -1556,10 +1558,18 @@ def render_coop_overview():
     color:#0e3a67;
     padding-left:10px;
     border-left:4px solid #25a7de;
+    margin-bottom:0;
+  }}
+  .mini-head {{
+    min-height:86px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:14px;
     margin-bottom:12px;
   }}
   .donut-shell {{
-    height: calc(100% - 34px);
+    flex:1;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -1640,25 +1650,26 @@ def render_coop_overview():
   .chart-wrap {{
     background:#f7fcff;
     border-radius:16px;
-    padding:10px 12px 8px 12px;
+    padding:10px 12px 4px 12px;
   }}
   .chart-head {{
     display:flex;
     align-items:flex-start;
     justify-content:space-between;
     gap:14px;
-    margin-bottom:10px;
+    margin-bottom:0;
   }}
   .chart-head .mini-title {{
     margin-bottom:0;
   }}
   .pd-chart-wrap {{
-    height: calc(100% - 34px);
+    flex:1;
     display:flex;
     flex-direction:column;
+    justify-content:flex-start;
   }}
   .pd-chart-wrap .chart-wrap {{
-    flex:1;
+    flex:none;
   }}
   .headcount-chip {{
     min-width:110px;
@@ -1682,6 +1693,9 @@ def render_coop_overview():
     color:#0e3a67;
     line-height:1;
   }}
+  .headcount-chip.ghost {{
+    visibility:hidden;
+  }}
 </style>
 </head>
 <body>
@@ -1691,7 +1705,7 @@ def render_coop_overview():
     </div>
     <div class="top-grid">
       <div class="mini-card">
-        <div class="chart-head">
+        <div class="mini-head chart-head">
           <div class="mini-title">PD Headcount</div>
           <div class="headcount-chip">
             <div class="chip-label">Co-ops</div>
@@ -1705,7 +1719,13 @@ def render_coop_overview():
         </div>
       </div>
       <div class="mini-card">
-        <div class="mini-title">Gender Distribution</div>
+        <div class="mini-head">
+          <div class="mini-title">Gender Distribution</div>
+          <div class="headcount-chip ghost" aria-hidden="true">
+            <div class="chip-label">Co-ops</div>
+            <div class="chip-value">{coop_count}</div>
+          </div>
+        </div>
         <div class="donut-shell">
           <div class="donut-wrap">
             <div class="donut">
