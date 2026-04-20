@@ -1526,7 +1526,7 @@ def render_coop_overview():
     justify-content:space-between;
     align-items:flex-start;
     gap:18px;
-    margin-bottom:8px;
+    margin-bottom:12px;
   }}
   .coop-title {{
     font-size:22px;
@@ -1710,7 +1710,11 @@ def render_coop_overview():
     white-space:nowrap;
   }}
   .gender-section .section-head {{
-    margin-bottom:2px;
+    margin-bottom:6px;
+  }}
+  .gender-section .donut-shell {{
+    align-items:center;
+    padding-top:0;
   }}
   .gender-section .donut {{
     width:116px;
@@ -1726,7 +1730,7 @@ def render_coop_overview():
     font-size:12px;
   }}
   .gender-section .donut-wrap {{
-    transform:translateY(-4px);
+    transform:translateY(10px);
   }}
   .gender-section .pct.male {{
     left:calc(50% + 58px);
