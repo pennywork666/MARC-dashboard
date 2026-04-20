@@ -1530,7 +1530,7 @@ def render_coop_overview():
   }}
   .coop-title {{
     font-size:22px;
-    font-weight:900;
+    font-weight:700;
     color:#0e3a67;
     padding-left:10px;
     border-left:4px solid #0096db;
@@ -1559,7 +1559,7 @@ def render_coop_overview():
   }}
   .mini-title {{
     font-size:18px;
-    font-weight:900;
+    font-weight:700;
     color:#0e3a67;
     padding-left:10px;
     border-left:4px solid #25a7de;
@@ -1611,7 +1611,7 @@ def render_coop_overview():
     z-index:2;
     color:#ffffff;
     font-size:18px;
-    font-weight:950;
+    font-weight:700;
     line-height:1;
     text-shadow:0 1px 3px rgba(14,58,103,.35);
   }}
@@ -1628,7 +1628,7 @@ def render_coop_overview():
   .pct {{
     position:absolute;
     font-size:14px;
-    font-weight:900;
+    font-weight:700;
     font-family:'Segoe UI', Arial, sans-serif;
     font-style:normal;
     letter-spacing:0;
@@ -1693,7 +1693,7 @@ def render_coop_overview():
   }}
   .headcount-chip .chip-label {{
     font-size:12px;
-    font-weight:900;
+    font-weight:700;
     color:#6b879f;
     font-family:'Segoe UI', Arial, sans-serif;
     font-style:normal;
@@ -1703,7 +1703,7 @@ def render_coop_overview():
   .headcount-chip .chip-value {{
     margin-top:4px;
     font-size:34px;
-    font-weight:950;
+    font-weight:700;
     color:#0e3a67;
     line-height:1;
     font-family:'Segoe UI', Arial, sans-serif;
