@@ -1542,21 +1542,16 @@ def render_coop_overview():
     display:grid;
     grid-template-columns:1.22fr 0.78fr;
     gap:14px;
-    align-items:stretch;
+    align-items:start;
     height: calc(100% - 46px);
   }}
-  .mini-card {{
-    border:1px solid #d8ebf7;
-    border-radius:18px;
-    background:#ffffff;
-    padding:16px 16px 14px 16px;
-    box-sizing:border-box;
-    height:100%;
+  .coop-section {{
     min-height:0;
     display:flex;
     flex-direction:column;
+    position:relative;
   }}
-  .pd-mini-card {{
+  .pd-section {{
     position:relative;
   }}
   .mini-title {{
@@ -1570,23 +1565,19 @@ def render_coop_overview():
     font-style:normal;
     letter-spacing:0;
   }}
-  .mini-head {{
-    min-height:86px;
+  .section-head {{
     display:flex;
     justify-content:space-between;
     align-items:flex-start;
     gap:14px;
-    margin-bottom:12px;
-  }}
-  .pd-mini-head {{
-    min-height:auto;
-    margin-bottom:6px;
+    margin-bottom:8px;
   }}
   .donut-shell {{
     flex:1;
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     justify-content:center;
+    padding-top:8px;
   }}
   .donut-wrap {{
     position:relative;
@@ -1673,21 +1664,16 @@ def render_coop_overview():
     align-items:flex-start;
     justify-content:space-between;
     gap:14px;
-    margin-bottom:0;
-  }}
-  .chart-head .mini-title {{
-    margin-bottom:0;
   }}
   .pd-chart-wrap {{
     flex:1;
     display:flex;
     flex-direction:column;
     justify-content:flex-start;
-    margin-top:-10px;
+    margin-top:-4px;
   }}
   .pd-chart-wrap .chart-wrap {{
     flex:none;
-    padding-top:8px;
   }}
   .headcount-chip {{
     min-width:110px;
@@ -1716,52 +1702,37 @@ def render_coop_overview():
     font-style:normal;
     letter-spacing:0;
   }}
-  .overlay-chip {{
-    position:absolute;
-    top:20px;
-    right:22px;
-    z-index:3;
+  .headcount-chip.total-chip {{
     min-width:116px;
     box-shadow:0 8px 18px rgba(14,58,103,.06);
   }}
-  .headcount-chip.ghost {{
-    visibility:hidden;
-  }}
-  .gender-card-compact .mini-title {{
+  .gender-section .mini-title {{
     white-space:nowrap;
   }}
-  .gender-card-compact .mini-head {{
-    min-height:46px;
-    margin-bottom:4px;
+  .gender-section .section-head {{
+    margin-bottom:2px;
   }}
-  .gender-card-compact .headcount-chip.ghost {{
-    min-width:0;
-    width:0;
-    padding:0;
-    border:none;
-    overflow:hidden;
-  }}
-  .gender-card-compact .donut {{
+  .gender-section .donut {{
     width:116px;
     height:116px;
   }}
-  .gender-card-compact .donut::after {{
+  .gender-section .donut::after {{
     inset:30px;
   }}
-  .gender-card-compact .ring-count {{
+  .gender-section .ring-count {{
     font-size:16px;
   }}
-  .gender-card-compact .pct {{
+  .gender-section .pct {{
     font-size:12px;
   }}
-  .gender-card-compact .donut-wrap {{
-    transform:translateY(-10px);
+  .gender-section .donut-wrap {{
+    transform:translateY(-4px);
   }}
-  .gender-card-compact .pct.male {{
+  .gender-section .pct.male {{
     left:calc(50% + 58px);
     top:34px;
   }}
-  .gender-card-compact .pct.female {{
+  .gender-section .pct.female {{
     right:calc(50% + 58px);
     bottom:34px;
   }}
@@ -1773,13 +1744,13 @@ def render_coop_overview():
       <div class="coop-title">{coop_overview_title}</div>
     </div>
     <div class="top-grid">
-      <div class="mini-card pd-mini-card">
-        <div class="mini-head chart-head pd-mini-head">
+      <div class="coop-section pd-section">
+        <div class="section-head chart-head">
           <div class="mini-title">PD Headcount</div>
-        </div>
-        <div class="headcount-chip overlay-chip">
+          <div class="headcount-chip total-chip">
             <div class="chip-label">Total</div>
             <div class="chip-value">{coop_count}</div>
+          </div>
         </div>
         <div class="pd-chart-wrap">
           <div class="chart-wrap">
@@ -1787,13 +1758,9 @@ def render_coop_overview():
           </div>
         </div>
       </div>
-      <div class="mini-card gender-card-compact">
-        <div class="mini-head">
+      <div class="coop-section gender-section">
+        <div class="section-head">
           <div class="mini-title">Gender Distribution</div>
-          <div class="headcount-chip ghost" aria-hidden="true">
-            <div class="chip-label">Co-ops</div>
-            <div class="chip-value">{coop_count}</div>
-          </div>
         </div>
         <div class="donut-shell">
           <div class="donut-wrap">
