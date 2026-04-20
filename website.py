@@ -843,8 +843,8 @@ def render_gender_distribution():
         flex-direction: column;
         gap: 14px;
         justify-content: center;
-        padding-top: 26px;
-        padding-bottom: 12px;
+        padding-top: 12px;
+        padding-bottom: 8px;
         height: 100%;
       }}
       .count-box {{
