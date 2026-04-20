@@ -646,6 +646,7 @@ def render_workforce_snapshot():
     <div style="
         width:100%;
         max-width:100%;
+        font-family:'Segoe UI', Arial, sans-serif;
         border:1px solid #d6eaf6;
         border-radius:22px;
         background:linear-gradient(145deg, #0d355f 0%, #0f4577 40%, #0a84c7 100%);
@@ -1712,6 +1713,16 @@ def render_coop_overview():
   }}
   .headcount-chip.ghost {{
     visibility:hidden;
+  }}
+  .gender-card-compact .mini-title {{
+    white-space:nowrap;
+  }}
+  .gender-card-compact .headcount-chip.ghost {{
+    min-width:0;
+    width:0;
+    padding:0;
+    border:none;
+    overflow:hidden;
   }}
   .gender-card-compact .donut {{
     width:116px;
