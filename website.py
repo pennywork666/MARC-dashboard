@@ -644,6 +644,8 @@ def render_service_anniversary_card():
 def render_workforce_snapshot():
     kpi_card = f"""
     <div style="
+        width:100%;
+        max-width:100%;
         border:1px solid #d6eaf6;
         border-radius:22px;
         background:linear-gradient(145deg, #0d355f 0%, #0f4577 40%, #0a84c7 100%);
@@ -786,12 +788,18 @@ def render_gender_distribution():
     <html>
     <head>
     <style>
+      html, body {{
+        width: 100%;
+        max-width: 100%;
+      }}
       body {{
         margin: 0;
         background: transparent;
         font-family: "Segoe UI", Arial, sans-serif;
       }}
       .gender-card {{
+        width: 100%;
+        max-width: 100%;
         border: 1px solid #d6eaf6;
         border-radius: 22px;
         background: linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
@@ -1110,6 +1118,8 @@ def render_pd_analysis():
 
     pd_card = f"""
     <div style="
+        width:100%;
+        max-width:100%;
         border:1px solid #d6eaf6;
         border-radius:22px;
         background:linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
@@ -1485,12 +1495,18 @@ def render_coop_overview():
 <html>
 <head>
 <style>
+  html, body {{
+    width:100%;
+    max-width:100%;
+  }}
   body {{
     margin:0;
     background:transparent;
     font-family:"Segoe UI", Arial, sans-serif;
   }}
   .coop-card {{
+    width:100%;
+    max-width:100%;
     border:1px solid #d6eaf6;
     border-radius:22px;
     background:linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
